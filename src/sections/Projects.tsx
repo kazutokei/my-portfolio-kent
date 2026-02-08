@@ -1,0 +1,225 @@
+import React, { useState } from 'react';
+import { ExternalLink, ArrowRight, Code, Palette, Video, Award, Layers } from 'lucide-react';
+
+type ProjectType = 'code' | 'graphic' | 'video';
+type MainCategory = 'projects' | 'certificates' | 'tech_stack';
+
+interface Project {
+  id: number;
+  type: ProjectType;
+  title: string;
+  description: string;
+  imageUrl: string;
+  tags: string[];
+  link?: string;
+}
+
+const projectsData: Project[] = [
+  {
+    id: 1,
+    type: 'code',
+    title: 'iREQUEST: Online Credential Request System',
+    description: 'Developed as a core project for the CS317 Software Engineering course, iREQUEST is a web-based platform streamlining document requests.',
+    imageUrl: '/projects/irequest.webp',
+    // UPDATED TAGS
+    tags: ['JavaScript', 'React', 'Vite', 'Tailwind CSS', 'Python', 'Django'],
+    link: '#'
+  },
+  {
+    id: 2,
+    type: 'code',
+    title: 'LocatR: Student Record Locator System',
+    description: 'An academic unit management system helping students locate their records efficiently across different departments.',
+    imageUrl: '/projects/locatr.webp',
+    // UPDATED TAGS
+    tags: ['Python', 'CustomTkinter', 'SQLite', 'TeX'],
+    link: '#'
+  },
+  {
+    id: 3,
+    type: 'code',
+    title: 'Gift Exchange App',
+    description: 'A fun, interactive application for organizing gift exchanges during holiday seasons with randomized matching logic.',
+    imageUrl: '/projects/gift-exchange.webp',
+    // UPDATED TAGS
+    tags: ['JavaScript', 'React', 'HTML', 'CSS'],
+    link: '#'
+  },
+  {
+    id: 4,
+    type: 'graphic',
+    title: 'Brand Identity Design',
+    description: 'Complete visual identity package including logo, typography, and color palette for a local startup.',
+    imageUrl: '/projects/graphic1.webp',
+    tags: ['Photoshop', 'Illustrator'],
+    link: '#'
+  },
+  {
+    id: 5,
+    type: 'video',
+    title: 'Cinematic Travel Vlog',
+    description: 'A short-form cinematic travel video showcasing color grading and sound design skills.',
+    imageUrl: '/projects/video1.webp',
+    tags: ['Premiere Pro', 'After Effects'],
+    link: '#'
+  },
+  {
+    id: 6, 
+    type: 'code',
+    title: 'Personal Portfolio Website',
+    description: 'A modern, high-performance portfolio website built to showcase my career and technical skills. Features smooth animations, a responsive layout, and interactive components.',
+    imageUrl: '/projects/portfolio.webp', 
+    tags: ['React', 'TypeScript', 'Tailwind CSS', 'Framer Motion', 'GSAP'],
+    link: '#' 
+  }
+];
+
+const Projects = () => {
+  const [activeMainTab, setActiveMainTab] = useState<MainCategory>('projects');
+  const [activeSubTab, setActiveSubTab] = useState<ProjectType>('code');
+
+  const filteredProjects = projectsData.filter(project => project.type === activeSubTab);
+
+  return (
+    // Reduced padding: pt-24 pb-20
+    <section id="projects" className="relative min-h-screen bg-zinc-950 px-6 pt-24 pb-20">
+      
+      <div className="max-w-5xl mx-auto">
+        
+        {/* --- HEADER --- */}
+        <div className="text-center mb-10 space-y-3 animate-in fade-in slide-in-from-bottom-8 duration-1000">
+          <h2 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight">Portfolio Showcase</h2>
+          <div className="w-20 h-1 bg-cyan-500 rounded-full mx-auto" />
+          <p className="text-zinc-400 max-w-2xl mx-auto text-base leading-relaxed pt-2">
+            Explore my journey through projects, certifications, and technical expertise. 
+            Each milestone reflects my growth as a developer and multimedia artist.
+          </p>
+        </div>
+
+        {/* --- MAIN TABS --- */}
+        <div className="flex flex-wrap justify-center gap-3 mb-8 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-200">
+          <button 
+            onClick={() => setActiveMainTab('projects')}
+            className={`flex items-center gap-2 px-6 py-3 rounded-2xl transition-all duration-300 font-bold text-sm md:text-base ${
+              activeMainTab === 'projects' 
+                ? 'bg-cyan-500 text-black shadow-[0_0_20px_rgba(6,182,212,0.4)] scale-105' 
+                : 'bg-zinc-900/50 text-zinc-400 hover:bg-zinc-900 hover:text-white border border-zinc-800'
+            }`}
+          >
+            <Code className="w-4 h-4" /> Projects
+          </button>
+          <button 
+            onClick={() => setActiveMainTab('certificates')}
+            className={`flex items-center gap-2 px-6 py-3 rounded-2xl transition-all duration-300 font-bold text-sm md:text-base ${
+              activeMainTab === 'certificates' 
+                ? 'bg-cyan-500 text-black shadow-[0_0_20px_rgba(6,182,212,0.4)] scale-105' 
+                : 'bg-zinc-900/50 text-zinc-400 hover:bg-zinc-900 hover:text-white border border-zinc-800'
+            }`}
+          >
+            <Award className="w-4 h-4" /> Certificates
+          </button>
+          <button 
+            onClick={() => setActiveMainTab('tech_stack')}
+            className={`flex items-center gap-2 px-6 py-3 rounded-2xl transition-all duration-300 font-bold text-sm md:text-base ${
+              activeMainTab === 'tech_stack' 
+                ? 'bg-cyan-500 text-black shadow-[0_0_20px_rgba(6,182,212,0.4)] scale-105' 
+                : 'bg-zinc-900/50 text-zinc-400 hover:bg-zinc-900 hover:text-white border border-zinc-800'
+            }`}
+          >
+            <Layers className="w-4 h-4" /> Tech Stack
+          </button>
+        </div>
+
+        {/* --- SUB TABS --- */}
+        {activeMainTab === 'projects' && (
+          <div className="flex justify-center gap-3 mb-12 animate-in fade-in zoom-in duration-500 delay-300">
+            <button 
+              onClick={() => setActiveSubTab('code')}
+              className={`px-5 py-1.5 rounded-full text-xs font-semibold transition-all duration-300 flex items-center gap-2 ${
+                activeSubTab === 'code' ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/50' : 'bg-zinc-900 text-zinc-500 hover:text-zinc-300 border border-zinc-800'
+              }`}
+            >
+              <Code className="w-3 h-3" /> Code
+            </button>
+            <button 
+              onClick={() => setActiveSubTab('graphic')}
+              className={`px-5 py-1.5 rounded-full text-xs font-semibold transition-all duration-300 flex items-center gap-2 ${
+                activeSubTab === 'graphic' ? 'bg-purple-500/20 text-purple-400 border border-purple-500/50' : 'bg-zinc-900 text-zinc-500 hover:text-zinc-300 border border-zinc-800'
+              }`}
+            >
+              <Palette className="w-3 h-3" /> Graphic
+            </button>
+            <button 
+              onClick={() => setActiveSubTab('video')}
+              className={`px-5 py-1.5 rounded-full text-xs font-semibold transition-all duration-300 flex items-center gap-2 ${
+                activeSubTab === 'video' ? 'bg-pink-500/20 text-pink-400 border border-pink-500/50' : 'bg-zinc-900 text-zinc-500 hover:text-zinc-300 border border-zinc-800'
+              }`}
+            >
+              <Video className="w-3 h-3" /> Video
+            </button>
+          </div>
+        )}
+
+        {/* --- CONTENT AREA --- */}
+        <div className="min-h-[400px]">
+          
+          {/* PROJECTS GRID */}
+          {activeMainTab === 'projects' && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-in fade-in slide-in-from-bottom-8 duration-700">
+              {filteredProjects.map((project) => (
+                <div key={project.id} className="group bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden hover:border-cyan-500/50 transition-all duration-300 hover:shadow-[0_0_30px_rgba(34,211,238,0.1)] flex flex-col h-full">
+                  
+                  {/* Image Placeholder */}
+                  <div className="relative h-40 bg-zinc-800 overflow-hidden group-hover:opacity-90 transition-opacity">
+                    <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 to-transparent z-10" />
+                    <div className="w-full h-full flex items-center justify-center text-zinc-600 font-mono text-xs">
+                      [Image: {project.title}]
+                    </div>
+                  </div>
+
+                  {/* Content */}
+                  <div className="p-5 flex flex-col flex-grow">
+                    <div className="flex flex-wrap gap-2 mb-2">
+                      {project.tags.map(tag => (
+                        <span key={tag} className="text-[10px] font-medium px-2 py-0.5 rounded bg-zinc-800 text-zinc-400 border border-zinc-700">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                    
+                    <h3 className="text-lg font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors">{project.title}</h3>
+                    <p className="text-zinc-400 text-xs leading-relaxed mb-4 flex-grow">
+                      {project.description}
+                    </p>
+                    
+                    <div className="flex items-center justify-between pt-3 border-t border-zinc-800">
+                      <a href={project.link} className="flex items-center gap-2 text-xs font-semibold text-white hover:text-cyan-400 transition-colors">
+                        <ExternalLink className="w-3 h-3" /> View Project
+                      </a>
+                      <button className="flex items-center gap-1 text-[10px] font-medium text-zinc-500 group-hover:translate-x-1 transition-transform">
+                        Details <ArrowRight className="w-2.5 h-2.5" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* CERTIFICATES & TECH STACK PLACEHOLDERS */}
+          {(activeMainTab === 'certificates' || activeMainTab === 'tech_stack') && (
+            <div className="text-center py-20 animate-in fade-in zoom-in duration-500">
+              {activeMainTab === 'certificates' ? <Award className="w-12 h-12 text-zinc-700 mx-auto mb-4" /> : <Layers className="w-12 h-12 text-zinc-700 mx-auto mb-4" />}
+              <h3 className="text-xl font-bold text-white mb-2">{activeMainTab === 'certificates' ? 'Certifications' : 'Tech Stack'} Coming Soon</h3>
+              <p className="text-zinc-500 text-sm">This section is currently under development.</p>
+            </div>
+          )}
+          
+        </div>
+
+      </div>
+    </section>
+  );
+};
+
+export default Projects;
