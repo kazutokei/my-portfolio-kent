@@ -3,7 +3,7 @@ import PillNav from './components/bits/PillNav';
 import Hero from './sections/Hero';
 import About from './sections/About';
 import Projects from './sections/Projects';
-import Galaxy from './components/reactbits/Galaxy'; // Adjust this import path to where your Galaxy component is saved
+import Galaxy from './components/bits/Galaxy';
 
 function App() {
   return (
