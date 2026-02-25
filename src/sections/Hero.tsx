@@ -15,7 +15,6 @@ const Hero = () => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Create a timeline for the hero section
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
@@ -23,7 +22,6 @@ const Hero = () => {
         }
       });
 
-      // Animate elements with the class 'gsap-anim' sequentially
       tl.from(".gsap-anim", {
         y: 40,
         opacity: 0,
@@ -32,7 +30,6 @@ const Hero = () => {
         ease: "power3.out"
       });
 
-      // Animate the profile card separately
       tl.from(".gsap-card", {
         scale: 0.9,
         opacity: 0,
@@ -42,7 +39,7 @@ const Hero = () => {
 
     }, sectionRef);
 
-    return () => ctx.revert(); // Cleanup on unmount
+    return () => ctx.revert();
   }, []);
 
   return (
@@ -53,7 +50,7 @@ const Hero = () => {
 
       <div className="max-w-5xl w-full grid grid-cols-1 lg:grid-cols-2 gap-8 items-center z-10">
         
-        {/* --- LEFT COLUMN: Text Content --- */}
+        {/* Removed 'animate-in fade-in...' classes from here */}
         <div className="space-y-6">
           
           <div className="flex flex-col items-start gap-1 gsap-anim">
@@ -154,7 +151,6 @@ const Hero = () => {
           </div>
         </div>
 
-        {/* --- RIGHT COLUMN: Profile Card --- */}
         <div className="flex justify-center lg:justify-end relative perspective-1000 gsap-card">
           <div className="w-full max-w-[380px]">
              <ProfileCard

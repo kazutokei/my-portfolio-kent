@@ -31,7 +31,7 @@ const About = () => {
       
       <div className="max-w-4xl w-full space-y-12">
         
-        {/* --- TOP SECTION: Title & Bio --- */}
+        {/* Removed old Tailwind animation classes */}
         <div className="flex flex-col items-center text-center space-y-6 gsap-anim">
           <div className="relative inline-block">
             <h2 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight">About Me</h2>
@@ -53,7 +53,6 @@ const About = () => {
           </div>
         </div>
 
-        {/* --- MIDDLE SECTION: Education & Language --- */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <div className="bg-zinc-900/40 border border-zinc-800/60 rounded-2xl p-6 hover:border-cyan-500/30 hover:bg-zinc-900/60 transition-all duration-300 gsap-anim">
             <h3 className="text-lg font-bold text-cyan-400 mb-3 flex items-center gap-2">
@@ -96,7 +95,6 @@ const About = () => {
           </div>
         </div>
 
-        {/* --- BOTTOM SECTION: Stats --- */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           <div className="bg-zinc-900/30 border border-zinc-800 rounded-2xl p-6 flex flex-col items-center justify-center hover:bg-zinc-900/50 hover:border-cyan-500/20 transition-all duration-300 group min-h-[140px] gsap-anim">
             <h4 className="text-4xl font-extrabold text-cyan-400 mb-1 group-hover:scale-110 transition-transform duration-300">

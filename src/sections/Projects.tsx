@@ -84,7 +84,6 @@ const Projects = () => {
 
   const filteredProjects = projectsData.filter(project => project.type === activeSubTab);
 
-  // Initial ScrollTrigger Animation
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.from(".gsap-header-anim", {
@@ -103,7 +102,6 @@ const Projects = () => {
     return () => ctx.revert();
   }, []);
 
-  // Animation for changing tabs
   useEffect(() => {
     if (!gridRef.current) return;
     
@@ -115,14 +113,14 @@ const Projects = () => {
     }, gridRef);
 
     return () => ctx.revert();
-  }, [activeMainTab, activeSubTab]); // Re-run when tabs change
+  }, [activeMainTab, activeSubTab]); 
 
   return (
     <section id="projects" ref={sectionRef} className="relative min-h-screen bg-zinc-950 px-6 pt-24 pb-20">
       
       <div className="max-w-5xl mx-auto">
         
-        {/* --- HEADER --- */}
+        {/* Removed old Tailwind animation classes */}
         <div className="text-center mb-10 space-y-3 gsap-header-anim">
           <h2 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight">Portfolio Showcase</h2>
           <div className="w-20 h-1 bg-cyan-500 rounded-full mx-auto" />
@@ -132,7 +130,6 @@ const Projects = () => {
           </p>
         </div>
 
-        {/* --- MAIN TABS --- */}
         <div className="flex flex-wrap justify-center gap-3 mb-8 gsap-header-anim">
           <button 
             onClick={() => setActiveMainTab('projects')}
@@ -166,7 +163,6 @@ const Projects = () => {
           </button>
         </div>
 
-        {/* --- SUB TABS --- */}
         {activeMainTab === 'projects' && (
           <div className="flex justify-center gap-3 mb-12 gsap-header-anim">
             <button 
@@ -196,16 +192,13 @@ const Projects = () => {
           </div>
         )}
 
-        {/* --- CONTENT AREA --- */}
         <div className="min-h-[400px]" ref={gridRef}>
           
-          {/* PROJECTS GRID */}
           {activeMainTab === 'projects' && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredProjects.map((project) => (
                 <div key={project.id} className="project-card group bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden hover:border-cyan-500/50 transition-all duration-300 hover:shadow-[0_0_30px_rgba(34,211,238,0.1)] flex flex-col h-full">
                   
-                  {/* Image Placeholder */}
                   <div className="relative h-40 bg-zinc-800 overflow-hidden group-hover:opacity-90 transition-opacity">
                     <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 to-transparent z-10" />
                     <div className="w-full h-full flex items-center justify-center text-zinc-600 font-mono text-xs">
@@ -213,7 +206,6 @@ const Projects = () => {
                     </div>
                   </div>
 
-                  {/* Content */}
                   <div className="p-5 flex flex-col flex-grow">
                     <div className="flex flex-wrap gap-2 mb-2">
                       {project.tags.map(tag => (
@@ -242,7 +234,6 @@ const Projects = () => {
             </div>
           )}
 
-          {/* CERTIFICATES & TECH STACK PLACEHOLDERS */}
           {(activeMainTab === 'certificates' || activeMainTab === 'tech_stack') && (
             <div className="project-card text-center py-20">
               {activeMainTab === 'certificates' ? <Award className="w-12 h-12 text-zinc-700 mx-auto mb-4" /> : <Layers className="w-12 h-12 text-zinc-700 mx-auto mb-4" />}
