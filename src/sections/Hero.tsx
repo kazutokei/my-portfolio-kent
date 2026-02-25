@@ -9,12 +9,8 @@ import { ArrowRight, Download, Mail } from 'lucide-react';
 const Hero = () => {
   return (
     // Reduced padding: pt-28 pb-12
-    <section id="home" className="relative min-h-screen flex items-center justify-center bg-zinc-950 px-6 pt-28 pb-12 overflow-hidden">
+    <section id="home" className="relative min-h-screen flex items-center justify-center bg-transparent px-6 pt-28 pb-12 overflow-hidden">
       
-      {/* Background Decor */}
-      <div className="absolute top-[-10%] left-[-20%] w-[500px] h-[500px] bg-cyan-500/5 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[400px] h-[400px] bg-indigo-500/5 rounded-full blur-[120px] pointer-events-none" />
-
       {/* Reduced max-width and gap */}
       <div className="max-w-5xl w-full grid grid-cols-1 lg:grid-cols-2 gap-8 items-center z-10">
         
