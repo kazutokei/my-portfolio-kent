@@ -2,11 +2,12 @@ import React from 'react';
 import PillNav from './components/bits/PillNav';
 import Hero from './sections/Hero';
 import About from './sections/About';
-import Projects from './sections/Projects'; // ✅ Import Projects
+import Projects from './sections/Projects';
 
 function App() {
   return (
-    <main className="bg-zinc-950 min-h-screen text-white selection:bg-cyan-500/30">
+    // Added overflow-x-hidden to prevent horizontal scrollbars during animations
+    <main className="bg-zinc-950 min-h-screen text-white selection:bg-cyan-500/30 overflow-x-hidden">
       
       <div className="absolute top-0 left-0 w-full z-50 flex justify-center py-6">
         <PillNav
@@ -32,7 +33,7 @@ function App() {
 
       <Hero />
       <About />
-      <Projects /> {/* ✅ Add Projects Section */}
+      <Projects />
       
     </main>
   );

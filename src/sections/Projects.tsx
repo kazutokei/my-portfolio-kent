@@ -1,5 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ExternalLink, ArrowRight, Code, Palette, Video, Award, Layers } from 'lucide-react';
+
+gsap.registerPlugin(ScrollTrigger);
 
 type ProjectType = 'code' | 'graphic' | 'video';
 type MainCategory = 'projects' | 'certificates' | 'tech_stack';
@@ -21,7 +25,6 @@ const projectsData: Project[] = [
     title: 'iREQUEST: Online Credential Request System',
     description: 'Developed as a core project for the CS317 Software Engineering course, iREQUEST is a web-based platform streamlining document requests.',
     imageUrl: '/projects/irequest.webp',
-    // UPDATED TAGS
     tags: ['JavaScript', 'React', 'Vite', 'Tailwind CSS', 'Python', 'Django'],
     link: '#'
   },
@@ -29,9 +32,8 @@ const projectsData: Project[] = [
     id: 2,
     type: 'code',
     title: 'LocatR: Student Record Locator System',
-    description: 'An academic unit management system helping students locate their records efficiently across different departments.',
+    description: 'Designed to transition the USTP CDO Registrar from manual to digital record keeping. Piloted with the CS3B section, it addresses process limitations to improve accuracy, efficiency, and user satisfaction.',
     imageUrl: '/projects/locatr.webp',
-    // UPDATED TAGS
     tags: ['Python', 'CustomTkinter', 'SQLite', 'TeX'],
     link: '#'
   },
@@ -39,9 +41,8 @@ const projectsData: Project[] = [
     id: 3,
     type: 'code',
     title: 'Gift Exchange App',
-    description: 'A fun, interactive application for organizing gift exchanges during holiday seasons with randomized matching logic.',
+    description: 'Developed to overcome time and distance constraints among friends, this platform automates holiday gift exchanges with randomized matching, allowing seamless celebrations from anywhere.',
     imageUrl: '/projects/gift-exchange.webp',
-    // UPDATED TAGS
     tags: ['JavaScript', 'React', 'HTML', 'CSS'],
     link: '#'
   },
@@ -77,17 +78,52 @@ const projectsData: Project[] = [
 const Projects = () => {
   const [activeMainTab, setActiveMainTab] = useState<MainCategory>('projects');
   const [activeSubTab, setActiveSubTab] = useState<ProjectType>('code');
+  
+  const sectionRef = useRef<HTMLElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
 
   const filteredProjects = projectsData.filter(project => project.type === activeSubTab);
 
+  // Initial ScrollTrigger Animation
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.from(".gsap-header-anim", {
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 75%",
+        },
+        y: 40,
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.15,
+        ease: "power3.out"
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  // Animation for changing tabs
+  useEffect(() => {
+    if (!gridRef.current) return;
+    
+    const ctx = gsap.context(() => {
+      gsap.fromTo(".project-card", 
+        { y: 30, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.5, stagger: 0.1, ease: "power2.out" }
+      );
+    }, gridRef);
+
+    return () => ctx.revert();
+  }, [activeMainTab, activeSubTab]); // Re-run when tabs change
+
   return (
-    // Reduced padding: pt-24 pb-20
-    <section id="projects" className="relative min-h-screen bg-zinc-950 px-6 pt-24 pb-20">
+    <section id="projects" ref={sectionRef} className="relative min-h-screen bg-zinc-950 px-6 pt-24 pb-20">
       
       <div className="max-w-5xl mx-auto">
         
         {/* --- HEADER --- */}
-        <div className="text-center mb-10 space-y-3 animate-in fade-in slide-in-from-bottom-8 duration-1000">
+        <div className="text-center mb-10 space-y-3 gsap-header-anim">
           <h2 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight">Portfolio Showcase</h2>
           <div className="w-20 h-1 bg-cyan-500 rounded-full mx-auto" />
           <p className="text-zinc-400 max-w-2xl mx-auto text-base leading-relaxed pt-2">
@@ -97,7 +133,7 @@ const Projects = () => {
         </div>
 
         {/* --- MAIN TABS --- */}
-        <div className="flex flex-wrap justify-center gap-3 mb-8 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-200">
+        <div className="flex flex-wrap justify-center gap-3 mb-8 gsap-header-anim">
           <button 
             onClick={() => setActiveMainTab('projects')}
             className={`flex items-center gap-2 px-6 py-3 rounded-2xl transition-all duration-300 font-bold text-sm md:text-base ${
@@ -132,7 +168,7 @@ const Projects = () => {
 
         {/* --- SUB TABS --- */}
         {activeMainTab === 'projects' && (
-          <div className="flex justify-center gap-3 mb-12 animate-in fade-in zoom-in duration-500 delay-300">
+          <div className="flex justify-center gap-3 mb-12 gsap-header-anim">
             <button 
               onClick={() => setActiveSubTab('code')}
               className={`px-5 py-1.5 rounded-full text-xs font-semibold transition-all duration-300 flex items-center gap-2 ${
@@ -161,13 +197,13 @@ const Projects = () => {
         )}
 
         {/* --- CONTENT AREA --- */}
-        <div className="min-h-[400px]">
+        <div className="min-h-[400px]" ref={gridRef}>
           
           {/* PROJECTS GRID */}
           {activeMainTab === 'projects' && (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-in fade-in slide-in-from-bottom-8 duration-700">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredProjects.map((project) => (
-                <div key={project.id} className="group bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden hover:border-cyan-500/50 transition-all duration-300 hover:shadow-[0_0_30px_rgba(34,211,238,0.1)] flex flex-col h-full">
+                <div key={project.id} className="project-card group bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden hover:border-cyan-500/50 transition-all duration-300 hover:shadow-[0_0_30px_rgba(34,211,238,0.1)] flex flex-col h-full">
                   
                   {/* Image Placeholder */}
                   <div className="relative h-40 bg-zinc-800 overflow-hidden group-hover:opacity-90 transition-opacity">
@@ -208,7 +244,7 @@ const Projects = () => {
 
           {/* CERTIFICATES & TECH STACK PLACEHOLDERS */}
           {(activeMainTab === 'certificates' || activeMainTab === 'tech_stack') && (
-            <div className="text-center py-20 animate-in fade-in zoom-in duration-500">
+            <div className="project-card text-center py-20">
               {activeMainTab === 'certificates' ? <Award className="w-12 h-12 text-zinc-700 mx-auto mb-4" /> : <Layers className="w-12 h-12 text-zinc-700 mx-auto mb-4" />}
               <h3 className="text-xl font-bold text-white mb-2">{activeMainTab === 'certificates' ? 'Certifications' : 'Tech Stack'} Coming Soon</h3>
               <p className="text-zinc-500 text-sm">This section is currently under development.</p>

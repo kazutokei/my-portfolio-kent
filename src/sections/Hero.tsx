@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import ProfileCard from '../components/bits/ProfileCard';
 import TextType from '../components/bits/TextType';
 import Shuffle from '../components/bits/Shuffle';
@@ -6,26 +8,55 @@ import GradientText from '../components/bits/GradientText';
 import CountUp from '../components/bits/CountUp';
 import { ArrowRight, Download, Mail } from 'lucide-react';
 
+gsap.registerPlugin(ScrollTrigger);
+
 const Hero = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Create a timeline for the hero section
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 80%",
+        }
+      });
+
+      // Animate elements with the class 'gsap-anim' sequentially
+      tl.from(".gsap-anim", {
+        y: 40,
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.15,
+        ease: "power3.out"
+      });
+
+      // Animate the profile card separately
+      tl.from(".gsap-card", {
+        scale: 0.9,
+        opacity: 0,
+        duration: 1,
+        ease: "back.out(1.5)"
+      }, "-=0.6");
+
+    }, sectionRef);
+
+    return () => ctx.revert(); // Cleanup on unmount
+  }, []);
+
   return (
-    // Reduced padding: pt-28 pb-12
-    <section id="home" className="relative min-h-screen flex items-center justify-center bg-zinc-950 px-6 pt-28 pb-12 overflow-hidden">
+    <section id="home" ref={sectionRef} className="relative min-h-screen flex items-center justify-center bg-zinc-950 px-6 pt-28 pb-12 overflow-hidden">
       
-      {/* Background Decor */}
       <div className="absolute top-[-10%] left-[-20%] w-[500px] h-[500px] bg-cyan-500/5 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[400px] h-[400px] bg-indigo-500/5 rounded-full blur-[120px] pointer-events-none" />
 
-      {/* Reduced max-width and gap */}
       <div className="max-w-5xl w-full grid grid-cols-1 lg:grid-cols-2 gap-8 items-center z-10">
         
         {/* --- LEFT COLUMN: Text Content --- */}
-        {/* Reduced space-y */}
-        <div className="space-y-6 animate-in fade-in slide-in-from-bottom-8 duration-1000">
+        <div className="space-y-6">
           
-          {/* HEADLINE BLOCK */}
-          <div className="flex flex-col items-start gap-1">
-            
-            {/* LINE 1: "Hi, I am" + "Kent" */}
+          <div className="flex flex-col items-start gap-1 gsap-anim">
             <div className="flex flex-row flex-wrap items-baseline gap-x-3">
               <Shuffle
                 tag="h1"
@@ -44,7 +75,6 @@ const Hero = () => {
                 loop={false}
                 loopDelay={0}
               />
-              
               <GradientText
                 colors={['#22d3ee', '#6366f1', '#a855f7', '#22d3ee']}
                 animationSpeed={6}
@@ -55,7 +85,6 @@ const Hero = () => {
               </GradientText>
             </div>
 
-            {/* LINE 2: "John Chavo" */}
             <GradientText
               colors={['#22d3ee', '#6366f1', '#a855f7', '#22d3ee']}
               animationSpeed={6}
@@ -66,8 +95,7 @@ const Hero = () => {
             </GradientText>
           </div>
 
-          {/* Typewriter Effect */}
-          <div className="text-lg md:text-xl text-cyan-200/80 font-mono h-[28px] flex items-center pt-1">
+          <div className="text-lg md:text-xl text-cyan-200/80 font-mono h-[28px] flex items-center pt-1 gsap-anim">
             <span className="mr-3 text-cyan-500">{'>'}</span>
             <TextType
               text={[
@@ -84,13 +112,12 @@ const Hero = () => {
             />
           </div>
 
-          <p className="text-zinc-400 text-base md:text-lg max-w-xl leading-relaxed">
+          <p className="text-zinc-400 text-base md:text-lg max-w-xl leading-relaxed gsap-anim">
             Computer Science undergraduate bridging Full-Stack Development and Multimedia Design. 
             Dedicated to delivering high-fidelity user experiences through the integration of technical logic and creativity.
           </p>
 
-          {/* Buttons */}
-          <div className="flex flex-wrap gap-3 pt-1">
+          <div className="flex flex-wrap gap-3 pt-1 gsap-anim">
             <a href="#contact" className="group px-6 py-2.5 bg-cyan-500 text-black font-bold rounded-full flex items-center gap-2 hover:bg-cyan-400 hover:scale-105 transition-all shadow-[0_0_20px_rgba(6,182,212,0.3)] text-sm md:text-base">
               Get in Touch
               <Mail className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -105,8 +132,7 @@ const Hero = () => {
             </a>
           </div>
 
-          {/* Stats Section */}
-          <div className="grid grid-cols-3 gap-4 pt-6 border-t border-zinc-800/50 w-full mt-6">
+          <div className="grid grid-cols-3 gap-4 pt-6 border-t border-zinc-800/50 w-full mt-6 gsap-anim">
             <div className="flex flex-col items-center">
               <h4 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-cyan-400 to-indigo-500 flex items-center">
                 <CountUp from={0} to={2} separator="," direction="up" duration={3} className="count-up-text" />+
@@ -129,8 +155,8 @@ const Hero = () => {
         </div>
 
         {/* --- RIGHT COLUMN: Profile Card --- */}
-        <div className="flex justify-center lg:justify-end relative perspective-1000">
-          <div className="w-full max-w-[380px] animate-in fade-in zoom-in duration-1000 delay-300">
+        <div className="flex justify-center lg:justify-end relative perspective-1000 gsap-card">
+          <div className="w-full max-w-[380px]">
              <ProfileCard
                 name="Kent John J. Chavo"
                 title="Aspiring Full-Stack Developer"
