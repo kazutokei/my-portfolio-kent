@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { ExternalLink, ArrowRight, Code, Palette, Video, Award, Layers } from 'lucide-react';
+import DomeGallery from '../components/bits/DomeGallery'; // Make sure this path matches where you saved DomeGallery.tsx
 
 type ProjectType = 'code' | 'graphic' | 'video';
 type MainCategory = 'projects' | 'certificates' | 'tech_stack';
@@ -19,9 +20,8 @@ const projectsData: Project[] = [
     id: 1,
     type: 'code',
     title: 'iREQUEST: Online Credential Request System',
-    description: 'Developed as a core project for the CS317 Software Engineering course, iREQUEST is a web-based platform streamlining document requests.',
+    description: 'Developed to assist the Office of the University Registrar at USTP CDO, iREQUEST is a web-based platform designed to transition student credential and document requests from a manual, paper-based process to a streamlined digital system.',
     imageUrl: '/projects/irequest.webp',
-    // UPDATED TAGS
     tags: ['JavaScript', 'React', 'Vite', 'Tailwind CSS', 'Python', 'Django'],
     link: '#'
   },
@@ -29,9 +29,8 @@ const projectsData: Project[] = [
     id: 2,
     type: 'code',
     title: 'LocatR: Student Record Locator System',
-    description: 'An academic unit management system helping students locate their records efficiently across different departments.',
+    description: 'Designed to transition the USTP CDO Registrar from manual to digital record keeping. Piloted with the CS3B section, it addresses process limitations to improve accuracy, efficiency, and user satisfaction.',
     imageUrl: '/projects/locatr.webp',
-    // UPDATED TAGS
     tags: ['Python', 'CustomTkinter', 'SQLite', 'TeX'],
     link: '#'
   },
@@ -39,14 +38,31 @@ const projectsData: Project[] = [
     id: 3,
     type: 'code',
     title: 'Gift Exchange App',
-    description: 'A fun, interactive application for organizing gift exchanges during holiday seasons with randomized matching logic.',
+    description: 'Developed to overcome time and distance constraints among friends, this platform automates holiday gift exchanges with randomized matching, allowing seamless celebrations from anywhere.',
     imageUrl: '/projects/gift-exchange.webp',
-    // UPDATED TAGS
     tags: ['JavaScript', 'React', 'HTML', 'CSS'],
     link: '#'
   },
   {
     id: 4,
+    type: 'code',
+    title: 'AListō',
+    description: 'A modern and intuitive to-do list web application designed to help users efficiently organize their tasks, track progress, and boost daily productivity.',
+    imageUrl: '/projects/alisto.webp',
+    tags: ['TypeScript', 'Tailwind CSS', 'PostgreSQL'],
+    link: '#'
+  },
+  {
+    id: 5, 
+    type: 'code',
+    title: 'Personal Portfolio Website',
+    description: 'A modern, high-performance portfolio website built to showcase my career and technical skills. Features smooth animations, a responsive layout, and interactive components.',
+    imageUrl: '/projects/portfolio.webp', 
+    tags: ['React', 'TypeScript', 'Tailwind CSS', 'Framer Motion', 'GSAP'],
+    link: '#' 
+  },
+  {
+    id: 6,
     type: 'graphic',
     title: 'Brand Identity Design',
     description: 'Complete visual identity package including logo, typography, and color palette for a local startup.',
@@ -55,22 +71,13 @@ const projectsData: Project[] = [
     link: '#'
   },
   {
-    id: 5,
+    id: 7,
     type: 'video',
     title: 'Cinematic Travel Vlog',
     description: 'A short-form cinematic travel video showcasing color grading and sound design skills.',
     imageUrl: '/projects/video1.webp',
     tags: ['Premiere Pro', 'After Effects'],
     link: '#'
-  },
-  {
-    id: 6, 
-    type: 'code',
-    title: 'Personal Portfolio Website',
-    description: 'A modern, high-performance portfolio website built to showcase my career and technical skills. Features smooth animations, a responsive layout, and interactive components.',
-    imageUrl: '/projects/portfolio.webp', 
-    tags: ['React', 'TypeScript', 'Tailwind CSS', 'Framer Motion', 'GSAP'],
-    link: '#' 
   }
 ];
 
@@ -80,9 +87,15 @@ const Projects = () => {
 
   const filteredProjects = projectsData.filter(project => project.type === activeSubTab);
 
+  // Extract just the images from the graphic projects to feed into the DomeGallery
+  const graphicImages = useMemo(() => {
+    const graphics = projectsData.filter(p => p.type === 'graphic');
+    // If you only have a few graphics, DomeGallery will automatically repeat them to fill the sphere!
+    return graphics.map(p => ({ src: p.imageUrl, alt: p.title }));
+  }, []);
+
   return (
-    // Reduced padding: pt-24 pb-20
-    <section id="projects" className="relative min-h-screen bg-zinc-950 px-6 pt-24 pb-20">
+    <section id="projects" className="relative min-h-screen bg-transparent px-6 pt-24 pb-20">
       
       <div className="max-w-5xl mx-auto">
         
@@ -103,7 +116,7 @@ const Projects = () => {
             className={`flex items-center gap-2 px-6 py-3 rounded-2xl transition-all duration-300 font-bold text-sm md:text-base ${
               activeMainTab === 'projects' 
                 ? 'bg-cyan-500 text-black shadow-[0_0_20px_rgba(6,182,212,0.4)] scale-105' 
-                : 'bg-zinc-900/50 text-zinc-400 hover:bg-zinc-900 hover:text-white border border-zinc-800'
+                : 'bg-zinc-900/50 text-zinc-400 hover:bg-zinc-800 hover:text-white border border-zinc-800'
             }`}
           >
             <Code className="w-4 h-4" /> Projects
@@ -113,7 +126,7 @@ const Projects = () => {
             className={`flex items-center gap-2 px-6 py-3 rounded-2xl transition-all duration-300 font-bold text-sm md:text-base ${
               activeMainTab === 'certificates' 
                 ? 'bg-cyan-500 text-black shadow-[0_0_20px_rgba(6,182,212,0.4)] scale-105' 
-                : 'bg-zinc-900/50 text-zinc-400 hover:bg-zinc-900 hover:text-white border border-zinc-800'
+                : 'bg-zinc-900/50 text-zinc-400 hover:bg-zinc-800 hover:text-white border border-zinc-800'
             }`}
           >
             <Award className="w-4 h-4" /> Certificates
@@ -123,7 +136,7 @@ const Projects = () => {
             className={`flex items-center gap-2 px-6 py-3 rounded-2xl transition-all duration-300 font-bold text-sm md:text-base ${
               activeMainTab === 'tech_stack' 
                 ? 'bg-cyan-500 text-black shadow-[0_0_20px_rgba(6,182,212,0.4)] scale-105' 
-                : 'bg-zinc-900/50 text-zinc-400 hover:bg-zinc-900 hover:text-white border border-zinc-800'
+                : 'bg-zinc-900/50 text-zinc-400 hover:bg-zinc-800 hover:text-white border border-zinc-800'
             }`}
           >
             <Layers className="w-4 h-4" /> Tech Stack
@@ -163,47 +176,73 @@ const Projects = () => {
         {/* --- CONTENT AREA --- */}
         <div className="min-h-[400px]">
           
-          {/* PROJECTS GRID */}
+          {/* PROJECTS GRID / DOME GALLERY */}
           {activeMainTab === 'projects' && (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-in fade-in slide-in-from-bottom-8 duration-700">
-              {filteredProjects.map((project) => (
-                <div key={project.id} className="group bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden hover:border-cyan-500/50 transition-all duration-300 hover:shadow-[0_0_30px_rgba(34,211,238,0.1)] flex flex-col h-full">
-                  
-                  {/* Image Placeholder */}
-                  <div className="relative h-40 bg-zinc-800 overflow-hidden group-hover:opacity-90 transition-opacity">
-                    <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 to-transparent z-10" />
-                    <div className="w-full h-full flex items-center justify-center text-zinc-600 font-mono text-xs">
-                      [Image: {project.title}]
-                    </div>
-                  </div>
-
-                  {/* Content */}
-                  <div className="p-5 flex flex-col flex-grow">
-                    <div className="flex flex-wrap gap-2 mb-2">
-                      {project.tags.map(tag => (
-                        <span key={tag} className="text-[10px] font-medium px-2 py-0.5 rounded bg-zinc-800 text-zinc-400 border border-zinc-700">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                    
-                    <h3 className="text-lg font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors">{project.title}</h3>
-                    <p className="text-zinc-400 text-xs leading-relaxed mb-4 flex-grow">
-                      {project.description}
-                    </p>
-                    
-                    <div className="flex items-center justify-between pt-3 border-t border-zinc-800">
-                      <a href={project.link} className="flex items-center gap-2 text-xs font-semibold text-white hover:text-cyan-400 transition-colors">
-                        <ExternalLink className="w-3 h-3" /> View Project
-                      </a>
-                      <button className="flex items-center gap-1 text-[10px] font-medium text-zinc-500 group-hover:translate-x-1 transition-transform">
-                        Details <ArrowRight className="w-2.5 h-2.5" />
-                      </button>
-                    </div>
+            <>
+              {activeSubTab === 'graphic' ? (
+                // DOME GALLERY (Renders only for Graphic tab)
+                <div className="relative w-full h-[500px] md:h-[600px] rounded-2xl overflow-hidden border border-zinc-800 bg-zinc-950/40 animate-in fade-in zoom-in duration-700">
+                  <DomeGallery
+                    images={graphicImages.length > 0 ? graphicImages : undefined} 
+                    fit={0.8}
+                    minRadius={600}
+                    maxVerticalRotationDeg={15} // Allowing a bit more vertical rotation
+                    segments={34}
+                    dragDampening={2}
+                    grayscale={false} // Setting to false so your graphic design colors actually show!
+                    overlayBlurColor="transparent" // Letting the galaxy shine through
+                  />
+                  {/* Small hint text for the user */}
+                  <div className="absolute bottom-4 left-0 right-0 text-center pointer-events-none z-10">
+                    <span className="bg-zinc-900/80 text-zinc-400 text-xs px-3 py-1.5 rounded-full backdrop-blur-sm border border-zinc-800">
+                      Drag to rotate • Click to view
+                    </span>
                   </div>
                 </div>
-              ))}
-            </div>
+              ) : (
+                // STANDARD CARD GRID (Renders for Code and Video tabs)
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-in fade-in slide-in-from-bottom-8 duration-700">
+                  {filteredProjects.map((project) => (
+                    <div key={project.id} className="group cursor-pointer bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden hover:border-cyan-500/50 hover:bg-zinc-800 transition-all duration-300 hover:shadow-[0_0_30px_rgba(34,211,238,0.1)] flex flex-col h-full">
+                      
+                      {/* Image Placeholder */}
+                      <div className="relative h-32 bg-zinc-800 overflow-hidden group-hover:opacity-90 transition-opacity">
+                        <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 to-transparent z-10" />
+                        <div className="w-full h-full flex items-center justify-center text-zinc-600 font-mono text-xs">
+                          [Image: {project.title}]
+                        </div>
+                      </div>
+
+                      {/* Content */}
+                      <div className="p-4 flex flex-col flex-grow">
+                        <div className="flex flex-wrap gap-1.5 mb-2">
+                          {project.tags.map(tag => (
+                            <span key={tag} className="text-[10px] font-medium px-2 py-0.5 rounded bg-zinc-800 text-zinc-400 border border-zinc-700">
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                        
+                        <h3 className="text-base font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors line-clamp-1">{project.title}</h3>
+                        
+                        <p className="text-zinc-400 text-xs leading-relaxed mb-4 line-clamp-2">
+                          {project.description}
+                        </p>
+                        
+                        <div className="mt-auto flex items-center justify-between pt-3 border-t border-zinc-800">
+                          <a href={project.link} className="flex items-center gap-2 text-xs font-semibold text-white hover:text-cyan-400 transition-colors">
+                            <ExternalLink className="w-3 h-3" /> View Project
+                          </a>
+                          <button className="flex items-center gap-1 text-[10px] font-medium text-zinc-500 group-hover:translate-x-1 transition-transform">
+                            Details <ArrowRight className="w-2.5 h-2.5" />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </>
           )}
 
           {/* CERTIFICATES & TECH STACK PLACEHOLDERS */}
@@ -222,4 +261,4 @@ const Projects = () => {
   );
 };
 
-export default Projects;
+export default Projects

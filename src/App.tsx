@@ -3,14 +3,13 @@ import PillNav from './components/bits/PillNav';
 import Hero from './sections/Hero';
 import About from './sections/About';
 import Projects from './sections/Projects';
-import Galaxy from './components/bits/Galaxy';
+import Galaxy from './components/bits/Galaxy'; // Adjust path if needed
 
 function App() {
   return (
     <main className="relative bg-zinc-950 min-h-screen text-white selection:bg-cyan-500/30 overflow-x-hidden">
       
       {/* --- GALAXY BACKGROUND --- */}
-      {/* Using fixed inset-0 to cover the entire viewport and stay behind the content */}
       <div className="fixed inset-0 z-0 pointer-events-auto">
         <div style={{ width: '100%', height: '100vh', position: 'relative' }}>
           <Galaxy
@@ -30,7 +29,6 @@ function App() {
       </div>
 
       {/* --- MAIN CONTENT WRAPPER --- */}
-      {/* Added relative z-10 so all your sections float above the Galaxy */}
       <div className="relative z-10">
         <div className="absolute top-0 left-0 w-full z-50 flex justify-center py-6">
           <PillNav
