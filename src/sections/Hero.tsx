@@ -131,7 +131,8 @@ const Hero = () => {
                     "Aspiring Web & Software Developer",
                     "Graphic Designer",
                     "Video Editor",
-                    "UI/UX Enthusiast"
+                    "UI/UX Enthusiast",
+                    "Student Leader",
                   ]}
                   typingSpeed={25}   // Zippy typing speed
                   deletingSpeed={15} // Zippy deleting speed
