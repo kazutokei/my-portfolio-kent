@@ -1,9 +1,8 @@
 import React from 'react';
-import PillNav from './components/bits/PillNav';
 import Hero from './sections/Hero';
 import About from './sections/About';
 import Projects from './sections/Projects';
-import Galaxy from './components/bits/Galaxy'; // Adjust path if needed
+import Galaxy from './components/bits/Galaxy';
 
 function App() {
   return (
@@ -30,28 +29,6 @@ function App() {
 
       {/* --- MAIN CONTENT WRAPPER --- */}
       <div className="relative z-10">
-        <div className="absolute top-0 left-0 w-full z-50 flex justify-center py-6">
-          <PillNav
-            logo={
-              <>
-                kejo.<span className="text-white">works</span>
-              </>
-            }
-            logoAlt="kejo.works logo"
-            items={[
-              { label: 'Home', href: '#home' },
-              { label: 'About', href: '#about' },
-              { label: 'Projects', href: '#projects' },
-              { label: 'Contact', href: '#contact' }
-            ]}
-            baseColor="#22d3ee"
-            pillColor="#18181b"
-            pillTextColor="#a1a1aa"
-            hoveredPillTextColor="#000"
-            initialLoadAnimation={true}
-          />
-        </div>
-
         <Hero />
         <About />
         <Projects />

@@ -2,9 +2,9 @@ import React from 'react';
 import CountUp from '../components/bits/CountUp';
 import MagicBento from '../components/bits/MagicBento';
 import type { BentoItem } from '../components/bits/MagicBento';
+import ScrollReveal from '../components/bits/ScrollReveal';
 
 const About = () => {
-
   const bentoItems: BentoItem[] = [
     {
       id: 'education',
@@ -33,21 +33,21 @@ const About = () => {
           </h3>
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <div className="flex justify-between items-baseline border-b border-zinc-800 pb-1">
+              <div className="flex justify-between items-baseline border-b border-zinc-800/50 pb-1">
                 <span className="text-white text-sm">English</span>
                 <span className="text-zinc-500 text-xs italic">Fluent</span>
               </div>
-              <div className="flex justify-between items-baseline border-b border-zinc-800 pb-1">
+              <div className="flex justify-between items-baseline border-b border-zinc-800/50 pb-1">
                 <span className="text-white text-sm">Filipino</span>
                 <span className="text-zinc-500 text-xs italic">Fluent</span>
               </div>
             </div>
             <div className="space-y-2">
-               <div className="flex justify-between items-baseline border-b border-zinc-800 pb-1">
+               <div className="flex justify-between items-baseline border-b border-zinc-800/50 pb-1">
                 <span className="text-white text-sm">Cebuano</span>
                 <span className="text-zinc-500 text-xs italic">Native</span>
               </div>
-              <div className="flex justify-between items-baseline border-b border-zinc-800 pb-1">
+              <div className="flex justify-between items-baseline border-b border-zinc-800/50 pb-1">
                 <span className="text-white text-sm">Korean</span>
                 <span className="text-zinc-500 text-xs italic">Basic</span>
               </div>
@@ -58,7 +58,7 @@ const About = () => {
     },
     {
       id: 'stat-years',
-      className: 'md:col-span-2 flex flex-col items-center justify-center min-h-[140px]',
+      className: 'md:col-span-2 flex flex-col items-center justify-center min-h-[140px] text-center',
       content: (
         <>
           <h4 className="text-4xl font-extrabold text-cyan-400 mb-1 group-hover:scale-110 transition-transform duration-300">
@@ -70,7 +70,7 @@ const About = () => {
     },
     {
       id: 'stat-projects',
-      className: 'md:col-span-2 flex flex-col items-center justify-center min-h-[140px]',
+      className: 'md:col-span-2 flex flex-col items-center justify-center min-h-[140px] text-center',
       content: (
         <>
           <h4 className="text-4xl font-extrabold text-cyan-400 mb-1 group-hover:scale-110 transition-transform duration-300">
@@ -82,7 +82,7 @@ const About = () => {
     },
     {
       id: 'stat-clients',
-      className: 'md:col-span-2 flex flex-col items-center justify-center min-h-[140px]',
+      className: 'md:col-span-2 flex flex-col items-center justify-center min-h-[140px] text-center',
       content: (
         <>
           <h4 className="text-4xl font-extrabold text-cyan-400 mb-1 group-hover:scale-110 transition-transform duration-300">
@@ -95,34 +95,32 @@ const About = () => {
   ];
 
   return (
-    <section id="about" className="relative min-h-screen flex flex-col items-center justify-center bg-transparent px-6 py-24">
+    <section id="about" className="relative w-full bg-transparent px-6 py-24 md:py-32 overflow-hidden">
       
-      <div className="max-w-4xl w-full space-y-12">
+      <div className="max-w-5xl mx-auto flex flex-col items-center">
         
-        {/* --- TOP SECTION: Title & Bio --- */}
-        <div className="flex flex-col items-center text-center space-y-6 animate-in fade-in slide-in-from-bottom-8 duration-1000">
-          <div className="relative inline-block">
-            <h2 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight">About Me</h2>
-            <span className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-20 h-1 bg-cyan-500 rounded-full" />
-          </div>
-
-          <div className="text-zinc-400 text-base md:text-lg leading-relaxed max-w-3xl space-y-4">
-            <p>
-              Hello! I am Kent, a Computer Science student and an aspiring Full-Stack Developer, 
-              with technical expertise supported by a five-year background in Multimedia Design. 
-              I build applications that connect backend logic with frontend interfaces, having a 
-              versatile set of modern technologies and creative tools at my disposal.
-            </p>
-            <p>
-              My current academic focus centers on AI and Computer Vision, alongside coursework 
-              in computational modeling and simulations. Always eager to learn emerging technologies, 
-              I aim to create functional software backed by clear documentation and scalable systems.
-            </p>
-          </div>
+        {/* --- TITLE --- */}
+        <div className="relative inline-block mb-16 md:mb-24">
+          <h2 className="text-3xl md:text-5xl font-extrabold text-white tracking-tight">About Me</h2>
+          <span className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-20 h-1.5 bg-cyan-500 rounded-full shadow-[0_0_15px_rgba(6,182,212,0.5)]" />
         </div>
 
+        {/* --- CINEMATIC TEXT REVEAL --- */}
+        <ScrollReveal className="text-xl md:text-2xl lg:text-3xl font-bold text-zinc-200 leading-[1.6] md:leading-[1.7] mb-24 md:mb-32 max-w-4xl mx-auto">
+          {/* Invisible spacer for Indentation */}
+          <span className="inline-block w-8 md:w-16" />
+          Hello! I am Kent, a Computer Science student and an aspiring Full-Stack Developer, with technical expertise supported by a five-year background in Multimedia Design. I build applications that connect backend logic with frontend interfaces, having a versatile set of modern technologies and creative tools at my disposal.
+          
+          {/* Invisible spacer forcing the Flex container to break to a new line */}
+          <span className="w-full block h-6 md:h-10" />
+          
+          {/* Invisible spacer for Indentation on paragraph 2 */}
+          <span className="inline-block w-8 md:w-16" />
+          My current academic focus centers on AI and Computer Vision, alongside coursework in computational modeling and simulations. Always eager to learn emerging technologies, I aim to create functional software backed by clear documentation and scalable systems.
+        </ScrollReveal>
+
         {/* --- MAGIC BENTO GRID --- */}
-        <div className="w-full animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-200">
+        <div className="w-full relative z-10">
           <MagicBento 
             items={bentoItems}
             gridClassName="grid gap-5 grid-cols-1 md:grid-cols-6"
@@ -134,7 +132,7 @@ const About = () => {
             clickEffect={true}
             spotlightRadius={400}
             particleCount={12}
-            glowColor="132, 0, 255"
+            glowColor="132, 0, 255" // Cyberpunk Purple
             disableAnimations={false}
           />
         </div>

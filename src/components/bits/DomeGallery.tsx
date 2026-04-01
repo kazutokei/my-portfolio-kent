@@ -138,6 +138,12 @@ function computeItemBaseRotation(offsetX: number, offsetY: number, sizeX: number
   return { rotateX, rotateY };
 }
 
+/** Scale (natW x natH) to fit inside (maxW x maxH), preserving aspect ratio. */
+function fitIntoBox(natW: number, natH: number, maxW: number, maxH: number) {
+  const scale = Math.min(maxW / natW, maxH / natH);
+  return { w: Math.round(natW * scale), h: Math.round(natH * scale) };
+}
+
 export default function DomeGallery({
   images = DEFAULT_IMAGES,
   fit = 0.5,
@@ -151,8 +157,8 @@ export default function DomeGallery({
   enlargeTransitionMs = DEFAULTS.enlargeTransitionMs,
   segments = DEFAULTS.segments,
   dragDampening = 2,
-  openedImageWidth = '400px',
-  openedImageHeight = '400px',
+  openedImageWidth,
+  openedImageHeight,
   imageBorderRadius = '30px',
   openedImageBorderRadius = '30px',
   grayscale = true
@@ -170,6 +176,10 @@ export default function DomeGallery({
     width: number;
     height: number;
   } | null>(null);
+
+  // ── NEW: refs for body-level overlay & scrim ─────────────────────────────
+  const bodyOverlayRef = useRef<HTMLElement | null>(null);
+  const bodyScrimRef   = useRef<HTMLElement | null>(null);
 
   const rotationRef = useRef({ x: 0, y: 0 });
   const startRotRef = useRef({ x: 0, y: 0 });
@@ -249,32 +259,6 @@ export default function DomeGallery({
       root.style.setProperty('--enlarge-radius', openedImageBorderRadius);
       root.style.setProperty('--image-filter', grayscale ? 'grayscale(1)' : 'none');
       applyTransform(rotationRef.current.x, rotationRef.current.y);
-
-      const enlargedOverlay = viewerRef.current?.querySelector('.enlarge') as HTMLElement;
-      if (enlargedOverlay && frameRef.current && mainRef.current) {
-        const frameR = frameRef.current.getBoundingClientRect();
-        const mainR = mainRef.current.getBoundingClientRect();
-
-        const hasCustomSize = openedImageWidth && openedImageHeight;
-        if (hasCustomSize) {
-          const tempDiv = document.createElement('div');
-          tempDiv.style.cssText = `position: absolute; width: ${openedImageWidth}; height: ${openedImageHeight}; visibility: hidden;`;
-          document.body.appendChild(tempDiv);
-          const tempRect = tempDiv.getBoundingClientRect();
-          document.body.removeChild(tempDiv);
-
-          const centeredLeft = frameR.left - mainR.left + (frameR.width - tempRect.width) / 2;
-          const centeredTop = frameR.top - mainR.top + (frameR.height - tempRect.height) / 2;
-
-          enlargedOverlay.style.left = `${centeredLeft}px`;
-          enlargedOverlay.style.top = `${centeredTop}px`;
-        } else {
-          enlargedOverlay.style.left = `${frameR.left - mainR.left}px`;
-          enlargedOverlay.style.top = `${frameR.top - mainR.top}px`;
-          enlargedOverlay.style.width = `${frameR.width}px`;
-          enlargedOverlay.style.height = `${frameR.height}px`;
-        }
-      }
     });
     ro.observe(root);
     return () => ro.disconnect();
@@ -427,6 +411,9 @@ export default function DomeGallery({
     { target: mainRef, eventOptions: { passive: false } }
   );
 
+  // ── CLOSE ─────────────────────────────────────────────────────────────────
+  // The close logic now tears down the body-level overlay + scrim instead of
+  // the old viewerRef-based overlay, but is otherwise identical in structure.
   useEffect(() => {
     const scrim = scrimRef.current;
     if (!scrim) return;
@@ -436,14 +423,23 @@ export default function DomeGallery({
       const el = focusedElRef.current;
       if (!el) return;
       const parent = el.parentElement as HTMLElement;
-      const overlay = viewerRef.current?.querySelector('.enlarge') as HTMLElement | null;
+
+      const overlay   = bodyOverlayRef.current;
+      const bodyScrim = bodyScrimRef.current;
       if (!overlay) return;
 
       const refDiv = parent.querySelector('.item__image--reference') as HTMLElement | null;
-
       const originalPos = originalTilePositionRef.current;
+
+      // Fade out the body scrim immediately
+      if (bodyScrim) {
+        bodyScrim.style.opacity = '0';
+        bodyScrim.style.pointerEvents = 'none';
+      }
+
       if (!originalPos) {
-        overlay.remove();
+        overlay.remove(); bodyOverlayRef.current = null;
+        if (bodyScrim) { setTimeout(() => { bodyScrim.remove(); bodyScrimRef.current = null; }, enlargeTransitionMs + 50); }
         if (refDiv) refDiv.remove();
         parent.style.setProperty('--rot-y-delta', `0deg`);
         parent.style.setProperty('--rot-x-delta', `0deg`);
@@ -455,64 +451,18 @@ export default function DomeGallery({
         return;
       }
 
-      const currentRect = overlay.getBoundingClientRect();
-      const rootRect = rootRef.current!.getBoundingClientRect();
-
-      const originalPosRelativeToRoot = {
-        left: originalPos.left - rootRect.left,
-        top: originalPos.top - rootRect.top,
-        width: originalPos.width,
-        height: originalPos.height
-      };
-
-      const overlayRelativeToRoot = {
-        left: currentRect.left - rootRect.left,
-        top: currentRect.top - rootRect.top,
-        width: currentRect.width,
-        height: currentRect.height
-      };
-
-      const animatingOverlay = document.createElement('div');
-      animatingOverlay.className = 'enlarge-closing';
-      animatingOverlay.style.cssText = `
-        position: absolute;
-        left: ${overlayRelativeToRoot.left}px;
-        top: ${overlayRelativeToRoot.top}px;
-        width: ${overlayRelativeToRoot.width}px;
-        height: ${overlayRelativeToRoot.height}px;
-        z-index: 9999;
-        border-radius: ${openedImageBorderRadius};
-        overflow: hidden;
-        box-shadow: 0 10px 30px rgba(0,0,0,.35);
-        transition: all ${enlargeTransitionMs}ms ease-out;
-        pointer-events: none;
-        margin: 0;
-        transform: none;
-        filter: ${grayscale ? 'grayscale(1)' : 'none'};
-      `;
-
-      const originalImg = overlay.querySelector('img');
-      if (originalImg) {
-        const img = originalImg.cloneNode() as HTMLImageElement;
-        img.style.cssText = 'width: 100%; height: 100%; object-fit: cover;';
-        animatingOverlay.appendChild(img);
-      }
-
-      overlay.remove();
-      rootRef.current!.appendChild(animatingOverlay);
-
-      void animatingOverlay.getBoundingClientRect();
-
-      requestAnimationFrame(() => {
-        animatingOverlay.style.left = originalPosRelativeToRoot.left + 'px';
-        animatingOverlay.style.top = originalPosRelativeToRoot.top + 'px';
-        animatingOverlay.style.width = originalPosRelativeToRoot.width + 'px';
-        animatingOverlay.style.height = originalPosRelativeToRoot.height + 'px';
-        animatingOverlay.style.opacity = '0';
-      });
+      // Animate overlay back to the original tile rect (fixed coords)
+      overlay.style.transition = `left ${enlargeTransitionMs}ms cubic-bezier(0.22,1,0.36,1), top ${enlargeTransitionMs}ms cubic-bezier(0.22,1,0.36,1), width ${enlargeTransitionMs}ms cubic-bezier(0.22,1,0.36,1), height ${enlargeTransitionMs}ms cubic-bezier(0.22,1,0.36,1), opacity ${enlargeTransitionMs}ms ease, border-radius ${enlargeTransitionMs}ms ease`;
+      overlay.style.left         = `${originalPos.left}px`;
+      overlay.style.top          = `${originalPos.top}px`;
+      overlay.style.width        = `${originalPos.width}px`;
+      overlay.style.height       = `${originalPos.height}px`;
+      overlay.style.opacity      = '0';
+      overlay.style.borderRadius = imageBorderRadius;
 
       const cleanup = () => {
-        animatingOverlay.remove();
+        overlay.remove(); bodyOverlayRef.current = null;
+        if (bodyScrim) { bodyScrim.remove(); bodyScrimRef.current = null; }
         originalTilePositionRef.current = null;
 
         if (refDiv) refDiv.remove();
@@ -548,9 +498,9 @@ export default function DomeGallery({
         });
       };
 
-      animatingOverlay.addEventListener('transitionend', cleanup, {
-        once: true
-      });
+      overlay.addEventListener('transitionend', cleanup, { once: true });
+      // Safety timeout in case transitionend doesn't fire
+      setTimeout(cleanup, enlargeTransitionMs + 120);
     };
 
     scrim.addEventListener('click', close);
@@ -563,8 +513,9 @@ export default function DomeGallery({
       scrim.removeEventListener('click', close);
       window.removeEventListener('keydown', onKey);
     };
-  }, [enlargeTransitionMs, openedImageBorderRadius, grayscale]);
+  }, [enlargeTransitionMs, openedImageBorderRadius, imageBorderRadius, grayscale]);
 
+  // ── OPEN ──────────────────────────────────────────────────────────────────
   const openItemFromElement = (el: HTMLElement) => {
     if (openingRef.current) return;
     openingRef.current = true;
@@ -593,10 +544,8 @@ export default function DomeGallery({
     void refDiv.offsetHeight;
 
     const tileR = refDiv.getBoundingClientRect();
-    const mainR = mainRef.current?.getBoundingClientRect();
-    const frameR = frameRef.current?.getBoundingClientRect();
 
-    if (!mainR || !frameR || tileR.width <= 0 || tileR.height <= 0) {
+    if (tileR.width <= 0 || tileR.height <= 0) {
       openingRef.current = false;
       focusedElRef.current = null;
       parent.removeChild(refDiv);
@@ -604,6 +553,7 @@ export default function DomeGallery({
       return;
     }
 
+    // Store the tile's FIXED (viewport) rect — used by close() to animate back
     originalTilePositionRef.current = {
       left: tileR.left,
       top: tileR.top,
@@ -612,71 +562,109 @@ export default function DomeGallery({
     };
     el.style.visibility = 'hidden';
     (el.style as any).zIndex = 0;
-    const overlay = document.createElement('div');
-    overlay.className = 'enlarge';
-    overlay.style.cssText = `position:absolute; left:${frameR.left - mainR.left}px; top:${frameR.top - mainR.top}px; width:${frameR.width}px; height:${frameR.height}px; opacity:0; z-index:30; will-change:transform,opacity; transform-origin:top left; transition:transform ${enlargeTransitionMs}ms ease, opacity ${enlargeTransitionMs}ms ease; border-radius:${openedImageBorderRadius}; overflow:hidden; box-shadow:0 10px 30px rgba(0,0,0,.35);`;
+
     const rawSrc = parent.dataset.src || (el.querySelector('img') as HTMLImageElement)?.src || '';
     const rawAlt = parent.dataset.alt || (el.querySelector('img') as HTMLImageElement)?.alt || '';
-    const img = document.createElement('img');
-    img.src = rawSrc;
-    img.alt = rawAlt;
-    img.style.cssText = `width:100%; height:100%; object-fit:cover; filter:${grayscale ? 'grayscale(1)' : 'none'};`;
-    overlay.appendChild(img);
-    viewerRef.current!.appendChild(overlay);
-    const tx0 = tileR.left - frameR.left;
-    const ty0 = tileR.top - frameR.top;
-    const sx0 = tileR.width / frameR.width;
-    const sy0 = tileR.height / frameR.height;
 
-    const validSx0 = isFinite(sx0) && sx0 > 0 ? sx0 : 1;
-    const validSy0 = isFinite(sy0) && sy0 > 0 ? sy0 : 1;
+    const buildOverlay = (natW: number, natH: number) => {
+      const VW  = window.innerWidth;
+      const VH  = window.innerHeight;
+      const PAD = Math.min(60, VW * 0.05, VH * 0.05);
+      const maxW = VW - PAD * 2;
+      const maxH = VH - PAD * 2;
 
-    overlay.style.transform = `translate(${tx0}px, ${ty0}px) scale(${validSx0}, ${validSy0})`;
-    setTimeout(() => {
-      if (!overlay.parentElement) return;
-      overlay.style.opacity = '1';
-      overlay.style.transform = 'translate(0px, 0px) scale(1, 1)';
-      rootRef.current?.setAttribute('data-enlarging', 'true');
-    }, 16);
-    const wantsResize = openedImageWidth || openedImageHeight;
-    if (wantsResize) {
-      const onFirstEnd = (ev: TransitionEvent) => {
-        if (ev.propertyName !== 'transform') return;
-        overlay.removeEventListener('transitionend', onFirstEnd);
-        const prevTransition = overlay.style.transition;
-        overlay.style.transition = 'none';
-        const tempWidth = openedImageWidth || `${frameR.width}px`;
-        const tempHeight = openedImageHeight || `${frameR.height}px`;
-        overlay.style.width = tempWidth;
-        overlay.style.height = tempHeight;
-        const newRect = overlay.getBoundingClientRect();
-        overlay.style.width = frameR.width + 'px';
-        overlay.style.height = frameR.height + 'px';
-        void overlay.offsetWidth;
-        overlay.style.transition = `left ${enlargeTransitionMs}ms ease, top ${enlargeTransitionMs}ms ease, width ${enlargeTransitionMs}ms ease, height ${enlargeTransitionMs}ms ease`;
-        const centeredLeft = frameR.left - mainR.left + (frameR.width - newRect.width) / 2;
-        const centeredTop = frameR.top - mainR.top + (frameR.height - newRect.height) / 2;
+      // Compute destination size from image's TRUE aspect ratio
+      const { w: imgW, h: imgH } = fitIntoBox(natW, natH, maxW, maxH);
+      const destLeft = (VW - imgW) / 2;
+      const destTop  = (VH - imgH) / 2;
+
+      // ── Body scrim ──────────────────────────────────────────────────────
+      const bodyScrim = document.createElement('div');
+      bodyScrim.style.cssText = `
+        position: fixed;
+        inset: 0;
+        z-index: 99998;
+        background: rgba(0,0,0,0.7);
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+        opacity: 0;
+        transition: opacity ${enlargeTransitionMs}ms ease;
+        cursor: pointer;
+      `;
+      bodyScrim.addEventListener('click', () => scrimRef.current?.click());
+      document.body.appendChild(bodyScrim);
+      bodyScrimRef.current = bodyScrim;
+
+      // ── Overlay — starts at the tile rect, animates to centered dest ───
+      const overlay = document.createElement('div');
+      overlay.className = 'dome-enlarge';
+      overlay.style.cssText = `
+        position: fixed;
+        left: ${tileR.left}px;
+        top: ${tileR.top}px;
+        width: ${tileR.width}px;
+        height: ${tileR.height}px;
+        z-index: 99999;
+        border-radius: ${imageBorderRadius};
+        overflow: hidden;
+        box-shadow: 0 30px 80px rgba(0,0,0,0.7);
+        opacity: 0;
+        cursor: pointer;
+        will-change: left, top, width, height, opacity, border-radius;
+        transition:
+          left          ${enlargeTransitionMs}ms cubic-bezier(0.22,1,0.36,1),
+          top           ${enlargeTransitionMs}ms cubic-bezier(0.22,1,0.36,1),
+          width         ${enlargeTransitionMs}ms cubic-bezier(0.22,1,0.36,1),
+          height        ${enlargeTransitionMs}ms cubic-bezier(0.22,1,0.36,1),
+          opacity       ${Math.round(enlargeTransitionMs * 0.6)}ms ease,
+          border-radius ${enlargeTransitionMs}ms ease;
+      `;
+      overlay.addEventListener('click', () => scrimRef.current?.click());
+
+      const img = document.createElement('img');
+      img.src = rawSrc;
+      img.alt = rawAlt;
+      // object-fit:contain on a box that IS the correct aspect ratio = full image, no crop
+      img.style.cssText = `
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        filter: ${grayscale ? 'grayscale(1)' : 'none'};
+      `;
+      overlay.appendChild(img);
+      document.body.appendChild(overlay);
+      bodyOverlayRef.current = overlay;
+
+      // Force paint of starting state, then animate to destination
+      void overlay.getBoundingClientRect();
+      requestAnimationFrame(() => {
         requestAnimationFrame(() => {
-          overlay.style.left = `${centeredLeft}px`;
-          overlay.style.top = `${centeredTop}px`;
-          overlay.style.width = tempWidth;
-          overlay.style.height = tempHeight;
+          bodyScrim.style.opacity = '1';
+          overlay.style.opacity      = '1';
+          overlay.style.left         = `${destLeft}px`;
+          overlay.style.top          = `${destTop}px`;
+          overlay.style.width        = `${imgW}px`;
+          overlay.style.height       = `${imgH}px`;
+          overlay.style.borderRadius = openedImageBorderRadius;
+          rootRef.current?.setAttribute('data-enlarging', 'true');
         });
-        const cleanupSecond = () => {
-          overlay.removeEventListener('transitionend', cleanupSecond);
-          overlay.style.transition = prevTransition;
-        };
-        overlay.addEventListener('transitionend', cleanupSecond, {
-          once: true
-        });
-      };
-      overlay.addEventListener('transitionend', onFirstEnd);
-    }
+      });
+    };
+
+    // Probe natural size first so we can size the overlay correctly
+    const probe = new Image();
+    probe.onload  = () => buildOverlay(probe.naturalWidth, probe.naturalHeight);
+    probe.onerror = () => buildOverlay(tileR.width, tileR.height); // fallback: tile ratio
+    probe.src = rawSrc;
   };
 
   useEffect(() => {
     return () => {
       document.body.classList.remove('dg-scroll-lock');
+      // Clean up any orphaned body elements on unmount
+      bodyOverlayRef.current?.remove();
+      bodyScrimRef.current?.remove();
     };
   }, []);
 
@@ -758,6 +746,10 @@ export default function DomeGallery({
       position: absolute;
       inset: 10px;
       pointer-events: none;
+    }
+
+    .dg-scroll-lock {
+      overflow: hidden !important;
     }
   `;
 

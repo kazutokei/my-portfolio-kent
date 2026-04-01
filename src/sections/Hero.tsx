@@ -1,151 +1,216 @@
-import React from 'react';
+import React, { useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
 import ProfileCard from '../components/bits/ProfileCard';
 import TextType from '../components/bits/TextType';
-import Shuffle from '../components/bits/Shuffle';
 import GradientText from '../components/bits/GradientText';
 import CountUp from '../components/bits/CountUp';
 import { ArrowRight, Download, Mail } from 'lucide-react';
 
+gsap.registerPlugin(ScrollTrigger);
+
 const Hero = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const nameWrapperRef = useRef<HTMLDivElement>(null);
+  const restOfLeftRef = useRef<HTMLDivElement>(null);
+  const rightColRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(() => {
+    if (!nameWrapperRef.current || !containerRef.current) return;
+
+    // Set initial states so elements don't flash before the animation starts
+    gsap.set(restOfLeftRef.current, { opacity: 0, y: 40 });
+    gsap.set(rightColRef.current, { opacity: 0, x: 40 });
+    
+    const nav = document.getElementById('main-nav');
+    if (nav) gsap.set(nav, { opacity: 0, y: -20 });
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: "top top", 
+        end: "+=120%",    
+        scrub: 1,         
+        pin: true,
+        invalidateOnRefresh: true, // Recalculates perfectly if the window is resized
+      }
+    });
+
+    // 1. Force the Intro Block (Name + Animated Roles) to start perfectly centered and massive
+    tl.from(nameWrapperRef.current, {
+      x: () => {
+        const el = nameWrapperRef.current;
+        if (!el) return 0;
+        const rect = el.getBoundingClientRect();
+        return (window.innerWidth / 2) - (rect.left + rect.width / 2);
+      },
+      y: () => {
+        const el = nameWrapperRef.current;
+        if (!el) return 0;
+        const rect = el.getBoundingClientRect();
+        return (window.innerHeight / 2) - (rect.top + rect.height / 2);
+      },
+      scale: 1.6, // Makes it huge in the center of the screen
+      ease: "power2.inOut",
+      duration: 1
+    }, 0);
+
+    // 2. Fade in the Navbar we hid in App.tsx
+    if (nav) {
+      tl.to(nav, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }, 0.2);
+    }
+
+    // 3. Fade in the Bio, Buttons, and Stats
+    tl.to(restOfLeftRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.4,
+      ease: "power2.out"
+    }, 0.3); 
+
+    // 4. Fade in the Profile Card
+    tl.to(rightColRef.current, {
+      opacity: 1,
+      x: 0,
+      duration: 0.4,
+      ease: "power2.out"
+    }, 0.4);
+
+  }, { scope: containerRef });
+
+  // Custom gradient to match your uploaded design perfectly
+  const gradientColors = ['#a855f7', '#3b82f6', '#22d3ee', '#a855f7'];
+
   return (
-    // Reduced padding: pt-28 pb-12
-    <section id="home" className="relative min-h-screen flex items-center justify-center bg-transparent px-6 pt-28 pb-12 overflow-hidden">
+    <section id="home" ref={containerRef} className="relative w-full bg-transparent overflow-hidden">
       
-      {/* Reduced max-width and gap */}
-      <div className="max-w-5xl w-full grid grid-cols-1 lg:grid-cols-2 gap-8 items-center z-10">
-        
-        {/* --- LEFT COLUMN: Text Content --- */}
-        {/* Reduced space-y */}
-        <div className="space-y-6 animate-in fade-in slide-in-from-bottom-8 duration-1000">
+      <div className="min-h-screen flex items-center justify-center px-6 pt-28 pb-12 w-full">
+        <div className="max-w-5xl w-full grid grid-cols-1 lg:grid-cols-2 gap-8 items-center z-10 relative">
           
-          {/* HEADLINE BLOCK */}
-          <div className="flex flex-col items-start gap-1">
+          {/* --- LEFT COLUMN: Text Content --- */}
+          <div className="space-y-6 flex flex-col items-start w-full relative">
             
-            {/* LINE 1: "Hi, I am" + "Kent" */}
-            <div className="flex flex-row flex-wrap items-baseline gap-x-3">
-              <Shuffle
-                tag="h1"
-                text="Hi, I am"
-                className="text-4xl md:text-6xl font-extrabold text-white tracking-tight leading-[1.1]"
-                shuffleDirection="right"
-                duration={0.35}
-                animationMode="evenodd"
-                shuffleTimes={1}
-                ease="power3.out"
-                stagger={0.03}
-                threshold={0.1}
-                triggerOnce={true}
-                triggerOnHover={true}
-                respectReducedMotion={true}
-                loop={false}
-                loopDelay={0}
-              />
+            {/* SCROLL-ANIMATED CENTER BLOCK (Your Splash Screen) */}
+            <div ref={nameWrapperRef} className="flex flex-col items-center lg:items-start z-20 origin-center relative">
               
-              <GradientText
-                colors={['#22d3ee', '#6366f1', '#a855f7', '#22d3ee']}
-                animationSpeed={6}
-                showBorder={false}
-                className="text-4xl md:text-6xl !font-extrabold tracking-tight leading-[1.1] !block !mx-0"
-              >
-                Kent
-              </GradientText>
+              {/* LINE 1: "Hello, I'm Kent" */}
+              <div className="flex flex-row items-baseline gap-x-3 md:gap-x-4 mb-1 whitespace-nowrap">
+                <h2 className="text-4xl md:text-6xl font-extrabold text-white tracking-tight leading-[1.1]">
+                  Hello, I'm
+                </h2>
+                
+                <GradientText
+                  colors={gradientColors}
+                  animationSpeed={6}
+                  showBorder={false}
+                  className="text-4xl md:text-6xl !font-extrabold tracking-tight leading-[1.1] !block !mx-0"
+                >
+                  Kent
+                </GradientText>
+              </div>
+
+              {/* LINE 2: "John Chavo" */}
+              <div className="whitespace-nowrap">
+                <GradientText
+                  colors={gradientColors}
+                  animationSpeed={6}
+                  showBorder={false}
+                  className="text-4xl md:text-6xl !font-extrabold tracking-tight leading-[1.1] !block !mx-0"
+                >
+                  John Chavo
+                </GradientText>
+              </div>
+
+              {/* Animated Typing Roles */}
+              <div className="text-lg md:text-xl text-cyan-200/80 font-mono h-[28px] flex items-center pt-1 mt-4 lg:mt-2">
+                <span className="mr-3 text-cyan-500">{'>'}</span>
+                <TextType
+                  text={[
+                    "Aspiring Full-Stack Developer",
+                    "Aspiring Web & Software Developer",
+                    "Graphic Designer",
+                    "Video Editor",
+                    "UI/UX Enthusiast"
+                  ]}
+                  typingSpeed={25}   // Zippy typing speed
+                  deletingSpeed={15} // Zippy deleting speed
+                  className="text-cyan-400 font-bold"
+                  cursorCharacter="_"
+                />
+              </div>
             </div>
 
-            {/* LINE 2: "John Chavo" */}
-            <GradientText
-              colors={['#22d3ee', '#6366f1', '#a855f7', '#22d3ee']}
-              animationSpeed={6}
-              showBorder={false}
-              className="text-4xl md:text-6xl !font-extrabold tracking-tight leading-[1.1] !block !mx-0"
-            >
-              John Chavo
-            </GradientText>
-          </div>
+            {/* REST OF CONTENT (Fades in on scroll) */}
+            <div ref={restOfLeftRef} className="space-y-6 w-full pt-2 opacity-0">
+              
+              <p className="text-zinc-400 text-base md:text-lg max-w-xl leading-relaxed text-center lg:text-left mt-2">
+                Computer Science undergraduate bridging Full-Stack Development and Multimedia Design. 
+                Dedicated to delivering high-fidelity user experiences through the integration of technical logic and creativity.
+              </p>
 
-          {/* Typewriter Effect */}
-          <div className="text-lg md:text-xl text-cyan-200/80 font-mono h-[28px] flex items-center pt-1">
-            <span className="mr-3 text-cyan-500">{'>'}</span>
-            <TextType
-              text={[
-                "Aspiring Web and Software Developer",
-                "Full-Stack Engineer",
-                "Graphic Designer",
-                "Video Editor",
-                "UI/UX Enthusiast"
-              ]}
-              typingSpeed={80}
-              deletingSpeed={40}
-              className="text-cyan-400 font-bold"
-              cursorCharacter="_"
-            />
-          </div>
+              <div className="flex flex-wrap justify-center lg:justify-start gap-3 pt-1">
+                <a href="#contact" className="group px-6 py-2.5 bg-cyan-500 text-black font-bold rounded-full flex items-center gap-2 hover:bg-cyan-400 hover:scale-105 transition-all shadow-[0_0_20px_rgba(6,182,212,0.3)] text-sm md:text-base">
+                  Get in Touch
+                  <Mail className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </a>
+                <a href="/resume.pdf" className="px-6 py-2.5 bg-zinc-900 text-white font-semibold rounded-full flex items-center gap-2 hover:bg-zinc-800 border border-zinc-800 transition-all hover:border-zinc-600 text-sm md:text-base">
+                  Download CV
+                  <Download className="w-4 h-4" />
+                </a>
+                <a href="#projects" className="px-6 py-2.5 text-zinc-300 font-semibold rounded-full hover:text-white transition-all flex items-center gap-2 group text-sm md:text-base">
+                  View My Work
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </a>
+              </div>
 
-          <p className="text-zinc-400 text-base md:text-lg max-w-xl leading-relaxed">
-            Computer Science undergraduate bridging Full-Stack Development and Multimedia Design. 
-            Dedicated to delivering high-fidelity user experiences through the integration of technical logic and creativity.
-          </p>
-
-          {/* Buttons */}
-          <div className="flex flex-wrap gap-3 pt-1">
-            <a href="#contact" className="group px-6 py-2.5 bg-cyan-500 text-black font-bold rounded-full flex items-center gap-2 hover:bg-cyan-400 hover:scale-105 transition-all shadow-[0_0_20px_rgba(6,182,212,0.3)] text-sm md:text-base">
-              Get in Touch
-              <Mail className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </a>
-            <a href="/resume.pdf" className="px-6 py-2.5 bg-zinc-900 text-white font-semibold rounded-full flex items-center gap-2 hover:bg-zinc-800 border border-zinc-800 transition-all hover:border-zinc-600 text-sm md:text-base">
-              Download CV
-              <Download className="w-4 h-4" />
-            </a>
-            <a href="#projects" className="px-6 py-2.5 text-zinc-300 font-semibold rounded-full hover:text-white transition-all flex items-center gap-2 group text-sm md:text-base">
-              View My Work
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </a>
-          </div>
-
-          {/* Stats Section */}
-          <div className="grid grid-cols-3 gap-4 pt-6 border-t border-zinc-800/50 w-full mt-6">
-            <div className="flex flex-col items-center">
-              <h4 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-cyan-400 to-indigo-500 flex items-center">
-                <CountUp from={0} to={2} separator="," direction="up" duration={3} className="count-up-text" />+
-              </h4>
-              <p className="text-zinc-500 text-xs md:text-sm mt-1 text-center">Years Experience</p>
+              <div className="grid grid-cols-3 gap-4 pt-6 border-t border-zinc-800/50 w-full mt-6">
+                <div className="flex flex-col items-center">
+                  <h4 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-cyan-400 to-indigo-500 flex items-center">
+                    <CountUp from={0} to={2} separator="," direction="up" duration={3} className="count-up-text" />+
+                  </h4>
+                  <p className="text-zinc-500 text-xs md:text-sm mt-1 text-center">Years Experience</p>
+                </div>
+                <div className="flex flex-col items-center">
+                  <h4 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-cyan-400 to-indigo-500 flex items-center">
+                    <CountUp from={0} to={5} separator="," direction="up" duration={3} className="count-up-text" />+
+                  </h4>
+                  <p className="text-zinc-500 text-xs md:text-sm mt-1 text-center">Projects Completed</p>
+                </div>
+                <div className="flex flex-col items-center">
+                  <h4 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-cyan-400 to-indigo-500 flex items-center">
+                    <CountUp from={0} to={2} separator="," direction="up" duration={3} className="count-up-text" />+
+                  </h4>
+                  <p className="text-zinc-500 text-xs md:text-sm mt-1 text-center">Satisfied Clients</p>
+                </div>
+              </div>
             </div>
-            <div className="flex flex-col items-center">
-              <h4 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-cyan-400 to-indigo-500 flex items-center">
-                <CountUp from={0} to={5} separator="," direction="up" duration={3} className="count-up-text" />+
-              </h4>
-              <p className="text-zinc-500 text-xs md:text-sm mt-1 text-center">Projects Completed</p>
-            </div>
-            <div className="flex flex-col items-center">
-              <h4 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-cyan-400 to-indigo-500 flex items-center">
-                <CountUp from={0} to={2} separator="," direction="up" duration={3} className="count-up-text" />+
-              </h4>
-              <p className="text-zinc-500 text-xs md:text-sm mt-1 text-center">Satisfied Clients</p>
+
+          </div>
+
+          {/* --- RIGHT COLUMN: Profile Card (Fades in on scroll) --- */}
+          <div ref={rightColRef} className="flex justify-center lg:justify-end relative perspective-1000 opacity-0">
+            <div className="w-full max-w-[380px]">
+               <ProfileCard
+                  name="Kent John J. Chavo"
+                  title="Aspiring Full-Stack Developer"
+                  handle="kentjohn03"
+                  status="Available for Work"
+                  contactText="Contact Me"
+                  avatarUrl="/me.webp"
+                  miniAvatarUrl="/me.webp"
+                  showUserInfo={true}
+                  enableTilt={true}
+                  enableMobileTilt={true}
+                  onContactClick={() => console.log('Contact clicked')}
+                  behindGlowEnabled={true} 
+                  behindGlowColor="rgba(125, 190, 255, 0.67)"
+                  innerGradient="linear-gradient(145deg,#60496e8c 0%,#71C4FF44 100%)"
+               />
             </div>
           </div>
+
         </div>
-
-        {/* --- RIGHT COLUMN: Profile Card --- */}
-        <div className="flex justify-center lg:justify-end relative perspective-1000">
-          <div className="w-full max-w-[380px] animate-in fade-in zoom-in duration-1000 delay-300">
-             <ProfileCard
-                name="Kent John J. Chavo"
-                title="Aspiring Full-Stack Developer"
-                handle="kentjohn03"
-                status="Available for Work"
-                contactText="Contact Me"
-                avatarUrl="/me.webp"
-                miniAvatarUrl="/me.webp"
-                showUserInfo={true}
-                enableTilt={true}
-                enableMobileTilt={true}
-                onContactClick={() => console.log('Contact clicked')}
-                behindGlowEnabled={true} 
-                behindGlowColor="rgba(125, 190, 255, 0.67)"
-                innerGradient="linear-gradient(145deg,#60496e8c 0%,#71C4FF44 100%)"
-             />
-          </div>
-        </div>
-
       </div>
     </section>
   );
