@@ -80,13 +80,18 @@ const Contact = () => {
           
           {/* LEFT COLUMN: Info & Socials */}
           <div className="lg:col-span-5 flex flex-col justify-center animate-in fade-in slide-in-from-bottom-12 duration-1000 delay-150">
-            <div className="text-4xl md:text-5xl font-black text-white leading-[1.4] mb-8">
-              Let's build <br />
-              <div className="flex flex-wrap items-center gap-3">
-                <span>something</span>
+            
+            {/* FIXED LAYOUT JUMP 
+              Using flex-col ensures Let's build -> something -> [word]
+              are always stacked perfectly on 3 lines, no matter how short the word is.
+            */}
+            <div className="text-4xl md:text-5xl font-black text-white leading-[1.3] mb-8 flex flex-col items-start gap-1">
+              <span>Let's build</span>
+              <span>something</span>
+              <div className="mt-1">
                 <RotatingText
                   texts={['meaningful.', 'impactful.', 'fun.', 'innovative.', 'scalable.']}
-                  mainClassName="px-3 sm:px-4 md:px-5 bg-cyan-400 text-black overflow-hidden py-1 sm:py-1.5 md:py-2 justify-center rounded-2xl shadow-[0_0_20px_rgba(6,182,212,0.4)] tracking-tight"
+                  mainClassName="px-4 md:px-5 bg-cyan-400 text-black overflow-hidden py-1.5 md:py-2 justify-center rounded-2xl shadow-[0_0_20px_rgba(6,182,212,0.4)] tracking-tight"
                   staggerFrom={"last"}
                   initial={{ y: "100%" }}
                   animate={{ y: 0 }}
@@ -125,7 +130,7 @@ const Contact = () => {
                 <div>
                   <p className="text-xs text-zinc-500 font-bold uppercase tracking-wider mb-1">Location</p>
                   <p className="text-white font-medium text-lg">
-                    Cagayan de Oro, Philippines
+                    Cagayan de Oro City, Philippines
                   </p>
                 </div>
               </div>

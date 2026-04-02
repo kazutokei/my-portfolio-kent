@@ -6,7 +6,7 @@ import ProfileCard from '../components/bits/ProfileCard';
 import TextType from '../components/bits/TextType';
 import GradientText from '../components/bits/GradientText';
 import CountUp from '../components/bits/CountUp';
-import { ArrowRight, Download, Mail } from 'lucide-react';
+import { ArrowRight, ExternalLink, Mail } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -155,9 +155,9 @@ const Hero = () => {
                   Get in Touch
                   <Mail className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </a>
-                <a href="/resume.pdf" className="px-6 py-2.5 bg-zinc-900 text-white font-semibold rounded-full flex items-center gap-2 hover:bg-zinc-800 border border-zinc-800 transition-all hover:border-zinc-600 text-sm md:text-base">
-                  Download CV
-                  <Download className="w-4 h-4" />
+                <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" className="px-6 py-2.5 bg-zinc-900 text-white font-semibold rounded-full flex items-center gap-2 hover:bg-zinc-800 border border-zinc-800 transition-all hover:border-zinc-600 text-sm md:text-base">
+                  View Resume
+                  <ExternalLink className="w-4 h-4" />
                 </a>
                 <a href="#projects" className="px-6 py-2.5 text-zinc-300 font-semibold rounded-full hover:text-white transition-all flex items-center gap-2 group text-sm md:text-base">
                   View My Work
@@ -193,20 +193,23 @@ const Hero = () => {
           <div ref={rightColRef} className="flex justify-center lg:justify-end relative perspective-1000 opacity-0">
             <div className="w-full max-w-[380px]">
                <ProfileCard
-                  name="Kent John J. Chavo"
-                  title="Aspiring Full-Stack Developer"
-                  handle="kentjohn03"
-                  status="Available for Work"
-                  contactText="Contact Me"
-                  avatarUrl="/me.webp"
-                  miniAvatarUrl="/me.webp"
-                  showUserInfo={true}
-                  enableTilt={true}
-                  enableMobileTilt={true}
-                  onContactClick={() => console.log('Contact clicked')}
-                  behindGlowEnabled={true} 
-                  behindGlowColor="rgba(125, 190, 255, 0.67)"
-                  innerGradient="linear-gradient(145deg,#60496e8c 0%,#71C4FF44 100%)"
+                 name="Kent John J. Chavo"
+                 title="Aspiring Full-Stack Developer"
+                 handle="kentjohn03"
+                 status="Available for Work"
+                 contactText="Contact Me"
+                 avatarUrl="/me.webp"
+                 miniAvatarUrl="/me.webp"
+                 showUserInfo={true}
+                 enableTilt={true}
+                 enableMobileTilt={true}
+                 onContactClick={() => {
+                   // This smoothly scrolls to the contact section when the button inside the profile card is clicked
+                   document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                 }}
+                 behindGlowEnabled={true} 
+                 behindGlowColor="rgba(125, 190, 255, 0.67)"
+                 innerGradient="linear-gradient(145deg,#60496e8c 0%,#71C4FF44 100%)"
                />
             </div>
           </div>

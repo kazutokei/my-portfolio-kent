@@ -654,7 +654,7 @@ const SpotifyOnRepeat = () => {
         href={spotifyLink}
         target="_blank"
         rel="noopener noreferrer"
-        className="group relative flex items-center p-2 pr-6 sm:pr-8 bg-zinc-900/40 backdrop-blur-xl border border-zinc-800/60 rounded-full hover:bg-zinc-900/80 transition-all duration-500 hover:border-[#1DB954]/40 hover:shadow-[0_0_40px_rgba(29,185,84,0.15)] max-w-2xl w-[95%] sm:w-auto"
+        className="group relative flex items-center p-2 pr-6 sm:pr-8 bg-zinc-900/40 backdrop-blur-xl border border-zinc-800/60 rounded-full hover:bg-zinc-900/80 transition-all duration-500 hover:border-[#1DB954]/40 hover:shadow-[0_0_40px_rgba(29,185,84,0.15)] max-w-2xl w-[95%] sm:w-auto overflow-hidden"
       >
         {/* Spinning Vinyl Cover */}
         <div className="relative w-16 h-16 sm:w-20 sm:h-20 flex-shrink-0 rounded-full p-1 bg-gradient-to-br from-zinc-800 to-zinc-950 shadow-[0_8px_20px_rgba(0,0,0,0.5)] group-hover:shadow-[0_0_20px_rgba(29,185,84,0.3)] transition-all duration-500 z-10">
@@ -670,8 +670,8 @@ const SpotifyOnRepeat = () => {
           </div>
         </div>
 
-        {/* Song Info */}
-        <div className="ml-4 sm:ml-5 flex flex-col justify-center py-2 flex-grow min-w-[150px] sm:min-w-[200px]">
+        {/* Song Info Container (Increased right padding to make room for interactive element) */}
+        <div className="ml-4 sm:ml-5 flex flex-col justify-center py-2 flex-grow pr-16 sm:pr-40">
           <p className="text-[9px] sm:text-[10px] uppercase tracking-widest text-[#1DB954] font-bold mb-1 flex items-center gap-1.5">
             <svg viewBox="0 0 24 24" fill="currentColor" className="w-3.5 h-3.5">
               <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.6.18-1.2.72-1.38 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z" />
@@ -684,12 +684,29 @@ const SpotifyOnRepeat = () => {
           <p className="text-xs sm:text-sm text-zinc-400 truncate pr-2 sm:pr-4">{artist}</p>
         </div>
 
-        {/* Equalizer */}
-        <div className="absolute right-5 sm:right-6 top-1/2 -translate-y-1/2 flex items-end gap-1 h-5 sm:h-6 opacity-60 group-hover:opacity-100 transition-opacity">
-          <div className="eq-bar" />
-          <div className="eq-bar" />
-          <div className="eq-bar" />
-          <div className="eq-bar" />
+        {/* Right Side Interaction Container */}
+        <div className="absolute right-4 sm:right-6 top-1/2 -translate-y-1/2 flex items-center justify-end">
+          
+          {/* Equalizer (Fades out and scales down on hover) */}
+          <div className="flex items-end gap-1 h-5 sm:h-6 opacity-60 group-hover:opacity-0 group-hover:scale-75 transition-all duration-300">
+            <div className="eq-bar" />
+            <div className="eq-bar" />
+            <div className="eq-bar" />
+            <div className="eq-bar" />
+          </div>
+
+          {/* "Listen on Spotify" CTA (Slides in from right and fades in on hover) */}
+          <div className="absolute right-0 flex items-center gap-1.5 sm:gap-2 opacity-0 translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-500 ease-out text-[#1DB954]">
+            <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider whitespace-nowrap hidden sm:block">Listen on Spotify</span>
+            <span className="text-[10px] font-bold uppercase tracking-wider whitespace-nowrap sm:hidden">Play</span>
+            <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-[#1DB954]/20 flex items-center justify-center">
+              {/* Play Icon */}
+              <svg viewBox="0 0 24 24" fill="currentColor" className="w-3 h-3 sm:w-4 sm:h-4 text-[#1DB954] ml-0.5">
+                <path d="M8 5.14v14l11-7-11-7z" />
+              </svg>
+            </div>
+          </div>
+          
         </div>
       </a>
     </div>
@@ -752,7 +769,8 @@ const About = () => {
                       </div>
                     </div>
                   </div>
-                  <span className="flex-shrink-0 flex items-center gap-1.5 text-xs font-semibold text-cyan-400 bg-cyan-500/10 px-3 py-1.5 rounded-lg border border-cyan-500/20 h-fit">
+                  {/* FIX ADDED HERE: w-fit self-start prevents stretching on mobile flex-col */}
+                  <span className="flex-shrink-0 flex items-center gap-1.5 text-xs font-semibold text-cyan-400 bg-cyan-500/10 px-3 py-1.5 rounded-lg border border-cyan-500/20 h-fit w-fit self-start sm:self-auto">
                     <Calendar className="w-3.5 h-3.5"/> 2023 - Present
                   </span>
                 </div>
@@ -790,7 +808,8 @@ const About = () => {
                       </div>
                     </div>
                   </div>
-                  <span className="flex-shrink-0 flex items-center gap-1.5 text-xs font-semibold text-zinc-400 bg-zinc-800/50 px-3 py-1.5 rounded-lg border border-zinc-700/50 h-fit">
+                  {/* FIX ADDED HERE: w-fit self-start prevents stretching on mobile flex-col */}
+                  <span className="flex-shrink-0 flex items-center gap-1.5 text-xs font-semibold text-zinc-400 bg-zinc-800/50 px-3 py-1.5 rounded-lg border border-zinc-700/50 h-fit w-fit self-start sm:self-auto">
                     <Calendar className="w-3.5 h-3.5"/> 2021 - 2023
                   </span>
                 </div>
