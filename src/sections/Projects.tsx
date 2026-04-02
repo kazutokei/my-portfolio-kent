@@ -1,5 +1,9 @@
-import React, { useState, useMemo, useEffect } from 'react';
-import { ExternalLink, ArrowRight, Code, Palette, Video, Award, Layers, ChevronLeft, Github, Star, Code2, Play, X } from 'lucide-react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
+import { 
+  ExternalLink, ArrowRight, Code, Palette, Video, Award, Layers, 
+  ChevronLeft, Github, Star, Code2, Play, X, Calendar, Building2,
+  MonitorSmartphone, Database, Clapperboard, Wrench, Triangle, Feather
+} from 'lucide-react';
 import DomeGallery from '../components/bits/DomeGallery'; 
 
 type ProjectType = 'code' | 'graphic' | 'video';
@@ -16,7 +20,16 @@ interface Project {
   features?: string[];
   githubUrl?: string;
   liveUrl?: string;
-  youtubeId?: string; // New property for our video lightbox
+  youtubeId?: string; 
+}
+
+interface Certificate {
+  id: number;
+  title: string;
+  issuer: string;
+  date: string;
+  imageUrl: string;
+  pdfUrl?: string; 
 }
 
 // Graphic filenames
@@ -42,7 +55,10 @@ const graphicFiles = [
   "wow_ustp-map", "[HAPPENING NOW] Hello World 2024", "[UPDATES TEMPLATE] CS3",
   "cbl-cs3", "cs3_cover-photo", "cstem-reveal", "cstem-teaser", "elecom-memo",
   "last-day", "techtalk-happeningnow", "techtalk-speaker", "under-the-cs_primer",
-  "voter-turnout"
+  "voter-turnout",
+  "ugmad_main-poster", "ugmad_teaser", "ovp-change-branding", "vrkan_what-to-wear",
+  "wow_timeline", "wow_cd", "unyon_cover-photo", "scitc-is-giving", "lycanfest_cd3",
+  "valo_agent-pick"
 ];
 
 const formatTitle = (filename: string) => {
@@ -123,22 +139,164 @@ const codeAndVideoProjects: Project[] = [
     type: 'video',
     title: 'Procedures for Disciplinary Actions in Cheating',
     description: 'An informative educational video detailing the procedures and disciplinary actions regarding academic dishonesty.',
-    imageUrl: '/section5_thumbnail.webp', // Replace when you have the thumbnail
+    imageUrl: '/section5_thumbnail.webp',
     tags: ['CapCut', 'Video Editing'],
-    youtubeId: 'VFzxXJYlf3k' // Extracted from https://youtu.be/VFzxXJYlf3k
+    youtubeId: 'VFzxXJYlf3k'
   },
   {
     id: 7,
     type: 'video',
     title: 'Dialogue as a Way of Life',
     description: 'A cinematic piece exploring the philosophy and practice of dialogue in everyday life.',
-    imageUrl: '/dialogue_thumbnail.webp', // Replace when you have the thumbnail
+    imageUrl: '/dialogue_thumbnail.webp',
     tags: ['Cinematography', 'Premiere Pro', 'Color Grading'],
-    youtubeId: 'ynf1EWwnFRY' // Extracted from https://youtu.be/ynf1EWwnFRY
+    youtubeId: 'ynf1EWwnFRY'
+  }
+];
+
+// Certificates Data
+const certificatesData: Certificate[] = [
+  {
+    id: 1,
+    title: 'Programming for Intermediate Users Using Python',
+    issuer: 'Department of Information and Communications Technology',
+    date: 'July 18, 2024',
+    imageUrl: '/cert_python-intermediate.webp',
+  }
+];
+
+// Categorized Tech Stack Data
+const techStackData = [
+  {
+    title: 'Frontend Development',
+    description: 'Building responsive, interactive, and animated user interfaces.',
+    icon: MonitorSmartphone,
+    items: [
+      { name: 'React', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg' },
+      { name: 'TypeScript', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg' },
+      { name: 'JavaScript', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg' },
+      { name: 'Tailwind CSS', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg' },
+      { name: 'Vite', iconUrl: '/vite.svg' }, 
+      { name: 'HTML5', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg' },
+      { name: 'CSS3', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg' }
+    ]
+  },
+  {
+    title: 'Backend & Database',
+    description: 'Developing server-side logic, APIs, and managing data structures.',
+    icon: Database,
+    items: [
+      { name: 'Python', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg' },
+      { name: 'Java', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg' },
+      { name: 'C++', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg' },
+      { name: 'Django', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/django/django-plain.svg' },
+      { name: 'PostgreSQL', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg' },
+      { name: 'Supabase', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/supabase/supabase-original.svg' },
+      { name: 'SQLite', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/sqlite/sqlite-original.svg' }
+    ]
+  },
+  {
+    title: 'Multimedia & Design',
+    description: 'Crafting brand identities, layout designs, and cinematic videos.',
+    icon: Clapperboard,
+    items: [
+      { name: 'Figma', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/figma/figma-original.svg' },
+      { name: 'Canva', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/canva/canva-original.svg' },
+      { name: 'Photoshop', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/photoshop/photoshop-original.svg' },
+      { name: 'Premiere Pro', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/premierepro/premierepro-original.svg' },
+      { name: 'DaVinci Resolve', iconUrl: '/davinci.svg' }, 
+      { name: 'CapCut', iconUrl: '/capcut.svg' } 
+    ]
+  },
+  {
+    title: 'Tools & Utilities',
+    description: 'Version control, UI frameworks, and workflow optimization.',
+    icon: Wrench,
+    items: [
+      { name: 'Git', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg' },
+      { name: 'GitHub', iconUrl: '/github.svg' },
+      { name: 'Vercel', LucideIcon: Triangle },
+      { name: 'Tkinter', LucideIcon: Feather }, // Official Feather logo for Tkinter
+      { name: 'CustomTkinter', iconUrl: '/custom-tkinter.svg' },
+      { name: 'LaTeX', iconUrl: '/latex.svg' },
+      { name: 'Framer Motion', iconUrl: '/framer-motion.svg' },
+      { name: 'GSAP', iconUrl: '/gsap.svg' }
+    ]
   }
 ];
 
 const projectsData: Project[] = [...codeAndVideoProjects, ...graphicProjects];
+
+// --- CUSTOM MAGIC BENTO CARD COMPONENT ---
+const MagicTechCard = ({ category }: { category: typeof techStackData[0] }) => {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isHovered, setIsHovered] = useState(false);
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    setMousePosition({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    });
+  };
+
+  return (
+    <div
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className="relative w-full bg-zinc-900 border border-zinc-800 rounded-[32px] p-6 md:p-8 overflow-hidden group transition-all duration-500"
+    >
+      {/* Spotlight Hover Effect */}
+      <div
+        className="pointer-events-none absolute -inset-px rounded-[32px] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+        style={{
+          background: `radial-gradient(600px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(34, 211, 238, 0.1), transparent 40%)`,
+        }}
+      />
+      
+      {/* Card Content */}
+      <div className="relative z-10">
+        <div className="flex items-center gap-3 mb-3">
+          <div className="w-12 h-12 rounded-full bg-zinc-950/50 border border-zinc-800/50 backdrop-blur-sm flex items-center justify-center text-cyan-400 group-hover:scale-110 group-hover:text-cyan-300 transition-all duration-500 shadow-lg shadow-black/20">
+            <category.icon className="w-5 h-5" />
+          </div>
+          {/* This is the smooth hover gradient you liked! */}
+          <h3 className="text-xl font-bold text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-cyan-200 transition-all duration-500">
+            {category.title}
+          </h3>
+        </div>
+        <p className="text-zinc-400 text-sm mb-8 leading-relaxed">
+          {category.description}
+        </p>
+
+        {/* Tech Pills */}
+        <div className="flex flex-wrap gap-3">
+          {category.items.map((tech, i) => (
+            <div 
+              key={i} 
+              className="relative flex items-center gap-2.5 px-4 py-2 bg-zinc-950/40 backdrop-blur-md border border-zinc-800/60 rounded-xl hover:border-cyan-500/30 hover:bg-zinc-900 transition-all duration-300 cursor-default tech-group hover:-translate-y-1 hover:shadow-[0_8px_16px_-6px_rgba(34,211,238,0.15)]"
+            >
+              {/* Uses your newly uploaded local SVGs or falls back to Lucide Icons */}
+              {tech.iconUrl ? (
+                <img src={tech.iconUrl} alt={tech.name} className="w-4 h-4 tech-group-hover:scale-110 transition-transform duration-300 drop-shadow-sm" />
+              ) : tech.LucideIcon ? (
+                <tech.LucideIcon className="w-4 h-4 text-zinc-400 tech-group-hover:text-cyan-400 transition-colors duration-300" />
+              ) : null}
+              <span className="text-sm font-semibold text-zinc-300 tech-group-hover:text-white transition-colors duration-300 tracking-wide">
+                {tech.name}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 
 const Projects = () => {
   const [activeMainTab, setActiveMainTab] = useState<MainCategory>('projects');
@@ -249,7 +407,9 @@ const Projects = () => {
                   <img 
                     src={selectedProject.imageUrl} 
                     alt={selectedProject.title} 
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover select-none"
+                    draggable={false}
+                    onContextMenu={(e) => e.preventDefault()}
                     onError={(e) => { (e.target as HTMLImageElement).src = 'data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw=='; }}
                   />
                 </div>
@@ -292,17 +452,17 @@ const Projects = () => {
               <button onClick={() => setActiveMainTab('tech_stack')} className={`flex items-center gap-2 px-6 py-3 rounded-2xl transition-all duration-300 font-bold text-sm md:text-base ${activeMainTab === 'tech_stack' ? 'bg-cyan-500 text-black shadow-[0_0_20px_rgba(6,182,212,0.4)] scale-105' : 'bg-zinc-900/50 text-zinc-400 hover:bg-zinc-800 hover:text-white border border-zinc-800'}`}><Layers className="w-4 h-4" /> Tech Stack</button>
             </div>
 
-            {activeMainTab === 'projects' && (
-              <div className="flex justify-center gap-3 mb-12">
-                <button onClick={() => setActiveSubTab('code')} className={`px-5 py-1.5 rounded-full text-xs font-semibold transition-all duration-300 flex items-center gap-2 ${activeSubTab === 'code' ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/50' : 'bg-zinc-900 text-zinc-500 hover:text-zinc-300 border border-zinc-800'}`}><Code className="w-3 h-3" /> Code</button>
-                <button onClick={() => setActiveSubTab('graphic')} className={`px-5 py-1.5 rounded-full text-xs font-semibold transition-all duration-300 flex items-center gap-2 ${activeSubTab === 'graphic' ? 'bg-purple-500/20 text-purple-400 border border-purple-500/50' : 'bg-zinc-900 text-zinc-500 hover:text-zinc-300 border border-zinc-800'}`}><Palette className="w-3 h-3" /> Graphic</button>
-                <button onClick={() => setActiveSubTab('video')} className={`px-5 py-1.5 rounded-full text-xs font-semibold transition-all duration-300 flex items-center gap-2 ${activeSubTab === 'video' ? 'bg-pink-500/20 text-pink-400 border border-pink-500/50' : 'bg-zinc-900 text-zinc-500 hover:text-zinc-300 border border-zinc-800'}`}><Video className="w-3 h-3" /> Video</button>
-              </div>
-            )}
-
             <div className="min-h-[400px]">
+              
+              {/* === PROJECTS TAB === */}
               {activeMainTab === 'projects' && (
                 <>
+                  <div className="flex justify-center gap-3 mb-12">
+                    <button onClick={() => setActiveSubTab('code')} className={`px-5 py-1.5 rounded-full text-xs font-semibold transition-all duration-300 flex items-center gap-2 ${activeSubTab === 'code' ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/50' : 'bg-zinc-900 text-zinc-500 hover:text-zinc-300 border border-zinc-800'}`}><Code className="w-3 h-3" /> Code</button>
+                    <button onClick={() => setActiveSubTab('graphic')} className={`px-5 py-1.5 rounded-full text-xs font-semibold transition-all duration-300 flex items-center gap-2 ${activeSubTab === 'graphic' ? 'bg-purple-500/20 text-purple-400 border border-purple-500/50' : 'bg-zinc-900 text-zinc-500 hover:text-zinc-300 border border-zinc-800'}`}><Palette className="w-3 h-3" /> Graphic</button>
+                    <button onClick={() => setActiveSubTab('video')} className={`px-5 py-1.5 rounded-full text-xs font-semibold transition-all duration-300 flex items-center gap-2 ${activeSubTab === 'video' ? 'bg-pink-500/20 text-pink-400 border border-pink-500/50' : 'bg-zinc-900 text-zinc-500 hover:text-zinc-300 border border-zinc-800'}`}><Video className="w-3 h-3" /> Video</button>
+                  </div>
+
                   {activeSubTab === 'graphic' ? (
                     <div className="relative w-full h-[500px] md:h-[600px] rounded-2xl overflow-hidden border border-zinc-800 bg-zinc-950/40">
                       <DomeGallery
@@ -329,7 +489,6 @@ const Projects = () => {
                         <div 
                           key={project.id} 
                           className="group cursor-pointer bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden hover:border-cyan-500/50 hover:bg-zinc-800 transition-all duration-300 hover:shadow-[0_0_30px_rgba(34,211,238,0.1)] flex flex-col h-full"
-                          // Make the entire card click open the appropriate view
                           onClick={() => {
                             if (project.type === 'video' && project.youtubeId) {
                               setActiveVideo(project.youtubeId);
@@ -340,7 +499,6 @@ const Projects = () => {
                         >
                           <div className="relative aspect-video bg-zinc-800 overflow-hidden">
                             <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 via-zinc-900/10 to-transparent z-10" />
-                            {/* If it's a video, show a play button overlay on hover */}
                             {project.type === 'video' && (
                               <div className="absolute inset-0 z-20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/40">
                                 <div className="w-12 h-12 bg-cyan-500 rounded-full flex items-center justify-center text-black shadow-lg shadow-cyan-500/30">
@@ -351,7 +509,9 @@ const Projects = () => {
                             <img 
                               src={project.imageUrl} 
                               alt={project.title}
-                              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 select-none"
+                              draggable={false}
+                              onContextMenu={(e) => e.preventDefault()}
                               onError={(e) => { (e.target as HTMLImageElement).src = 'data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw=='; }}
                             />
                           </div>
@@ -375,7 +535,7 @@ const Projects = () => {
                               {project.type !== 'video' && (
                                 <a 
                                   href={project.liveUrl || project.link} 
-                                  onClick={(e) => e.stopPropagation()} // Prevent card click when clicking link
+                                  onClick={(e) => e.stopPropagation()}
                                   className="flex items-center gap-2 text-xs font-semibold text-white hover:text-cyan-400 transition-colors"
                                 >
                                   <ExternalLink className="w-3 h-3" /> View Project
@@ -402,13 +562,62 @@ const Projects = () => {
                 </>
               )}
 
-              {(activeMainTab === 'certificates' || activeMainTab === 'tech_stack') && (
-                <div className="text-center py-20">
-                  {activeMainTab === 'certificates' ? <Award className="w-12 h-12 text-zinc-700 mx-auto mb-4" /> : <Layers className="w-12 h-12 text-zinc-700 mx-auto mb-4" />}
-                  <h3 className="text-xl font-bold text-white mb-2">{activeMainTab === 'certificates' ? 'Certifications' : 'Tech Stack'} Coming Soon</h3>
-                  <p className="text-zinc-500 text-sm">This section is currently under development.</p>
+              {/* === CERTIFICATES TAB === */}
+              {activeMainTab === 'certificates' && (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 animate-in fade-in slide-in-from-bottom-8 duration-700">
+                  {certificatesData.map((cert) => (
+                    <a 
+                      key={cert.id} 
+                      href={cert.pdfUrl || cert.imageUrl} // Opens PDF if available, otherwise opens the image
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="group block bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden hover:border-cyan-500/50 hover:shadow-[0_0_30px_rgba(34,211,238,0.15)] transition-all duration-300"
+                    >
+                      <div className="relative aspect-[4/3] bg-zinc-950 overflow-hidden p-6 border-b border-zinc-800 flex items-center justify-center">
+                        <img 
+                          src={cert.imageUrl} 
+                          alt={cert.title} 
+                          className="w-full h-full object-contain drop-shadow-2xl transition-transform duration-500 group-hover:scale-[1.02] select-none"
+                          draggable={false}
+                          onContextMenu={(e) => e.preventDefault()}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-zinc-900/50 to-transparent pointer-events-none" />
+                      </div>
+
+                      <div className="p-6">
+                        <h3 className="text-xl font-bold text-white mb-4 group-hover:text-cyan-400 transition-colors leading-tight">
+                          {cert.title}
+                        </h3>
+                        
+                        <div className="space-y-2">
+                          <div className="flex items-center gap-3 text-sm text-zinc-400">
+                            <Building2 className="w-4 h-4 text-cyan-500/70" />
+                            <span>{cert.issuer}</span>
+                          </div>
+                          <div className="flex items-center gap-3 text-sm text-zinc-400">
+                            <Calendar className="w-4 h-4 text-cyan-500/70" />
+                            <span>{cert.date}</span>
+                          </div>
+                        </div>
+
+                        <div className="mt-6 flex items-center text-xs font-semibold text-cyan-400 group-hover:translate-x-1 transition-transform">
+                          View Certificate <ExternalLink className="w-3 h-3 ml-1.5" />
+                        </div>
+                      </div>
+                    </a>
+                  ))}
                 </div>
               )}
+
+              {/* === TECH STACK TAB (MAGIC BENTO) === */}
+              {activeMainTab === 'tech_stack' && (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-in fade-in slide-in-from-bottom-8 duration-700">
+                  {techStackData.map((category, idx) => (
+                    <MagicTechCard key={idx} category={category} />
+                  ))}
+                </div>
+              )}
+
             </div>
           </div>
         )}
@@ -418,21 +627,16 @@ const Projects = () => {
       {/* --- VIDEO LIGHTBOX MODAL --- */}
       {activeVideo && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 animate-in fade-in duration-300">
-          {/* Dark blurred background overlay */}
           <div 
             className="absolute inset-0 bg-zinc-950/90 backdrop-blur-xl cursor-pointer"
             onClick={() => setActiveVideo(null)}
           />
-          
-          {/* Close Button */}
           <button 
             onClick={() => setActiveVideo(null)}
             className="absolute top-4 right-4 md:top-8 md:right-8 text-zinc-400 hover:text-white bg-zinc-900/50 hover:bg-zinc-800 p-3 rounded-full border border-zinc-800 transition-all z-10"
           >
             <X className="w-6 h-6" />
           </button>
-
-          {/* YouTube Iframe Container */}
           <div className="relative w-full max-w-5xl aspect-video bg-black rounded-2xl overflow-hidden shadow-2xl shadow-cyan-500/10 z-10 scale-in-95 duration-300 border border-zinc-800">
             <iframe 
               width="100%" 
