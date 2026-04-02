@@ -32,7 +32,7 @@ interface Certificate {
   pdfUrl?: string; 
 }
 
-// Graphic filenames
+// Array of graphic design asset filenames
 const graphicFiles = [
   "all-saints-day", "all-souls-day", "btd_3-days", "btd_collabs", "btd_d-day",
   "ovp-25", "ovp_fb-cover-25",
@@ -78,28 +78,38 @@ const graphicProjects: Project[] = graphicFiles.map((file, index) => ({
   link: '#'
 }));
 
-// Static code and video projects
+// Project data definitions (Code and Video)
 const codeAndVideoProjects: Project[] = [
   {
     id: 1,
     type: 'code',
     title: 'iREQUEST: Online Credential Request System',
-    description: 'Developed to assist the Office of the University Registrar at USTP CDO, iREQUEST is a web-based platform designed to transition student credential and document requests from a manual, paper-based process to a streamlined digital system.',
+    description: 'Developed to assist the Office of the University Registrar at USTP CDO, iREQUEST transitions student credential and document requests from a manual process to a streamlined digital system.',
     imageUrl: '/irequest_thumbnail.webp',
-    tags: ['JavaScript', 'React', 'Vite', 'Tailwind CSS', 'Python', 'Django'],
-    features: ['Secure user authentication', 'Automated document processing workflow', 'Real-time request status tracking', 'Admin dashboard for university staff'],
-    githubUrl: '#',
-    liveUrl: '#',
+    tags: ['React', 'Vite', 'Tailwind CSS', 'Django', 'PostgreSQL', 'Vercel', 'Render'],
+    features: [
+      'Secure JWT Authentication & Role-based Access',
+      'End-to-End Document Request & Clearance Workflow',
+      'Admin Dashboard for Payment & File Verification',
+      'Real-time Request Status Tracking & Analytics'
+    ],
+    githubUrl: 'https://github.com/pendonj14/iRequest.git',
+    liveUrl: 'https://irequest-nu.vercel.app/',
   },
   {
     id: 2,
     type: 'code',
     title: 'LocatR: Student Record Locator System',
-    description: 'Designed to transition the USTP CDO Registrar from manual to digital record keeping. Piloted with the CS3B section, it addresses process limitations to improve accuracy, efficiency, and user satisfaction.',
+    description: 'Requested by the Office of the University Registrar at USTP CDO, LocatR is a desktop application designed to manage student records, including their ID, name, program, and location.',
     imageUrl: '/locatr_thumbnail.webp',
-    tags: ['Python', 'CustomTkinter', 'SQLite', 'TeX'],
-    features: ['Desktop GUI optimized for low-end hardware', 'Fast local SQLite database queries', 'Automated PDF report generation'],
-    githubUrl: '#',
+    tags: ['Python', 'CustomTkinter', 'SQLite', 'QRCode'],
+    features: [
+      'Academic Dashboard for quick record navigation',
+      'Automated QR Code generation for student records',
+      'Dynamic search & strict 10-digit ID input validation',
+      'Fast local SQLite database queries with DPI Awareness'
+    ],
+    githubUrl: 'https://github.com/wency01x/StudentRecordLocatorSystem.git',
   },
   {
     id: 3,
@@ -107,21 +117,20 @@ const codeAndVideoProjects: Project[] = [
     title: 'Gift Exchange App',
     description: 'Developed to overcome time and distance constraints among friends, this platform automates holiday gift exchanges with randomized matching, allowing seamless celebrations from anywhere.',
     imageUrl: '/gift-exchange_thumbnail.webp',
-    tags: ['JavaScript', 'React', 'HTML', 'CSS'],
-    features: ['Randomized pairing algorithm', 'Anonymous wishlists', 'Mobile-responsive festive UI'],
-    githubUrl: '#',
-    liveUrl: '#',
+    tags: ['JavaScript', 'React', 'HTML', 'CSS', 'Supabase', 'Vercel'],
+    features: ['Randomized pairing algorithm', 'Anonymous wishlists', 'Mobile-responsive UI'],
+    githubUrl: 'https://github.com/kazutokei/christmas-party.git',
   },
   {
     id: 4,
     type: 'code',
-    title: 'AListō',
+    title: 'AListō: To-Do List App',
     description: 'A modern and intuitive to-do list web application designed to help users efficiently organize their tasks, track progress, and boost daily productivity.',
     imageUrl: '/alisto_thumbnail.webp',
-    tags: ['TypeScript', 'Tailwind CSS', 'PostgreSQL'],
-    features: ['Drag-and-drop task reordering', 'Category tagging and filtering', 'Progress tracking analytics'],
-    githubUrl: '#',
-    liveUrl: '#',
+    tags: ['TypeScript', 'Tailwind CSS', 'PostgreSQL', 'Vercel'],
+    features: ['Google OAuth & Secure Account Registration', 'Smart Task Filtering (Today, Upcoming, Important)', 'Custom Project Categories & Location Tags'],
+    githubUrl: 'https://github.com/B1ns0y/Alisto-main.git',
+    liveUrl: 'https://alisto-main.vercel.app',
   },
   {
     id: 5, 
@@ -154,7 +163,7 @@ const codeAndVideoProjects: Project[] = [
   }
 ];
 
-// Certificates Data
+// Certification data definitions
 const certificatesData: Certificate[] = [
   {
     id: 1,
@@ -162,10 +171,17 @@ const certificatesData: Certificate[] = [
     issuer: 'Department of Information and Communications Technology',
     date: 'July 18, 2024',
     imageUrl: '/cert_python-intermediate.webp',
+  },
+  {
+    id: 2,
+    title: 'SQL (Basic)',
+    issuer: 'HackerRank',
+    date: '02 Apr, 2026',
+    imageUrl: '/sql_basic-certificate.webp',
   }
 ];
 
-// Categorized Tech Stack Data
+// Technology stack categorizations
 const techStackData = [
   {
     title: 'Frontend Development',
@@ -216,7 +232,7 @@ const techStackData = [
       { name: 'Git', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg' },
       { name: 'GitHub', iconUrl: '/github.svg' },
       { name: 'Vercel', LucideIcon: Triangle },
-      { name: 'Tkinter', LucideIcon: Feather }, // Official Feather logo for Tkinter
+      { name: 'Tkinter', LucideIcon: Feather }, 
       { name: 'CustomTkinter', iconUrl: '/custom-tkinter.svg' },
       { name: 'LaTeX', iconUrl: '/latex.svg' },
       { name: 'Framer Motion', iconUrl: '/framer-motion.svg' },
@@ -227,7 +243,7 @@ const techStackData = [
 
 const projectsData: Project[] = [...codeAndVideoProjects, ...graphicProjects];
 
-// --- CUSTOM MAGIC BENTO CARD COMPONENT ---
+// MagicTechCard: Interactive bento card for tech stack categories
 const MagicTechCard = ({ category }: { category: typeof techStackData[0] }) => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
@@ -250,7 +266,7 @@ const MagicTechCard = ({ category }: { category: typeof techStackData[0] }) => {
       onMouseLeave={() => setIsHovered(false)}
       className="relative w-full bg-zinc-900 border border-zinc-800 rounded-[32px] p-6 md:p-8 overflow-hidden group transition-all duration-500"
     >
-      {/* Spotlight Hover Effect */}
+      {/* Dynamic spotlight hover effect */}
       <div
         className="pointer-events-none absolute -inset-px rounded-[32px] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
         style={{
@@ -258,13 +274,13 @@ const MagicTechCard = ({ category }: { category: typeof techStackData[0] }) => {
         }}
       />
       
-      {/* Card Content */}
+      {/* Card content wrapper */}
       <div className="relative z-10">
         <div className="flex items-center gap-3 mb-3">
           <div className="w-12 h-12 rounded-full bg-zinc-950/50 border border-zinc-800/50 backdrop-blur-sm flex items-center justify-center text-cyan-400 group-hover:scale-110 group-hover:text-cyan-300 transition-all duration-500 shadow-lg shadow-black/20">
             <category.icon className="w-5 h-5" />
           </div>
-          {/* This is the smooth hover gradient you liked! */}
+          {/* Category title with hover gradient */}
           <h3 className="text-xl font-bold text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-cyan-200 transition-all duration-500">
             {category.title}
           </h3>
@@ -273,14 +289,14 @@ const MagicTechCard = ({ category }: { category: typeof techStackData[0] }) => {
           {category.description}
         </p>
 
-        {/* Tech Pills */}
+        {/* Technology item pills */}
         <div className="flex flex-wrap gap-3">
           {category.items.map((tech, i) => (
             <div 
               key={i} 
               className="relative flex items-center gap-2.5 px-4 py-2 bg-zinc-950/40 backdrop-blur-md border border-zinc-800/60 rounded-xl hover:border-cyan-500/30 hover:bg-zinc-900 transition-all duration-300 cursor-default tech-group hover:-translate-y-1 hover:shadow-[0_8px_16px_-6px_rgba(34,211,238,0.15)]"
             >
-              {/* Uses your newly uploaded local SVGs or falls back to Lucide Icons */}
+              {/* Icon rendering with local SVG or Lucide fallback */}
               {tech.iconUrl ? (
                 <img src={tech.iconUrl} alt={tech.name} className="w-4 h-4 tech-group-hover:scale-110 transition-transform duration-300 drop-shadow-sm" />
               ) : tech.LucideIcon ? (
@@ -301,20 +317,20 @@ const MagicTechCard = ({ category }: { category: typeof techStackData[0] }) => {
 const Projects = () => {
   const [activeMainTab, setActiveMainTab] = useState<MainCategory>('projects');
   const [activeSubTab, setActiveSubTab] = useState<ProjectType>('code');
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   
-  // State to hold the YouTube ID of the currently playing video
+  // State for fullscreen project details overlay
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [activeVideo, setActiveVideo] = useState<string | null>(null);
 
-  // Lock the background scroll when the video lightbox is open
+  // Lock body scroll when modals or overlays are active
   useEffect(() => {
-    if (activeVideo) {
+    if (activeVideo || selectedProject) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
     }
     return () => { document.body.style.overflow = ''; };
-  }, [activeVideo]);
+  }, [activeVideo, selectedProject]);
 
   const filteredProjects = projectsData.filter(project => project.type === activeSubTab);
 
@@ -324,118 +340,11 @@ const Projects = () => {
   }, []);
 
   return (
-    <section id="projects" className="relative min-h-screen bg-transparent px-6 pt-24 pb-20">
-      <div className="max-w-5xl mx-auto">
-        
-        {/* --- DETAILS VIEW (For Code Projects) --- */}
-        {selectedProject ? (
-          <div className="animate-in fade-in slide-in-from-bottom-8 duration-700">
-            <div className="flex items-center gap-3 text-sm text-zinc-400 mb-8">
-              <button 
-                onClick={() => setSelectedProject(null)}
-                className="flex items-center gap-2 px-3 py-1.5 bg-zinc-900 border border-zinc-800 rounded-lg hover:text-white hover:border-zinc-600 transition-colors"
-              >
-                <ChevronLeft className="w-4 h-4" /> Back
-              </button>
-              <span className="hidden md:inline">Projects</span>
-              <span className="hidden md:inline">›</span>
-              <span className="text-white truncate max-w-[200px] md:max-w-none">{selectedProject.title}</span>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-              <div className="lg:col-span-5 space-y-8">
-                <div>
-                  <h1 className="text-3xl md:text-5xl font-extrabold text-white leading-tight mb-4 tracking-tight">
-                    {selectedProject.title}
-                  </h1>
-                  <div className="w-16 h-1 bg-cyan-500 rounded-full mb-6" />
-                  <p className="text-zinc-400 leading-relaxed text-base">
-                    {selectedProject.description}
-                  </p>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="p-4 bg-zinc-900 border border-zinc-800 rounded-2xl flex items-center gap-4 shadow-lg shadow-black/20">
-                    <div className="w-10 h-10 rounded-full bg-cyan-500/10 flex items-center justify-center text-cyan-400">
-                      <Code2 className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <h4 className="text-xl font-bold text-white">{selectedProject.tags.length}</h4>
-                      <p className="text-[10px] uppercase tracking-wider text-zinc-500 font-semibold">Total Tech</p>
-                    </div>
-                  </div>
-                  <div className="p-4 bg-zinc-900 border border-zinc-800 rounded-2xl flex items-center gap-4 shadow-lg shadow-black/20">
-                    <div className="w-10 h-10 rounded-full bg-purple-500/10 flex items-center justify-center text-purple-400">
-                      <Layers className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <h4 className="text-xl font-bold text-white">{selectedProject.features?.length || 0}</h4>
-                      <p className="text-[10px] uppercase tracking-wider text-zinc-500 font-semibold">Key Features</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex flex-wrap gap-3">
-                  {selectedProject.liveUrl && (
-                    <a href={selectedProject.liveUrl} className="flex items-center gap-2 px-6 py-2.5 bg-cyan-500 text-black font-bold rounded-xl hover:bg-cyan-400 hover:scale-105 transition-all text-sm">
-                      <ExternalLink className="w-4 h-4" /> Live Demo
-                    </a>
-                  )}
-                  {selectedProject.githubUrl && (
-                    <a href={selectedProject.githubUrl} className="flex items-center gap-2 px-6 py-2.5 bg-zinc-900 text-white font-semibold rounded-xl border border-zinc-800 hover:bg-zinc-800 transition-all text-sm shadow-lg shadow-black/20">
-                      <Github className="w-4 h-4" /> GitHub
-                    </a>
-                  )}
-                </div>
-
-                <div className="pt-6 border-t border-zinc-800/50">
-                  <h3 className="text-sm font-semibold text-white mb-4 flex items-center gap-2">
-                    <Code className="w-4 h-4 text-cyan-400" /> Technologies Used
-                  </h3>
-                  <div className="flex flex-wrap gap-2">
-                    {selectedProject.tags.map(tag => (
-                      <span key={tag} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-300 text-xs font-medium shadow-sm shadow-black/20">
-                        <div className="w-1.5 h-1.5 rounded-full bg-cyan-500/50" /> {tag}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              <div className="lg:col-span-7 space-y-6">
-                <div className="rounded-2xl overflow-hidden border border-zinc-800 bg-zinc-900 aspect-[4/3] relative shadow-xl shadow-black/30">
-                  <img 
-                    src={selectedProject.imageUrl} 
-                    alt={selectedProject.title} 
-                    className="w-full h-full object-cover select-none"
-                    draggable={false}
-                    onContextMenu={(e) => e.preventDefault()}
-                    onError={(e) => { (e.target as HTMLImageElement).src = 'data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw=='; }}
-                  />
-                </div>
-
-                {selectedProject.features && selectedProject.features.length > 0 && (
-                  <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 md:p-8 shadow-xl shadow-black/30">
-                    <h3 className="text-xl font-bold text-white flex items-center gap-2 mb-6">
-                      <Star className="w-5 h-5 text-cyan-400 fill-cyan-400/20" /> Key Features
-                    </h3>
-                    <ul className="space-y-4">
-                      {selectedProject.features.map((feature, idx) => (
-                        <li key={idx} className="flex items-start gap-3 text-zinc-300 text-sm leading-relaxed">
-                          <div className="min-w-6 w-6 h-6 rounded-full bg-zinc-800 flex items-center justify-center text-xs font-bold text-cyan-400 mt-0.5">
-                            {idx + 1}
-                          </div>
-                          {feature}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        ) : (
-          // --- MAIN GRID OVERVIEW ---
+    <>
+      <section id="projects" className="relative min-h-screen bg-transparent px-6 pt-24 pb-20">
+        <div className="max-w-5xl mx-auto">
+          
+          {/* Main Grid Overview: Rendered underneath overlays to preserve scroll position */}
           <div className="animate-in fade-in duration-500">
             <div className="text-center mb-10 space-y-3">
               <h2 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight">Portfolio Showcase</h2>
@@ -454,7 +363,7 @@ const Projects = () => {
 
             <div className="min-h-[400px]">
               
-              {/* === PROJECTS TAB === */}
+              {/* Projects Tab Content */}
               {activeMainTab === 'projects' && (
                 <>
                   <div className="flex justify-center gap-3 mb-12">
@@ -518,11 +427,17 @@ const Projects = () => {
 
                           <div className="p-4 flex flex-col flex-grow">
                             <div className="flex flex-wrap gap-1.5 mb-2">
-                              {project.tags.map(tag => (
+                              {/* Limit displayed tags to 4 for card preview */}
+                              {project.tags.slice(0, 4).map(tag => (
                                 <span key={tag} className="text-[10px] font-medium px-2 py-0.5 rounded bg-zinc-800 text-zinc-400 border border-zinc-700">
                                   {tag}
                                 </span>
                               ))}
+                              {project.tags.length > 4 && (
+                                <span className="text-[10px] font-medium px-2 py-0.5 rounded bg-zinc-800 text-zinc-400 border border-zinc-700">
+                                  +{project.tags.length - 4}
+                                </span>
+                              )}
                             </div>
                             
                             <h3 className="text-base font-bold text-white mb-2 group-hover:text-cyan-400 transition-colors line-clamp-1">{project.title}</h3>
@@ -533,13 +448,9 @@ const Projects = () => {
                             
                             <div className="mt-auto flex items-center justify-between pt-3 border-t border-zinc-800">
                               {project.type !== 'video' && (
-                                <a 
-                                  href={project.liveUrl || project.link} 
-                                  onClick={(e) => e.stopPropagation()}
-                                  className="flex items-center gap-2 text-xs font-semibold text-white hover:text-cyan-400 transition-colors"
-                                >
+                                <div className="flex items-center gap-2 text-xs font-semibold text-white hover:text-cyan-400 transition-colors">
                                   <ExternalLink className="w-3 h-3" /> View Project
-                                </a>
+                                </div>
                               )}
                               
                               <div className="ml-auto">
@@ -562,13 +473,13 @@ const Projects = () => {
                 </>
               )}
 
-              {/* === CERTIFICATES TAB === */}
+              {/* Certificates Tab Content */}
               {activeMainTab === 'certificates' && (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 animate-in fade-in slide-in-from-bottom-8 duration-700">
                   {certificatesData.map((cert) => (
                     <a 
                       key={cert.id} 
-                      href={cert.pdfUrl || cert.imageUrl} // Opens PDF if available, otherwise opens the image
+                      href={cert.pdfUrl || cert.imageUrl}
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="group block bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden hover:border-cyan-500/50 hover:shadow-[0_0_30px_rgba(34,211,238,0.15)] transition-all duration-300"
@@ -609,7 +520,7 @@ const Projects = () => {
                 </div>
               )}
 
-              {/* === TECH STACK TAB (MAGIC BENTO) === */}
+              {/* Tech Stack Tab Content */}
               {activeMainTab === 'tech_stack' && (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-in fade-in slide-in-from-bottom-8 duration-700">
                   {techStackData.map((category, idx) => (
@@ -620,13 +531,125 @@ const Projects = () => {
 
             </div>
           </div>
-        )}
+        </div>
+      </section>
 
-      </div>
+      {/* Project Details Overlay */}
+      {selectedProject && (
+        <div className="fixed inset-0 z-[100] bg-zinc-950 overflow-y-auto animate-in slide-in-from-bottom-12 fade-in duration-500">
+          
+          {/* Ambient background glow */}
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-cyan-500/5 blur-[120px] rounded-full pointer-events-none" />
 
-      {/* --- VIDEO LIGHTBOX MODAL --- */}
+          <div className="relative min-h-screen max-w-5xl mx-auto px-6 py-12 md:py-24">
+            
+            <div className="flex items-center gap-3 text-sm text-zinc-400 mb-10">
+              <button 
+                onClick={() => setSelectedProject(null)}
+                className="flex items-center gap-2 px-4 py-2 bg-zinc-900 border border-zinc-800 rounded-lg hover:text-white hover:border-zinc-600 transition-colors"
+              >
+                <ChevronLeft className="w-4 h-4" /> Back to Projects
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10">
+              <div className="lg:col-span-5 space-y-8">
+                <div>
+                  <h1 className="text-4xl md:text-5xl font-extrabold text-white leading-tight mb-4 tracking-tight">
+                    {selectedProject.title}
+                  </h1>
+                  <div className="w-16 h-1 bg-cyan-500 rounded-full mb-6" />
+                  <p className="text-zinc-400 leading-relaxed text-base md:text-lg">
+                    {selectedProject.description}
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="p-5 bg-zinc-900/50 border border-zinc-800/80 rounded-2xl flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-full bg-cyan-500/10 flex items-center justify-center text-cyan-400 border border-cyan-500/20">
+                      <Code2 className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h4 className="text-2xl font-bold text-white">{selectedProject.tags.length}</h4>
+                      <p className="text-[10px] uppercase tracking-wider text-zinc-500 font-bold">Total Tech</p>
+                    </div>
+                  </div>
+                  <div className="p-5 bg-zinc-900/50 border border-zinc-800/80 rounded-2xl flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-full bg-purple-500/10 flex items-center justify-center text-purple-400 border border-purple-500/20">
+                      <Layers className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h4 className="text-2xl font-bold text-white">{selectedProject.features?.length || 0}</h4>
+                      <p className="text-[10px] uppercase tracking-wider text-zinc-500 font-bold">Key Features</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap gap-3">
+                  {selectedProject.liveUrl && (
+                    <a href={selectedProject.liveUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-8 py-3.5 bg-cyan-500 text-black font-bold rounded-xl hover:bg-cyan-400 hover:scale-105 transition-all text-sm md:text-base">
+                      <ExternalLink className="w-4 h-4" /> Live Demo
+                    </a>
+                  )}
+                  {selectedProject.githubUrl && (
+                    <a href={selectedProject.githubUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-8 py-3.5 bg-zinc-900 text-white font-semibold rounded-xl border border-zinc-800 hover:bg-zinc-800 transition-all text-sm md:text-base shadow-lg shadow-black/20">
+                      <Github className="w-4 h-4" /> Source Code
+                    </a>
+                  )}
+                </div>
+
+                <div className="pt-8 border-t border-zinc-800/50">
+                  <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-5 flex items-center gap-2">
+                    <Code className="w-4 h-4 text-cyan-400" /> Technologies Used
+                  </h3>
+                  <div className="flex flex-wrap gap-2.5">
+                    {selectedProject.tags.map(tag => (
+                      <span key={tag} className="flex items-center gap-2 px-3.5 py-2 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-300 text-sm font-medium shadow-sm shadow-black/20">
+                        <div className="w-1.5 h-1.5 rounded-full bg-cyan-500/50" /> {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <div className="lg:col-span-7 space-y-8">
+                <div className="rounded-[32px] overflow-hidden border border-zinc-800 bg-zinc-900 aspect-[4/3] relative shadow-2xl shadow-black/50">
+                  <img 
+                    src={selectedProject.imageUrl} 
+                    alt={selectedProject.title} 
+                    className="w-full h-full object-cover select-none"
+                    draggable={false}
+                    onContextMenu={(e) => e.preventDefault()}
+                    onError={(e) => { (e.target as HTMLImageElement).src = 'data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw=='; }}
+                  />
+                </div>
+
+                {selectedProject.features && selectedProject.features.length > 0 && (
+                  <div className="bg-zinc-900/50 border border-zinc-800/80 rounded-[32px] p-8 md:p-10 shadow-2xl shadow-black/30">
+                    <h3 className="text-2xl font-bold text-white flex items-center gap-3 mb-8">
+                      <Star className="w-6 h-6 text-cyan-400 fill-cyan-400/20" /> Key Features
+                    </h3>
+                    <ul className="space-y-5">
+                      {selectedProject.features.map((feature, idx) => (
+                        <li key={idx} className="flex items-start gap-4 text-zinc-300 text-base leading-relaxed">
+                          <div className="min-w-8 w-8 h-8 rounded-full bg-zinc-800 flex items-center justify-center text-sm font-bold text-cyan-400 mt-0.5 border border-zinc-700">
+                            {idx + 1}
+                          </div>
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Video Lightbox Modal */}
       {activeVideo && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 animate-in fade-in duration-300">
+        <div className="fixed inset-0 z-[120] flex items-center justify-center p-4 sm:p-6 animate-in fade-in duration-300">
           <div 
             className="absolute inset-0 bg-zinc-950/90 backdrop-blur-xl cursor-pointer"
             onClick={() => setActiveVideo(null)}
@@ -651,7 +674,7 @@ const Projects = () => {
           </div>
         </div>
       )}
-    </section>
+    </>
   );
 };
 

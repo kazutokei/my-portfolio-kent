@@ -123,3 +123,32 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* ==========================================
+   GLOBAL CUSTOM SCROLLBAR
+   ========================================== */
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #09090b;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #27272a;
+  border-radius: 9999px;
+  border: 2px solid #09090b;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #06b6d4;
+}
+
+html {
+  scroll-behavior: smooth;
+  /* Firefox Fallback */
+  scrollbar-width: thin;
+  scrollbar-color: #27272a #09090b;
+}
