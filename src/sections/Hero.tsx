@@ -155,10 +155,18 @@ const Hero = () => {
                   Get in Touch
                   <Mail className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </a>
-                <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" className="px-6 py-2.5 bg-zinc-900 text-white font-semibold rounded-full flex items-center gap-2 hover:bg-zinc-800 border border-zinc-800 transition-all hover:border-zinc-600 text-sm md:text-base">
+                
+                {/* Clean, Native New Tab Button */}
+                <a 
+                  href="/CHAVO_resume.pdf" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="px-6 py-2.5 bg-zinc-900 text-white font-semibold rounded-full flex items-center gap-2 hover:bg-zinc-800 border border-zinc-800 transition-all hover:border-zinc-600 text-sm md:text-base"
+                >
                   View Resume
                   <ExternalLink className="w-4 h-4" />
                 </a>
+
                 <a href="#projects" className="px-6 py-2.5 text-zinc-300 font-semibold rounded-full hover:text-white transition-all flex items-center gap-2 group text-sm md:text-base">
                   View My Work
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
