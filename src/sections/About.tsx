@@ -791,7 +791,6 @@ const About = () => {
               <div className="flex-1 bg-zinc-900/50 border border-zinc-800/60 rounded-2xl p-5 hover:border-cyan-500/30 transition-colors group">
                 <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
                   <div className="flex gap-4 items-start">
-                    {/* FIX: Shrunk image to w-10 h-10 on small mobile to allow room for text */}
                     <div className="w-10 h-10 sm:w-14 sm:h-14 bg-white rounded-xl p-1.5 flex-shrink-0 shadow-lg group-hover:scale-105 transition-transform duration-300">
                       <img 
                         src="/ustp.webp" 
@@ -824,10 +823,9 @@ const About = () => {
                 </div>
               </div>
 
-              <div className="flex-1 bg-zinc-900/30 border border-zinc-800/60 rounded-2xl p-5 hover:border-zinc-500/50 transition-colors group">
+              <div className="flex-1 bg-zinc-900/30 border border-zinc-800/60 rounded-2xl p-5 hover:border-cyan-500/30 transition-colors group">
                 <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
                   <div className="flex gap-4 items-start">
-                    {/* FIX: Shrunk image to w-10 h-10 on small mobile to allow room for text */}
                     <div className="w-10 h-10 sm:w-14 sm:h-14 bg-white rounded-xl p-1.5 flex-shrink-0 shadow-lg group-hover:scale-105 transition-transform duration-300">
                       <img 
                         src="/ldcu.webp" 
@@ -837,7 +835,6 @@ const About = () => {
                       />
                     </div>
                     <div>
-                      {/* FIX: Shrunk text to 13px on mobile so it fits nicely alongside the image without excessive wrapping */}
                       <h4 className="text-[13px] sm:text-lg font-bold text-white leading-snug">Science, Technology, Engineering, and Mathematics</h4>
                       <p className="text-xs sm:text-sm text-zinc-400 mt-1">Liceo de Cagayan University</p>
                       <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mt-2">
@@ -988,7 +985,7 @@ const About = () => {
         {/* --- CINEMATIC TEXT REVEAL --- */}
         <div className="mb-24 md:mb-32 max-w-4xl mx-auto">
           <ScrollReveal className="text-base md:text-lg lg:text-xl font-medium text-white text-center leading-[1.7] md:leading-[1.7]">
-            {`Hello! I am Kent, a Computer Science student and an aspiring Full-Stack Developer, with technical expertise supported by a five-year background in Multimedia Design. I build applications that connect backend logic with frontend interfaces, having a versatile set of modern technologies and creative tools at my disposal.\n\nMy current academic focus centers on AI and Computer Vision, alongside coursework in computational modeling and simulations. Always eager to learn emerging technologies, I aim to create functional software backed by clear documentation and scalable systems.`}
+            {`Hello! I am Kent, a Computer Science student and an aspiring Full-Stack Developer with technical expertise supported by a five-year background in Multimedia Design. I build applications that connect backend logic with frontend interfaces, having a versatile set of modern technologies and creative tools at my disposal. My current academic focus centers on artificial intelligence, particularly deep learning and machine learning within computer vision, alongside coursework in computational modeling and simulations. I am always eager to learn emerging technologies, balancing what needs to be built with a deep consideration of who I am building it for, ensuring every solution is grounded in scalable logic and artistic, creative design.`}
           </ScrollReveal>
         </div>
 
