@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Mail, Send, Github, Facebook, Instagram, Linkedin, ExternalLink, CheckCircle2, MapPin, Award } from 'lucide-react';
+import { Mail, Send, Github, Facebook, Instagram, Linkedin, ExternalLink, CheckCircle2, MapPin, Award, AlertCircle } from 'lucide-react';
 import ScrollReveal from '../components/bits/ScrollReveal';
 import RotatingText from '../components/bits/RotatingText';
+import emailjs from '@emailjs/browser';
 
 const Contact = () => {
   const [formState, setFormState] = useState({
@@ -11,6 +12,7 @@ const Contact = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormState({
@@ -22,15 +24,34 @@ const Contact = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
-    // Simulate network request
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setIsSubmitted(true);
-      setFormState({ name: '', email: '', message: '' });
-      
-      setTimeout(() => setIsSubmitted(false), 5000);
-    }, 1500);
+    setError(null);
+
+    // --- YOUR LIVE EMAILJS CREDENTIALS ---
+    const serviceId = 'service_ba41ykf'; 
+    const templateId = 'template_36ubf89'; 
+    const publicKey = 'inzhqvfwSM7IZb-Ct'; 
+
+    const templateParams = {
+      name: formState.name,
+      email: formState.email,
+      message: formState.message,
+    };
+
+    emailjs.send(serviceId, templateId, templateParams, publicKey)
+      .then((response) => {
+        console.log('SUCCESS!', response.status, response.text);
+        setIsSubmitting(false);
+        setIsSubmitted(true);
+        setFormState({ name: '', email: '', message: '' });
+        
+        // Reset success state after 5 seconds
+        setTimeout(() => setIsSubmitted(false), 5000);
+      })
+      .catch((err) => {
+        console.error('FAILED...', err);
+        setIsSubmitting(false);
+        setError("Failed to send message. Please check your connection or try again.");
+      });
   };
 
   const inputClasses = "w-full bg-zinc-900 border border-zinc-800 rounded-xl px-5 py-4 text-white placeholder:text-zinc-600 outline-none transition-all duration-300 hover:border-cyan-500/50 hover:shadow-[0_0_15px_rgba(6,182,212,0.1)] focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 focus:shadow-[0_0_20px_rgba(6,182,212,0.15)]";
@@ -70,7 +91,6 @@ const Contact = () => {
     <section id="contact" className="relative min-h-screen bg-transparent px-6 pt-24 pb-32 flex flex-col justify-center">
       <div className="max-w-6xl mx-auto w-full">
         
-        {/* Section Header */}
         <div className="mb-16 text-center animate-in fade-in slide-in-from-bottom-8 duration-700">
           <h2 className="text-3xl md:text-5xl font-extrabold text-white tracking-tight mb-4">Get In Touch</h2>
           <div className="w-16 h-1.5 bg-cyan-500 rounded-full mx-auto shadow-[0_0_15px_rgba(6,182,212,0.5)]" />
@@ -78,13 +98,7 @@ const Contact = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8">
           
-          {/* LEFT COLUMN: Info & Socials */}
           <div className="lg:col-span-5 flex flex-col justify-center animate-in fade-in slide-in-from-bottom-12 duration-1000 delay-150">
-            
-            {/* FIXED LAYOUT JUMP 
-              Using flex-col ensures Let's build -> something -> [word]
-              are always stacked perfectly on 3 lines, no matter how short the word is.
-            */}
             <div className="text-4xl md:text-5xl font-black text-white leading-[1.3] mb-8 flex flex-col items-start gap-1">
               <span>Let's build</span>
               <span>something</span>
@@ -109,7 +123,6 @@ const Contact = () => {
             </p>
 
             <div className="space-y-6 mb-10 w-fit">
-              {/* Email Card */}
               <div className="flex items-center gap-5 p-5 bg-zinc-900 border border-zinc-800 rounded-2xl transition-all duration-300 hover:border-cyan-500/30 hover:shadow-[0_0_15px_rgba(6,182,212,0.05)]">
                 <div className="w-12 h-12 rounded-full bg-cyan-500/10 flex items-center justify-center flex-shrink-0 text-cyan-400 border border-cyan-500/20">
                   <Mail className="w-5 h-5" />
@@ -122,7 +135,6 @@ const Contact = () => {
                 </div>
               </div>
 
-              {/* Location Card */}
               <div className="flex items-center gap-5 p-5 bg-zinc-900 border border-zinc-800 rounded-2xl transition-all duration-300 hover:border-cyan-500/30 hover:shadow-[0_0_15px_rgba(6,182,212,0.05)]">
                 <div className="w-12 h-12 rounded-full bg-cyan-500/10 flex items-center justify-center flex-shrink-0 text-cyan-400 border border-cyan-500/20">
                   <MapPin className="w-5 h-5" />
@@ -136,7 +148,6 @@ const Contact = () => {
               </div>
             </div>
 
-            {/* Social Links */}
             <div className="space-y-3 max-w-md">
               <h4 className="text-sm font-bold text-white uppercase tracking-wider mb-4">Connect with me</h4>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -166,11 +177,9 @@ const Contact = () => {
             </div>
           </div>
 
-          {/* RIGHT COLUMN: Contact Form */}
           <div className="lg:col-span-7 lg:pl-10 animate-in fade-in slide-in-from-bottom-12 duration-1000 delay-300 mt-10 lg:mt-0">
             <div className="bg-zinc-900 border border-zinc-800/60 p-8 md:p-10 rounded-[32px] shadow-2xl relative overflow-hidden group/form">
               
-              {/* Magic Bento Style Background Glow */}
               <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/5 rounded-full blur-[100px] pointer-events-none group-hover/form:bg-cyan-500/10 transition-colors duration-500" />
               <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-500/5 rounded-full blur-[100px] pointer-events-none group-hover/form:bg-purple-500/10 transition-colors duration-500" />
 
@@ -219,6 +228,13 @@ const Contact = () => {
                   />
                 </div>
 
+                {error && (
+                  <div className="flex items-center gap-2 text-red-400 text-sm bg-red-400/10 p-3 rounded-lg border border-red-400/20">
+                    <AlertCircle className="w-4 h-4" />
+                    {error}
+                  </div>
+                )}
+
                 <button 
                   type="submit" 
                   disabled={isSubmitting || isSubmitted}
@@ -249,7 +265,6 @@ const Contact = () => {
               </form>
             </div>
           </div>
-
         </div>
       </div>
     </section>
