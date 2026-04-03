@@ -1,16 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [activeTab, setActiveTab] = useState('Home');
 
-  // Detect scroll to toggle background styles
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 20) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
+      setIsScrolled(window.scrollY > 20);
+      
+      // Basic auto-spy logic (optional)
+      const sections = ['home', 'about', 'projects', 'contact'];
+      for (const section of sections) {
+        const el = document.getElementById(section);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          if (rect.top >= 0 && rect.top <= 300) {
+            setActiveTab(section.charAt(0).toUpperCase() + section.slice(1));
+          }
+        }
       }
     };
 
@@ -19,10 +27,10 @@ const Navbar = () => {
   }, []);
 
   const navLinks = [
-    { name: 'Home', href: '#home', active: true },
-    { name: 'About', href: '#about', active: false },
-    { name: 'Projects', href: '#projects', active: false },
-    { name: 'Contact', href: '#contact', active: false },
+    { name: 'Home', href: '#home' },
+    { name: 'About', href: '#about' },
+    { name: 'Projects', href: '#projects' },
+    { name: 'Contact', href: '#contact' },
   ];
 
   return (
@@ -30,44 +38,38 @@ const Navbar = () => {
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
-        isScrolled
-          ? 'bg-zinc-950/80 backdrop-blur-md border-b border-white/5 py-4'
-          : 'bg-transparent py-6'
-      }`}
+      className="fixed top-6 left-0 w-full z-[100] flex justify-center px-6"
     >
-      {/* ✅ FIXED: Updated max-width to align with Hero content */}
-      <div className="max-w-7xl w-full mx-auto px-6 flex items-center justify-between">
-        
-        {/* LOGO */}
-        <a href="#home" className="text-2xl font-bold tracking-tight text-cyan-400">
-          kejo.works
-        </a>
-
-        {/* DESKTOP LINKS */}
-        <div className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
+      <div className={`flex items-center gap-1 p-2 rounded-full border transition-all duration-500 ${
+        isScrolled 
+          ? 'bg-zinc-950/80 backdrop-blur-md border-white/10 shadow-2xl' 
+          : 'bg-zinc-900/40 backdrop-blur-sm border-white/5'
+      }`}>
+        {navLinks.map((link) => {
+          const isActive = activeTab === link.name;
+          return (
             <a
               key={link.name}
               href={link.href}
-              className={`relative text-sm font-medium transition-colors hover:text-cyan-400 ${
-                link.active ? 'text-cyan-400' : 'text-zinc-300'
+              onClick={() => setActiveTab(link.name)}
+              className={`relative px-4 py-2 text-sm font-bold transition-all duration-300 rounded-full ${
+                isActive ? 'text-black' : 'text-zinc-400 hover:text-white'
               }`}
             >
-              {link.name}
+              {/* This span ensures the text is ALWAYS above the pill background */}
+              <span className="relative z-10">{link.name}</span>
               
-              {/* Active Indicator Line */}
-              {link.active && (
-                <span className="absolute -bottom-1 left-0 w-full h-[2px] bg-cyan-400 rounded-full" />
+              {/* This is the MAGIC PILL that moves between links */}
+              {isActive && (
+                <motion.div
+                  layoutId="nav-pill"
+                  className="absolute inset-0 bg-white rounded-full z-0"
+                  transition={{ type: 'spring', duration: 0.5, bounce: 0.2 }}
+                />
               )}
             </a>
-          ))}
-        </div>
-
-        {/* MOBILE MENU PLACEHOLDER */}
-        <div className="md:hidden">
-          {/* You can add a hamburger icon button here later */}
-        </div>
+          );
+        })}
       </div>
     </motion.nav>
   );
