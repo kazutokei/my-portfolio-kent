@@ -3,7 +3,7 @@ import Hero from './sections/Hero';
 import About from './sections/About';
 import Projects from './sections/Projects';
 import Contact from './sections/Contact';
-import Galaxy from './components/bits/Galaxy';
+import Particles from './components/bits/Particles';
 import GooeyNav from './components/bits/GooeyNav';
 
 function App() {
@@ -18,23 +18,24 @@ function App() {
   return (
     <main className="relative bg-zinc-950 min-h-screen text-white selection:bg-cyan-500/30 overflow-x-hidden">
       
-      {/* --- GALAXY BACKGROUND --- */}
+      {/* --- OGL PARTICLES BACKGROUND --- */}
       {/* Set z-0 so it stays behind everything */}
-      <div className="fixed inset-0 z-0 pointer-events-auto">
+      <div className="fixed inset-0 z-0">
         <div style={{ width: '100%', height: '100vh', position: 'relative' }}>
-          <Galaxy
-            starSpeed={0.5}
-            density={1}
-            hueShift={140}
-            speed={1}
-            glowIntensity={0.3}
-            saturation={0}
-            mouseRepulsion={true}
-            repulsionStrength={2}
-            twinkleIntensity={0.3}
-            rotationSpeed={0.1}
-            transparent={true}
+          <Particles
+            particleColors={["#ffffff", "#06b6d4"]} // White and Cyan to match your theme
+            particleCount={250}
+            particleSpread={12}
+            speed={0.1}
+            particleBaseSize={80} // Slightly reduced from 100 for a cleaner deep-space look
+            moveParticlesOnHover={true}
+            particleHoverFactor={1}
+            alphaParticles={true}
+            disableRotation={false}
+            pixelRatio={typeof window !== 'undefined' ? window.devicePixelRatio : 1}
           />
+          {/* Subtle gradient overlay to ensure your text and cards remain readable over the bright particles */}
+          <div className="absolute inset-0 bg-gradient-to-b from-zinc-950/20 via-transparent to-zinc-950/20 pointer-events-none" />
         </div>
       </div>
 
