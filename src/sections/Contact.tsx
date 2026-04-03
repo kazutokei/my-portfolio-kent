@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { Mail, Send, Github, Facebook, Instagram, Linkedin, ExternalLink, CheckCircle2, MapPin, Award, AlertCircle } from 'lucide-react';
-import ScrollReveal from '../components/bits/ScrollReveal';
-import RotatingText from '../components/bits/RotatingText';
 import emailjs from '@emailjs/browser';
+import RotatingText from '../components/bits/RotatingText';
 
 const Contact = () => {
   const [formState, setFormState] = useState({
@@ -26,7 +25,6 @@ const Contact = () => {
     setIsSubmitting(true);
     setError(null);
 
-    // --- YOUR LIVE EMAILJS CREDENTIALS ---
     const serviceId = 'service_ba41ykf'; 
     const templateId = 'template_36ubf89'; 
     const publicKey = 'inzhqvfwSM7IZb-Ct'; 
@@ -39,16 +37,12 @@ const Contact = () => {
 
     emailjs.send(serviceId, templateId, templateParams, publicKey)
       .then((response) => {
-        console.log('SUCCESS!', response.status, response.text);
         setIsSubmitting(false);
         setIsSubmitted(true);
         setFormState({ name: '', email: '', message: '' });
-        
-        // Reset success state after 5 seconds
         setTimeout(() => setIsSubmitted(false), 5000);
       })
       .catch((err) => {
-        console.error('FAILED...', err);
         setIsSubmitting(false);
         setError("Failed to send message. Please check your connection or try again.");
       });
@@ -88,7 +82,7 @@ const Contact = () => {
   ];
 
   return (
-    <section id="contact" className="relative min-h-screen bg-transparent px-6 pt-24 pb-32 flex flex-col justify-center">
+    <section id="contact" className="relative min-h-screen bg-transparent px-6 pt-24 pb-32 flex flex-col justify-center overflow-x-hidden">
       <div className="max-w-6xl mx-auto w-full">
         
         <div className="mb-16 text-center animate-in fade-in slide-in-from-bottom-8 duration-700">
@@ -98,7 +92,8 @@ const Contact = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8">
           
-          <div className="lg:col-span-5 flex flex-col justify-center animate-in fade-in slide-in-from-bottom-12 duration-1000 delay-150">
+          {/* LEFT COLUMN - Added 'px-2' to give margin on mobile */}
+          <div className="lg:col-span-5 flex flex-col justify-center animate-in fade-in slide-in-from-bottom-12 duration-1000 delay-150 px-2 sm:px-0">
             <div className="text-4xl md:text-5xl font-black text-white leading-[1.3] mb-8 flex flex-col items-start gap-1">
               <span>Let's build</span>
               <span>something</span>
@@ -122,34 +117,35 @@ const Contact = () => {
               Whether you have a project in mind, a question about my work, or just want to say hi, my inbox is always open.
             </p>
 
-            <div className="space-y-6 mb-10 w-fit">
-              <div className="flex items-center gap-5 p-5 bg-zinc-900 border border-zinc-800 rounded-2xl transition-all duration-300 hover:border-cyan-500/30 hover:shadow-[0_0_15px_rgba(6,182,212,0.05)]">
-                <div className="w-12 h-12 rounded-full bg-cyan-500/10 flex items-center justify-center flex-shrink-0 text-cyan-400 border border-cyan-500/20">
+            {/* INFO CARDS CONTAINER - Ensure cards don't overflow */}
+            <div className="space-y-6 mb-10 w-full max-w-full">
+              <div className="flex items-center gap-4 sm:gap-5 p-4 sm:p-5 bg-zinc-900 border border-zinc-800 rounded-2xl transition-all duration-300 hover:border-cyan-500/30 hover:shadow-[0_0_15px_rgba(6,182,212,0.05)] w-full overflow-hidden">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-cyan-500/10 flex items-center justify-center flex-shrink-0 text-cyan-400 border border-cyan-500/20">
                   <Mail className="w-5 h-5" />
                 </div>
-                <div>
-                  <p className="text-xs text-zinc-500 font-bold uppercase tracking-wider mb-1">Email Me At</p>
-                  <a href="mailto:chavo.kentjohn@gmail.com" className="text-white font-medium hover:text-cyan-400 transition-colors text-lg">
+                <div className="min-w-0"> {/* min-w-0 allows text truncation/wrap to work in flex */}
+                  <p className="text-[10px] sm:text-xs text-zinc-500 font-bold uppercase tracking-wider mb-1">Email Me At</p>
+                  <a href="mailto:chavo.kentjohn@gmail.com" className="text-white font-medium hover:text-cyan-400 transition-colors text-sm sm:text-lg break-all sm:break-normal">
                     chavo.kentjohn@gmail.com
                   </a>
                 </div>
               </div>
 
-              <div className="flex items-center gap-5 p-5 bg-zinc-900 border border-zinc-800 rounded-2xl transition-all duration-300 hover:border-cyan-500/30 hover:shadow-[0_0_15px_rgba(6,182,212,0.05)]">
-                <div className="w-12 h-12 rounded-full bg-cyan-500/10 flex items-center justify-center flex-shrink-0 text-cyan-400 border border-cyan-500/20">
+              <div className="flex items-center gap-4 sm:gap-5 p-4 sm:p-5 bg-zinc-900 border border-zinc-800 rounded-2xl transition-all duration-300 hover:border-cyan-500/30 hover:shadow-[0_0_15px_rgba(6,182,212,0.05)] w-full">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-cyan-500/10 flex items-center justify-center flex-shrink-0 text-cyan-400 border border-cyan-500/20">
                   <MapPin className="w-5 h-5" />
                 </div>
                 <div>
-                  <p className="text-xs text-zinc-500 font-bold uppercase tracking-wider mb-1">Location</p>
-                  <p className="text-white font-medium text-lg">
+                  <p className="text-[10px] sm:text-xs text-zinc-500 font-bold uppercase tracking-wider mb-1">Location</p>
+                  <p className="text-white font-medium text-sm sm:text-lg">
                     Cagayan de Oro City, Philippines
                   </p>
                 </div>
               </div>
             </div>
 
-            <div className="space-y-3 max-w-md">
-              <h4 className="text-sm font-bold text-white uppercase tracking-wider mb-4">Connect with me</h4>
+            <div className="space-y-4 max-w-full">
+              <h4 className="text-sm font-bold text-white uppercase tracking-wider mb-2">Connect with me</h4>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {socialLinks.map((social) => (
                   <a 
@@ -177,8 +173,9 @@ const Contact = () => {
             </div>
           </div>
 
+          {/* RIGHT COLUMN - FORM */}
           <div className="lg:col-span-7 lg:pl-10 animate-in fade-in slide-in-from-bottom-12 duration-1000 delay-300 mt-10 lg:mt-0">
-            <div className="bg-zinc-900 border border-zinc-800/60 p-8 md:p-10 rounded-[32px] shadow-2xl relative overflow-hidden group/form">
+            <div className="bg-zinc-900 border border-zinc-800/60 p-6 sm:p-8 md:p-10 rounded-[32px] shadow-2xl relative overflow-hidden group/form">
               
               <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/5 rounded-full blur-[100px] pointer-events-none group-hover/form:bg-cyan-500/10 transition-colors duration-500" />
               <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-500/5 rounded-full blur-[100px] pointer-events-none group-hover/form:bg-purple-500/10 transition-colors duration-500" />
