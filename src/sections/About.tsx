@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { gsap } from 'gsap';
-import { GraduationCap, Globe, Calendar } from 'lucide-react';
+import { GraduationCap, Globe, Calendar, Users } from 'lucide-react';
 import ScrollReveal from '../components/bits/ScrollReveal';
 
 // ==========================================
@@ -670,7 +670,7 @@ const SpotifyOnRepeat = () => {
           </div>
         </div>
 
-        {/* Song Info Container (Increased right padding to make room for interactive element) */}
+        {/* Song Info Container */}
         <div className="ml-4 sm:ml-5 flex flex-col justify-center py-2 flex-grow pr-16 sm:pr-40">
           <p className="text-[9px] sm:text-[10px] uppercase tracking-widest text-[#1DB954] font-bold mb-1 flex items-center gap-1.5">
             <svg viewBox="0 0 24 24" fill="currentColor" className="w-3.5 h-3.5">
@@ -686,27 +686,21 @@ const SpotifyOnRepeat = () => {
 
         {/* Right Side Interaction Container */}
         <div className="absolute right-4 sm:right-6 top-1/2 -translate-y-1/2 flex items-center justify-end">
-          
-          {/* Equalizer (Fades out and scales down on hover) */}
           <div className="flex items-end gap-1 h-5 sm:h-6 opacity-60 group-hover:opacity-0 group-hover:scale-75 transition-all duration-300">
             <div className="eq-bar" />
             <div className="eq-bar" />
             <div className="eq-bar" />
             <div className="eq-bar" />
           </div>
-
-          {/* "Listen on Spotify" CTA (Slides in from right and fades in on hover) */}
           <div className="absolute right-0 flex items-center gap-1.5 sm:gap-2 opacity-0 translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-500 ease-out text-[#1DB954]">
             <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider whitespace-nowrap hidden sm:block">Listen on Spotify</span>
             <span className="text-[10px] font-bold uppercase tracking-wider whitespace-nowrap sm:hidden">Play</span>
             <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-[#1DB954]/20 flex items-center justify-center">
-              {/* Play Icon */}
               <svg viewBox="0 0 24 24" fill="currentColor" className="w-3 h-3 sm:w-4 sm:h-4 text-[#1DB954] ml-0.5">
                 <path d="M8 5.14v14l11-7-11-7z" />
               </svg>
             </div>
           </div>
-          
         </div>
       </a>
     </div>
@@ -719,6 +713,57 @@ const SpotifyOnRepeat = () => {
 // ==========================================
 
 const About = () => {
+
+  // Centralized data for Affiliations to keep the UI clean
+  const affiliations = [
+    {
+      org: "University Student Government",
+      chapter: "USTP CDO",
+      roles: [
+        { title: "Deputy Director, Office of the Creatives & Docu.", date: "July 2025 - Present", active: true },
+        { title: "Staff, Office of the Vice President", date: "July 2024 - July 2025", active: false }
+      ]
+    },
+    {
+      org: "Computer Science Student Society",
+      chapter: "USTP CDO",
+      roles: [
+        { title: "Associate Electoral Commissioner", date: "July 2025 - Present", active: true },
+        { title: "Vice President - External", date: "July 2024 - July 2025", active: false },
+        { title: "Graphic Designer, Creatives Team", date: "July 2023 - July 2024", active: false }
+      ]
+    },
+    {
+      org: "Google Developer Groups (GDG) on Campus",
+      chapter: "USTP CDO",
+      roles: [
+        { title: "Member", date: "July 2025 - Present", active: true },
+        { title: "CS Ambassador, Technology Dept.", date: "Aug 2023 - July 2024", active: false }
+      ]
+    },
+    {
+      org: "Student Council of IT and Computing",
+      chapter: "USTP CDO",
+      roles: [
+        { title: "Graphic Designer, Dept. of Comms.", date: "Aug 2023 - July 2024", active: false }
+      ]
+    },
+    {
+      org: "Unyon Mindanao Office",
+      chapter: "USTP CDO Chapter",
+      roles: [
+        { title: "Creatives and Technical Staff", date: "Jan 2025 - July 2025", active: false }
+      ]
+    },
+    {
+      org: "Robogals CDO",
+      chapter: "CDO Chapter",
+      roles: [
+        { title: "Socials Committee", date: "July 2023 - July 2024", active: false }
+      ]
+    }
+  ];
+
   const bentoItems: BentoItem[] = [
     // 1. EDUCATION CARD
     {
@@ -733,21 +778,16 @@ const About = () => {
             <h3 className="text-2xl font-bold text-white">Education</h3>
           </div>
 
-          {/* Timeline Container */}
           <div className="relative ml-4 mt-2 flex flex-col gap-10">
-            {/* Timeline Vertical Line */}
             <div className="absolute left-[15px] top-4 bottom-4 w-[2px] bg-zinc-800" />
 
-            {/* USTP Timeline Node */}
             <div className="relative flex gap-6">
-              {/* Timeline Dot */}
               <div className="relative z-10 flex flex-col items-center justify-start mt-2">
                 <div className="w-8 h-8 rounded-full bg-zinc-950 flex items-center justify-center border-2 border-zinc-800">
                   <div className="w-3 h-3 rounded-full bg-cyan-400 shadow-[0_0_10px_rgba(6,182,212,0.8)]" />
                 </div>
               </div>
 
-              {/* Content Box */}
               <div className="flex-1 bg-zinc-900/50 border border-zinc-800/60 rounded-2xl p-5 hover:border-cyan-500/30 transition-colors group">
                 <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
                   <div className="flex gap-4 items-start">
@@ -769,7 +809,6 @@ const About = () => {
                       </div>
                     </div>
                   </div>
-                  {/* FIX ADDED HERE: w-fit self-start prevents stretching on mobile flex-col */}
                   <span className="flex-shrink-0 flex items-center gap-1.5 text-xs font-semibold text-cyan-400 bg-cyan-500/10 px-3 py-1.5 rounded-lg border border-cyan-500/20 h-fit w-fit self-start sm:self-auto">
                     <Calendar className="w-3.5 h-3.5"/> 2023 - Present
                   </span>
@@ -777,16 +816,13 @@ const About = () => {
               </div>
             </div>
 
-            {/* Liceo Timeline Node */}
             <div className="relative flex gap-6">
-              {/* Timeline Dot */}
               <div className="relative z-10 flex flex-col items-center justify-start mt-2">
                 <div className="w-8 h-8 rounded-full bg-zinc-950 flex items-center justify-center border-2 border-zinc-800">
                   <div className="w-3 h-3 rounded-full bg-zinc-600" />
                 </div>
               </div>
 
-              {/* Content Box */}
               <div className="flex-1 bg-zinc-900/30 border border-zinc-800/60 rounded-2xl p-5 hover:border-zinc-500/50 transition-colors group">
                 <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
                   <div className="flex gap-4 items-start">
@@ -808,7 +844,6 @@ const About = () => {
                       </div>
                     </div>
                   </div>
-                  {/* FIX ADDED HERE: w-fit self-start prevents stretching on mobile flex-col */}
                   <span className="flex-shrink-0 flex items-center gap-1.5 text-xs font-semibold text-zinc-400 bg-zinc-800/50 px-3 py-1.5 rounded-lg border border-zinc-700/50 h-fit w-fit self-start sm:self-auto">
                     <Calendar className="w-3.5 h-3.5"/> 2021 - 2023
                   </span>
@@ -892,6 +927,46 @@ const About = () => {
             2+
           </h2>
           <p className="text-sm text-zinc-400 font-semibold tracking-wider uppercase">Satisfied Clients</p>
+        </div>
+      )
+    },
+    // 4. NEW: AFFILIATIONS AND MEMBERSHIPS CARD (Full Width)
+    {
+      id: 'affiliations',
+      className: 'lg:col-span-6 p-8',
+      content: (
+        <div className="flex flex-col h-full z-10 relative">
+          <div className="flex items-center gap-3 mb-8">
+            <div className="w-12 h-12 rounded-full bg-cyan-500/10 flex items-center justify-center text-cyan-400 shadow-lg shadow-cyan-500/10">
+              <Users className="w-6 h-6" />
+            </div>
+            <h3 className="text-2xl font-bold text-white">Leadership & Affiliations</h3>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {affiliations.map((org, idx) => (
+              <div 
+                key={idx} 
+                className="bg-zinc-900/40 border border-zinc-800/50 rounded-2xl p-5 hover:border-cyan-500/30 transition-colors flex flex-col"
+              >
+                <h4 className="text-white font-bold text-[15px] leading-snug mb-1">{org.org}</h4>
+                <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider mb-4">{org.chapter}</p>
+                
+                <div className="space-y-3 mt-auto">
+                  {org.roles.map((role, rIdx) => (
+                    <div key={rIdx} className="flex flex-col">
+                      <span className={`text-sm font-semibold ${role.active ? 'text-cyan-400' : 'text-zinc-300'}`}>
+                        {role.title}
+                      </span>
+                      <span className="text-[11px] text-zinc-500 mt-0.5 tracking-wide">
+                        {role.date}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       )
     }
