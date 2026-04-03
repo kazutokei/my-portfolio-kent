@@ -152,3 +152,27 @@ html {
   scrollbar-width: thin;
   scrollbar-color: #27272a #09090b;
 }
+
+/* ==========================================
+   MAGIC UI SMOOTH CURSOR OVERRIDES
+   ========================================== */
+
+/* Hide the default mouse everywhere */
+* {
+  cursor: none !important;
+}
+
+/* Keep the text cursor for your contact form inputs so users know they can type */
+input,
+textarea,
+select,
+[contenteditable="true"] {
+  cursor: text !important;
+}
+
+/* Fallback: ensure interactive elements don't randomly show a default pointer if the library glitches */
+button,
+a,
+[role="button"] {
+  cursor: none !important;
+}

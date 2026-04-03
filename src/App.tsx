@@ -5,6 +5,7 @@ import Projects from './sections/Projects';
 import Contact from './sections/Contact';
 import Particles from './components/bits/Particles';
 import GooeyNav from './components/bits/GooeyNav';
+import { SmoothCursor } from './components/ui/smooth-cursor'; // Make sure this path matches where Magic UI saved the file!
 
 function App() {
   // Navigation items: Ensure href matches the id="name" in each section file
@@ -18,6 +19,9 @@ function App() {
   return (
     <main className="relative bg-zinc-950 min-h-screen text-white selection:bg-cyan-500/30 overflow-x-hidden">
       
+      {/* --- MAGIC UI SMOOTH CURSOR --- */}
+      <SmoothCursor />
+
       {/* --- OGL PARTICLES BACKGROUND --- */}
       {/* Set z-0 so it stays behind everything */}
       <div className="fixed inset-0 z-0">
