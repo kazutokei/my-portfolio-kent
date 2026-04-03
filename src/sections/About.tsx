@@ -800,7 +800,8 @@ const About = () => {
                       />
                     </div>
                     <div>
-                      <h4 className="text-lg font-bold text-white leading-snug">Bachelor of Science in<br className="hidden sm:block"/>Computer Science</h4>
+                      {/* Fixed "inComputer" by adding a hardcoded space right before the <br/> */}
+                      <h4 className="text-lg font-bold text-white leading-snug">Bachelor of Science in{" "}<br className="hidden sm:block"/>Computer Science</h4>
                       <p className="text-sm text-zinc-300 mt-1">University of Science and Technology of Southern Philippines</p>
                       <div className="flex flex-wrap items-center gap-2 mt-2">
                         <span className="text-[10px] font-bold text-zinc-500 tracking-wider uppercase">Tertiary</span>
@@ -835,7 +836,8 @@ const About = () => {
                       />
                     </div>
                     <div>
-                      <h4 className="text-lg font-bold text-white leading-snug">Science, Technology,<br className="hidden sm:block"/>Engineering, and Mathematics</h4>
+                      {/* Fixed "Technology,Engineering" by adding a hardcoded space right before the <br/> */}
+                      <h4 className="text-lg font-bold text-white leading-snug">Science, Technology,{" "}<br className="hidden sm:block"/>Engineering, and Mathematics</h4>
                       <p className="text-sm text-zinc-400 mt-1">Liceo de Cagayan University</p>
                       <div className="flex flex-wrap items-center gap-2 mt-2">
                         <span className="text-[10px] font-bold text-zinc-500 tracking-wider uppercase">Senior High School</span>

@@ -94,9 +94,9 @@ const Hero = () => {
             {/* SCROLL-ANIMATED CENTER BLOCK (Your Splash Screen) */}
             <div ref={nameWrapperRef} className="flex flex-col items-center lg:items-start z-20 origin-center relative">
               
-              {/* LINE 1: "Hello, I'm Kent" */}
-              <div className="flex flex-row items-baseline gap-x-3 md:gap-x-4 mb-1 whitespace-nowrap">
-                <h2 className="text-4xl md:text-6xl font-extrabold text-white tracking-tight leading-[1.1]">
+              {/* LINE 1: "Hello, I'm Kent" - Scaled down for mobile */}
+              <div className="flex flex-row items-baseline gap-x-2 sm:gap-x-4 mb-1 whitespace-nowrap">
+                <h2 className="text-3xl sm:text-4xl md:text-6xl font-extrabold text-white tracking-tight leading-[1.1]">
                   Hello, I'm
                 </h2>
                 
@@ -104,26 +104,26 @@ const Hero = () => {
                   colors={gradientColors}
                   animationSpeed={6}
                   showBorder={false}
-                  className="text-4xl md:text-6xl !font-extrabold tracking-tight leading-[1.1] !block !mx-0"
+                  className="text-3xl sm:text-4xl md:text-6xl !font-extrabold tracking-tight leading-[1.1] !block !mx-0"
                 >
                   Kent
                 </GradientText>
               </div>
 
-              {/* LINE 2: "John Chavo" */}
+              {/* LINE 2: "John Chavo" - Scaled down for mobile */}
               <div className="whitespace-nowrap">
                 <GradientText
                   colors={gradientColors}
                   animationSpeed={6}
                   showBorder={false}
-                  className="text-4xl md:text-6xl !font-extrabold tracking-tight leading-[1.1] !block !mx-0"
+                  className="text-3xl sm:text-4xl md:text-6xl !font-extrabold tracking-tight leading-[1.1] !block !mx-0"
                 >
                   John Chavo
                 </GradientText>
               </div>
 
-              {/* Animated Typing Roles */}
-              <div className="text-lg md:text-xl text-cyan-200/80 font-mono h-[28px] flex items-center pt-1 mt-4 lg:mt-2">
+              {/* Animated Typing Roles - Scaled down text size to fit small screens */}
+              <div className="text-sm sm:text-base md:text-xl text-cyan-200/80 font-mono h-[28px] flex items-center pt-1 mt-4 lg:mt-2">
                 <span className="mr-3 text-cyan-500">{'>'}</span>
                 <TextType
                   text={[
@@ -145,7 +145,7 @@ const Hero = () => {
             {/* REST OF CONTENT (Fades in on scroll) */}
             <div ref={restOfLeftRef} className="space-y-6 w-full pt-2 opacity-0">
               
-              <p className="text-zinc-400 text-base md:text-lg max-w-xl leading-relaxed text-center lg:text-left mt-2">
+              <p className="text-zinc-400 text-sm sm:text-base md:text-lg max-w-xl leading-relaxed text-center lg:text-left mt-2">
                 Computer Science undergraduate bridging Full-Stack Development and Multimedia Design. 
                 Dedicated to delivering high-fidelity user experiences through the integration of technical logic and creativity.
               </p>
@@ -175,22 +175,22 @@ const Hero = () => {
 
               <div className="grid grid-cols-3 gap-4 pt-6 border-t border-zinc-800/50 w-full mt-6">
                 <div className="flex flex-col items-center">
-                  <h4 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-cyan-400 to-indigo-500 flex items-center">
+                  <h4 className="text-2xl sm:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-cyan-400 to-indigo-500 flex items-center">
                     <CountUp from={0} to={2} separator="," direction="up" duration={3} className="count-up-text" />+
                   </h4>
-                  <p className="text-zinc-500 text-xs md:text-sm mt-1 text-center">Years Experience</p>
+                  <p className="text-zinc-500 text-[10px] sm:text-xs md:text-sm mt-1 text-center">Years Experience</p>
                 </div>
                 <div className="flex flex-col items-center">
-                  <h4 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-cyan-400 to-indigo-500 flex items-center">
+                  <h4 className="text-2xl sm:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-cyan-400 to-indigo-500 flex items-center">
                     <CountUp from={0} to={5} separator="," direction="up" duration={3} className="count-up-text" />+
                   </h4>
-                  <p className="text-zinc-500 text-xs md:text-sm mt-1 text-center">Projects Completed</p>
+                  <p className="text-zinc-500 text-[10px] sm:text-xs md:text-sm mt-1 text-center">Projects Completed</p>
                 </div>
                 <div className="flex flex-col items-center">
-                  <h4 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-cyan-400 to-indigo-500 flex items-center">
+                  <h4 className="text-2xl sm:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-cyan-400 to-indigo-500 flex items-center">
                     <CountUp from={0} to={2} separator="," direction="up" duration={3} className="count-up-text" />+
                   </h4>
-                  <p className="text-zinc-500 text-xs md:text-sm mt-1 text-center">Satisfied Clients</p>
+                  <p className="text-zinc-500 text-[10px] sm:text-xs md:text-sm mt-1 text-center">Satisfied Clients</p>
                 </div>
               </div>
             </div>
@@ -199,7 +199,8 @@ const Hero = () => {
 
           {/* --- RIGHT COLUMN: Profile Card (Fades in on scroll) --- */}
           <div ref={rightColRef} className="flex justify-center lg:justify-end relative perspective-1000 opacity-0">
-            <div className="w-full max-w-[380px]">
+            {/* Added max-width constraints for smaller screens to fix aggressive image cropping */}
+            <div className="w-full max-w-[280px] sm:max-w-[340px] lg:max-w-[380px] mx-auto lg:mx-0">
                <ProfileCard
                  name="Kent John J. Chavo"
                  title="Aspiring Full-Stack Developer"
@@ -210,9 +211,8 @@ const Hero = () => {
                  miniAvatarUrl="/me.webp"
                  showUserInfo={true}
                  enableTilt={true}
-                 enableMobileTilt={true}
+                 enableMobileTilt={false} // Disabled tilt on mobile to fix the touch-scroll hijack issue
                  onContactClick={() => {
-                   // This smoothly scrolls to the contact section when the button inside the profile card is clicked
                    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
                  }}
                  behindGlowEnabled={true} 
