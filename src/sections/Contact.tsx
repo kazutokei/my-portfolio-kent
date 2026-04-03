@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Mail, Send, Github, Facebook, Instagram, Linkedin, ExternalLink, CheckCircle2, MapPin, Award, AlertCircle } from 'lucide-react';
+import { Mail, Send, Github, Facebook, Instagram, Linkedin, ExternalLink, MapPin, Award } from 'lucide-react';
 import emailjs from '@emailjs/browser';
 import RotatingText from '../components/bits/RotatingText';
+import Swal from 'sweetalert2';
 
 const Contact = () => {
   const [formState, setFormState] = useState({
@@ -10,8 +11,19 @@ const Contact = () => {
     message: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+
+  // Custom configuration for SweetAlert2 to match your portfolio theme
+  const swalConfig = {
+    background: '#18181b', // Zinc-900
+    color: '#ffffff',
+    confirmButtonColor: '#06b6d4', // Cyan-500
+    borderRadius: '24px',
+    customClass: {
+      popup: 'border border-zinc-800 shadow-2xl rounded-[24px]',
+      title: 'text-white font-bold',
+      htmlContainer: 'text-zinc-400'
+    }
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormState({
@@ -23,7 +35,6 @@ const Contact = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setError(null);
 
     const serviceId = 'service_ba41ykf'; 
     const templateId = 'template_36ubf89'; 
@@ -36,15 +47,33 @@ const Contact = () => {
     };
 
     emailjs.send(serviceId, templateId, templateParams, publicKey)
-      .then((response) => {
+      .then(() => {
         setIsSubmitting(false);
-        setIsSubmitted(true);
         setFormState({ name: '', email: '', message: '' });
-        setTimeout(() => setIsSubmitted(false), 5000);
+        
+        // SUCCESS ALERT
+        Swal.fire({
+          ...swalConfig,
+          title: 'Message Sent!',
+          text: "Thanks for reaching out, Kent will get back to you soon.",
+          icon: 'success',
+          timer: 3500,
+          showConfirmButton: false,
+          timerProgressBar: true,
+        });
       })
       .catch((err) => {
+        console.error('FAILED...', err);
         setIsSubmitting(false);
-        setError("Failed to send message. Please check your connection or try again.");
+        
+        // ERROR ALERT
+        Swal.fire({
+          ...swalConfig,
+          title: 'Error!',
+          text: "Failed to send message. Please check your connection or try again.",
+          icon: 'error',
+          confirmButtonText: 'Try Again'
+        });
       });
   };
 
@@ -92,7 +121,6 @@ const Contact = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8">
           
-          {/* LEFT COLUMN - Added 'px-2' to give margin on mobile */}
           <div className="lg:col-span-5 flex flex-col justify-center animate-in fade-in slide-in-from-bottom-12 duration-1000 delay-150 px-2 sm:px-0">
             <div className="text-4xl md:text-5xl font-black text-white leading-[1.3] mb-8 flex flex-col items-start gap-1">
               <span>Let's build</span>
@@ -117,13 +145,12 @@ const Contact = () => {
               Whether you have a project in mind, a question about my work, or just want to say hi, my inbox is always open.
             </p>
 
-            {/* INFO CARDS CONTAINER - Ensure cards don't overflow */}
             <div className="space-y-6 mb-10 w-full max-w-full">
               <div className="flex items-center gap-4 sm:gap-5 p-4 sm:p-5 bg-zinc-900 border border-zinc-800 rounded-2xl transition-all duration-300 hover:border-cyan-500/30 hover:shadow-[0_0_15px_rgba(6,182,212,0.05)] w-full overflow-hidden">
                 <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-cyan-500/10 flex items-center justify-center flex-shrink-0 text-cyan-400 border border-cyan-500/20">
                   <Mail className="w-5 h-5" />
                 </div>
-                <div className="min-w-0"> {/* min-w-0 allows text truncation/wrap to work in flex */}
+                <div className="min-w-0">
                   <p className="text-[10px] sm:text-xs text-zinc-500 font-bold uppercase tracking-wider mb-1">Email Me At</p>
                   <a href="mailto:chavo.kentjohn@gmail.com" className="text-white font-medium hover:text-cyan-400 transition-colors text-sm sm:text-lg break-all sm:break-normal">
                     chavo.kentjohn@gmail.com
@@ -173,7 +200,6 @@ const Contact = () => {
             </div>
           </div>
 
-          {/* RIGHT COLUMN - FORM */}
           <div className="lg:col-span-7 lg:pl-10 animate-in fade-in slide-in-from-bottom-12 duration-1000 delay-300 mt-10 lg:mt-0">
             <div className="bg-zinc-900 border border-zinc-800/60 p-6 sm:p-8 md:p-10 rounded-[32px] shadow-2xl relative overflow-hidden group/form">
               
@@ -225,32 +251,15 @@ const Contact = () => {
                   />
                 </div>
 
-                {error && (
-                  <div className="flex items-center gap-2 text-red-400 text-sm bg-red-400/10 p-3 rounded-lg border border-red-400/20">
-                    <AlertCircle className="w-4 h-4" />
-                    {error}
-                  </div>
-                )}
-
                 <button 
                   type="submit" 
-                  disabled={isSubmitting || isSubmitted}
-                  className={`relative w-full overflow-hidden rounded-xl font-bold text-lg transition-all duration-300 flex items-center justify-center gap-2 h-14
-                    ${isSubmitted 
-                      ? 'bg-[#1DB954]/10 text-[#1DB954] border border-[#1DB954]/20' 
-                      : 'bg-white text-black hover:bg-cyan-50 hover:scale-[1.02] shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_25px_rgba(6,182,212,0.3)] disabled:opacity-70 disabled:hover:scale-100'
-                    }
-                  `}
+                  disabled={isSubmitting}
+                  className="relative w-full overflow-hidden rounded-xl font-bold text-lg transition-all duration-300 flex items-center justify-center gap-2 h-14 bg-white text-black hover:bg-cyan-50 hover:scale-[1.02] shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_25px_rgba(6,182,212,0.3)] disabled:opacity-70 disabled:hover:scale-100"
                 >
                   {isSubmitting ? (
                     <>
                       <div className="w-5 h-5 border-2 border-black/20 border-t-black rounded-full animate-spin" />
                       Sending...
-                    </>
-                  ) : isSubmitted ? (
-                    <>
-                      <CheckCircle2 className="w-5 h-5" />
-                      Message Sent!
                     </>
                   ) : (
                     <>
