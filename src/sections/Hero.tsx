@@ -19,9 +19,11 @@ const Hero = () => {
   useGSAP(() => {
     if (!nameWrapperRef.current || !containerRef.current) return;
 
-    // Set initial states so elements don't flash before the animation starts
+    const isMobile = window.innerWidth < 768;
+
+    // Set initial states
     gsap.set(restOfLeftRef.current, { opacity: 0, y: 40 });
-    gsap.set(rightColRef.current, { opacity: 0, x: 40 });
+    gsap.set(rightColRef.current, { opacity: 0, x: isMobile ? 0 : 40, y: isMobile ? 40 : 0 });
     
     const nav = document.getElementById('main-nav');
     if (nav) gsap.set(nav, { opacity: 0, y: -20 });
@@ -33,13 +35,14 @@ const Hero = () => {
         end: "+=120%",    
         scrub: 1,         
         pin: true,
-        invalidateOnRefresh: true, // Recalculates perfectly if the window is resized
+        invalidateOnRefresh: true, 
       }
     });
 
-    // 1. Force the Intro Block (Name + Animated Roles) to start perfectly centered and massive
+    // 1. Force the Intro Block to start centered. 
     tl.from(nameWrapperRef.current, {
       x: () => {
+        if (isMobile) return 0; 
         const el = nameWrapperRef.current;
         if (!el) return 0;
         const rect = el.getBoundingClientRect();
@@ -51,7 +54,7 @@ const Hero = () => {
         const rect = el.getBoundingClientRect();
         return (window.innerHeight / 2) - (rect.top + rect.height / 2);
       },
-      scale: 1.6, // Makes it huge in the center of the screen
+      scale: isMobile ? 1 : 1.6, 
       ease: "power2.inOut",
       duration: 1
     }, 0);
@@ -73,33 +76,32 @@ const Hero = () => {
     tl.to(rightColRef.current, {
       opacity: 1,
       x: 0,
+      y: 0,
       duration: 0.4,
       ease: "power2.out"
     }, 0.4);
 
   }, { scope: containerRef });
 
-  // Custom gradient to match your uploaded design perfectly
   const gradientColors = ['#a855f7', '#3b82f6', '#22d3ee', '#a855f7'];
 
   return (
-    <section id="home" ref={containerRef} className="relative w-full bg-transparent overflow-hidden">
+    <section id="home" ref={containerRef} className="relative w-full max-w-[100vw] bg-transparent overflow-x-hidden overflow-y-hidden lg:overflow-y-visible">
       
-      <div className="min-h-screen flex items-center justify-center px-6 pt-28 pb-12 w-full">
+      <div className="min-h-screen flex items-center justify-center px-4 sm:px-6 pt-24 pb-12 w-full">
         <div className="max-w-5xl w-full grid grid-cols-1 lg:grid-cols-2 gap-8 items-center z-10 relative">
           
           {/* --- LEFT COLUMN: Text Content --- */}
-          <div className="space-y-6 flex flex-col items-start w-full relative">
+          <div className="space-y-6 flex flex-col items-center lg:items-start w-full relative">
             
-            {/* SCROLL-ANIMATED CENTER BLOCK (Your Splash Screen) */}
-            <div ref={nameWrapperRef} className="flex flex-col items-center lg:items-start z-20 origin-center relative">
+            {/* SCROLL-ANIMATED CENTER BLOCK */}
+            <div ref={nameWrapperRef} className="flex flex-col items-center lg:items-start z-20 origin-center relative w-full max-w-full">
               
-              {/* LINE 1: "Hello, I'm Kent" - Scaled down for mobile */}
-              <div className="flex flex-row items-baseline gap-x-2 sm:gap-x-4 mb-1 whitespace-nowrap">
+              {/* LINE 1: "Hello, I'm Kent" */}
+              <div className="flex flex-row items-baseline justify-center lg:justify-start gap-x-2 sm:gap-x-4 mb-1 w-full">
                 <h2 className="text-3xl sm:text-4xl md:text-6xl font-extrabold text-white tracking-tight leading-[1.1]">
                   Hello, I'm
                 </h2>
-                
                 <GradientText
                   colors={gradientColors}
                   animationSpeed={6}
@@ -110,8 +112,8 @@ const Hero = () => {
                 </GradientText>
               </div>
 
-              {/* LINE 2: "John Chavo" - Scaled down for mobile */}
-              <div className="whitespace-nowrap">
+              {/* LINE 2: "John Chavo" */}
+              <div className="w-full flex justify-center lg:justify-start">
                 <GradientText
                   colors={gradientColors}
                   animationSpeed={6}
@@ -122,30 +124,30 @@ const Hero = () => {
                 </GradientText>
               </div>
 
-              {/* Animated Typing Roles - Scaled down text size to fit small screens */}
-              <div className="text-sm sm:text-base md:text-xl text-cyan-200/80 font-mono h-[28px] flex items-center pt-1 mt-4 lg:mt-2">
-                <span className="mr-3 text-cyan-500">{'>'}</span>
+              {/* Animated Typing Roles */}
+              <div className="text-[10px] xs:text-[11px] sm:text-sm md:text-xl text-cyan-200/80 font-mono h-auto min-h-[28px] flex items-center justify-center lg:justify-start pt-1 mt-4 lg:mt-2 w-full overflow-hidden">
+                <span className="mr-1.5 sm:mr-3 text-cyan-500">{'>'}</span>
                 <TextType
                   text={[
                     "Aspiring Full-Stack Developer",
-                    "Aspiring Web & Software Developer",
+                    "Aspiring Web & Software Dev", 
                     "Graphic Designer",
                     "Video Editor",
                     "UI/UX Enthusiast",
                     "Student Leader",
                   ]}
-                  typingSpeed={25}   // Zippy typing speed
-                  deletingSpeed={15} // Zippy deleting speed
-                  className="text-cyan-400 font-bold"
+                  typingSpeed={25}   
+                  deletingSpeed={15} 
+                  className="text-cyan-400 font-bold whitespace-nowrap"
                   cursorCharacter="_"
                 />
               </div>
             </div>
 
-            {/* REST OF CONTENT (Fades in on scroll) */}
-            <div ref={restOfLeftRef} className="space-y-6 w-full pt-2 opacity-0">
+            {/* REST OF CONTENT */}
+            <div ref={restOfLeftRef} className="space-y-6 w-full pt-2 opacity-0 flex flex-col items-center lg:items-start">
               
-              <p className="text-zinc-400 text-sm sm:text-base md:text-lg max-w-xl leading-relaxed text-center lg:text-left mt-2">
+              <p className="text-zinc-400 text-sm sm:text-base md:text-lg max-w-xl leading-relaxed text-center lg:text-left mt-2 px-2 lg:px-0">
                 Computer Science undergraduate bridging Full-Stack Development and Multimedia Design. 
                 Dedicated to delivering high-fidelity user experiences through the integration of technical logic and creativity.
               </p>
@@ -156,7 +158,6 @@ const Hero = () => {
                   <Mail className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </a>
                 
-                {/* Clean, Native New Tab Button */}
                 <a 
                   href="/CHAVO_resume.pdf" 
                   target="_blank" 
@@ -167,40 +168,42 @@ const Hero = () => {
                   <ExternalLink className="w-4 h-4" />
                 </a>
 
-                <a href="#projects" className="px-6 py-2.5 text-zinc-300 font-semibold rounded-full hover:text-white transition-all flex items-center gap-2 group text-sm md:text-base">
+                <a href="#projects" className="px-6 py-2.5 text-zinc-300 font-semibold rounded-full hover:text-white transition-all flex items-center gap-2 group text-sm md:text-base hidden sm:flex">
                   View My Work
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </a>
               </div>
 
-              <div className="grid grid-cols-3 gap-4 pt-6 border-t border-zinc-800/50 w-full mt-6">
+              <div className="grid grid-cols-3 gap-2 sm:gap-4 pt-6 border-t border-zinc-800/50 w-full max-w-lg mt-6">
                 <div className="flex flex-col items-center">
                   <h4 className="text-2xl sm:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-cyan-400 to-indigo-500 flex items-center">
                     <CountUp from={0} to={2} separator="," direction="up" duration={3} className="count-up-text" />+
                   </h4>
-                  <p className="text-zinc-500 text-[10px] sm:text-xs md:text-sm mt-1 text-center">Years Experience</p>
+                  <p className="text-zinc-500 text-[10px] sm:text-xs md:text-sm mt-1 text-center">Years Exp.</p>
                 </div>
                 <div className="flex flex-col items-center">
                   <h4 className="text-2xl sm:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-cyan-400 to-indigo-500 flex items-center">
                     <CountUp from={0} to={5} separator="," direction="up" duration={3} className="count-up-text" />+
                   </h4>
-                  <p className="text-zinc-500 text-[10px] sm:text-xs md:text-sm mt-1 text-center">Projects Completed</p>
+                  <p className="text-zinc-500 text-[10px] sm:text-xs md:text-sm mt-1 text-center">Projects</p>
                 </div>
                 <div className="flex flex-col items-center">
                   <h4 className="text-2xl sm:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-cyan-400 to-indigo-500 flex items-center">
                     <CountUp from={0} to={2} separator="," direction="up" duration={3} className="count-up-text" />+
                   </h4>
-                  <p className="text-zinc-500 text-[10px] sm:text-xs md:text-sm mt-1 text-center">Satisfied Clients</p>
+                  <p className="text-zinc-500 text-[10px] sm:text-xs md:text-sm mt-1 text-center">Clients</p>
                 </div>
               </div>
             </div>
 
           </div>
 
-          {/* --- RIGHT COLUMN: Profile Card (Fades in on scroll) --- */}
-          <div ref={rightColRef} className="flex justify-center lg:justify-end relative perspective-1000 opacity-0">
-            {/* Added max-width constraints for smaller screens to fix aggressive image cropping */}
-            <div className="w-full max-w-[280px] sm:max-w-[340px] lg:max-w-[380px] mx-auto lg:mx-0">
+          {/* --- RIGHT COLUMN: Profile Card --- */}
+          <div ref={rightColRef} className="w-full flex justify-center lg:justify-end relative perspective-1000 opacity-0 mt-0 sm:mt-8 lg:mt-0">
+            {/* FIX: Force proportional shrinking via CSS transform scale. 
+                This shrinks the fixed-width card down to 85% of its size on small phones, 
+                then 95% on medium phones, and 100% on large screens! */}
+            <div className="flex justify-center w-full transform scale-[0.85] xs:scale-[0.90] sm:scale-[0.95] md:scale-100 origin-top">
                <ProfileCard
                  name="Kent John J. Chavo"
                  title="Aspiring Full-Stack Developer"
@@ -211,7 +214,7 @@ const Hero = () => {
                  miniAvatarUrl="/me.webp"
                  showUserInfo={true}
                  enableTilt={true}
-                 enableMobileTilt={false} // Disabled tilt on mobile to fix the touch-scroll hijack issue
+                 enableMobileTilt={false} 
                  onContactClick={() => {
                    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
                  }}
