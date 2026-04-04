@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Mail, Send, Github, Facebook, Instagram, Linkedin, ExternalLink, MapPin, Award } from 'lucide-react';
 import emailjs from '@emailjs/browser';
 import RotatingText from '../components/bits/RotatingText';
+import BorderGlow from '../components/bits/BorderGlow';
 import Swal from 'sweetalert2';
 
 const Contact = () => {
@@ -200,76 +201,91 @@ const Contact = () => {
             </div>
           </div>
 
+          {/* INTEGRATED BORDER GLOW CONTAINER */}
           <div className="lg:col-span-7 lg:pl-10 animate-in fade-in slide-in-from-bottom-12 duration-1000 delay-300 mt-10 lg:mt-0">
-            <div className="bg-zinc-900 border border-zinc-800/60 p-6 sm:p-8 md:p-10 rounded-[32px] shadow-2xl relative overflow-hidden group/form">
-              
-              <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/5 rounded-full blur-[100px] pointer-events-none group-hover/form:bg-cyan-500/10 transition-colors duration-500" />
-              <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-500/5 rounded-full blur-[100px] pointer-events-none group-hover/form:bg-purple-500/10 transition-colors duration-500" />
+            <BorderGlow
+              edgeSensitivity={30}
+              glowColor="188 95 45" // Matched to Cyan theme
+              backgroundColor="#18181b" // Match zinc-900
+              borderRadius={32}
+              glowRadius={40}
+              glowIntensity={1}
+              coneSpread={25}
+              animated={false}
+              colors={['#06b6d4', '#a855f7', '#3b82f6']} // Cyan, Purple, Blue from your theme
+              className="w-full shadow-2xl group/form"
+            >
+              <div className="relative p-6 sm:p-8 md:p-10 rounded-[32px] overflow-hidden w-full h-full">
+                
+                {/* Ambient background blur blobs inside the form area */}
+                <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/5 rounded-full blur-[100px] pointer-events-none group-hover/form:bg-cyan-500/10 transition-colors duration-500" />
+                <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-500/5 rounded-full blur-[100px] pointer-events-none group-hover/form:bg-purple-500/10 transition-colors duration-500" />
 
-              <form onSubmit={handleSubmit} className="relative z-10 flex flex-col gap-6">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  <div className="flex flex-col gap-2">
-                    <label htmlFor="name" className="text-sm font-semibold text-zinc-400 ml-1">Your Name</label>
-                    <input 
-                      type="text" 
-                      id="name"
-                      name="name"
-                      value={formState.name}
-                      onChange={handleChange}
-                      required
-                      placeholder="John Doe"
-                      className={inputClasses}
-                    />
+                <form onSubmit={handleSubmit} className="relative z-10 flex flex-col gap-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div className="flex flex-col gap-2">
+                      <label htmlFor="name" className="text-sm font-semibold text-zinc-400 ml-1">Your Name</label>
+                      <input 
+                        type="text" 
+                        id="name"
+                        name="name"
+                        value={formState.name}
+                        onChange={handleChange}
+                        required
+                        placeholder="John Doe"
+                        className={inputClasses}
+                      />
+                    </div>
+
+                    <div className="flex flex-col gap-2">
+                      <label htmlFor="email" className="text-sm font-semibold text-zinc-400 ml-1">Email Address</label>
+                      <input 
+                        type="email" 
+                        id="email"
+                        name="email"
+                        value={formState.email}
+                        onChange={handleChange}
+                        required
+                        placeholder="john@example.com"
+                        className={inputClasses}
+                      />
+                    </div>
                   </div>
 
                   <div className="flex flex-col gap-2">
-                    <label htmlFor="email" className="text-sm font-semibold text-zinc-400 ml-1">Email Address</label>
-                    <input 
-                      type="email" 
-                      id="email"
-                      name="email"
-                      value={formState.email}
+                    <label htmlFor="message" className="text-sm font-semibold text-zinc-400 ml-1">Your Message</label>
+                    <textarea 
+                      id="message"
+                      name="message"
+                      value={formState.message}
                       onChange={handleChange}
                       required
-                      placeholder="john@example.com"
-                      className={inputClasses}
+                      placeholder="How can I help you?"
+                      rows={5}
+                      className={`${inputClasses} resize-none`}
                     />
                   </div>
-                </div>
 
-                <div className="flex flex-col gap-2">
-                  <label htmlFor="message" className="text-sm font-semibold text-zinc-400 ml-1">Your Message</label>
-                  <textarea 
-                    id="message"
-                    name="message"
-                    value={formState.message}
-                    onChange={handleChange}
-                    required
-                    placeholder="How can I help you?"
-                    rows={5}
-                    className={`${inputClasses} resize-none`}
-                  />
-                </div>
-
-                <button 
-                  type="submit" 
-                  disabled={isSubmitting}
-                  className="relative w-full overflow-hidden rounded-xl font-bold text-lg transition-all duration-300 flex items-center justify-center gap-2 h-14 bg-white text-black hover:bg-cyan-50 hover:scale-[1.02] shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_25px_rgba(6,182,212,0.3)] disabled:opacity-70 disabled:hover:scale-100"
-                >
-                  {isSubmitting ? (
-                    <>
-                      <div className="w-5 h-5 border-2 border-black/20 border-t-black rounded-full animate-spin" />
-                      Sending...
-                    </>
-                  ) : (
-                    <>
-                      Send Message
-                      <Send className="w-4 h-4 ml-1" />
-                    </>
-                  )}
-                </button>
-              </form>
-            </div>
+                  <button 
+                    type="submit" 
+                    disabled={isSubmitting}
+                    className="relative w-full overflow-hidden rounded-xl font-bold text-lg transition-all duration-300 flex items-center justify-center gap-2 h-14 bg-white text-black hover:bg-cyan-50 hover:scale-[1.02] shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_25px_rgba(6,182,212,0.3)] disabled:opacity-70 disabled:hover:scale-100"
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <div className="w-5 h-5 border-2 border-black/20 border-t-black rounded-full animate-spin" />
+                        Sending...
+                      </>
+                    ) : (
+                      <>
+                        Send Message
+                        <Send className="w-4 h-4 ml-1" />
+                      </>
+                    )}
+                  </button>
+                </form>
+              </div>
+            </BorderGlow>
           </div>
         </div>
       </div>
