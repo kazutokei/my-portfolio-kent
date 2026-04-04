@@ -133,7 +133,7 @@ const codeAndVideoProjects: Project[] = [
     tags: ['TypeScript', 'Tailwind CSS', 'PostgreSQL', 'Vercel'],
     features: ['Google OAuth & Secure Account Registration', 'Smart Task Filtering (Today, Upcoming, Important)', 'Custom Project Categories & Location Tags'],
     githubUrl: 'https://github.com/B1ns0y/Alisto-main.git',
-    liveStatus: 'Offline', // ✅ CHANGED HERE
+    liveStatus: 'Offline', 
   },
   {
     id: 5, 
@@ -215,7 +215,7 @@ const techStackData = [
     ]
   },
   {
-    title: 'Multimedia & Design',
+    title: 'Visual Design & Video',
     description: 'Crafting brand identities, layout designs, and cinematic videos.',
     icon: Clapperboard,
     items: [
@@ -352,9 +352,10 @@ const Projects = () => {
             <div className="text-center mb-10 space-y-3">
               <h2 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight">Portfolio Showcase</h2>
               <div className="w-20 h-1 bg-cyan-500 rounded-full mx-auto" />
+              {/* REVISED TEXT HERE */}
               <p className="text-zinc-400 max-w-2xl mx-auto text-base leading-relaxed pt-2">
                 Explore my journey through projects, certifications, and technical expertise. 
-                Each milestone reflects my growth as a developer and multimedia artist.
+                Each milestone reflects my growth as a developer and showcases my creative works.
               </p>
             </div>
 
