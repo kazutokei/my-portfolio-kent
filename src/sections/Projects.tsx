@@ -85,7 +85,7 @@ const codeAndVideoProjects: Project[] = [
     id: 1,
     type: 'code',
     title: 'iREQUEST: Online Credential Request System',
-    description: 'Developed to assist the Office of the University Registrar at USTP CDO, iREQUEST transitions student credential and document requests from a manual process to a streamlined digital system.',
+    description: 'A client project developed for the Office of the University Registrar at USTP CDO. It transitions student credential and document requests from a manual process to a streamlined digital system.',
     imageUrl: '/irequest_thumbnail.webp',
     tags: ['React', 'Vite', 'Tailwind CSS', 'Django', 'PostgreSQL', 'Vercel', 'Render'],
     features: [
@@ -95,13 +95,13 @@ const codeAndVideoProjects: Project[] = [
       'Real-time Request Status Tracking & Analytics'
     ],
     githubUrl: 'https://github.com/pendonj14/iRequest.git',
-    liveStatus: 'In Development',
+    liveStatus: 'Offline (Client Project)',
   },
   {
     id: 2,
     type: 'code',
     title: 'LocatR: Student Record Locator System',
-    description: 'Requested by the Office of the University Registrar at USTP CDO, LocatR is a desktop application designed to manage student records, including their ID, name, program, and location.',
+    description: 'A desktop application requested by the Office of the University Registrar at USTP CDO as a client project to efficiently manage student records, including ID, name, program, and location.',
     imageUrl: '/locatr_thumbnail.webp',
     tags: ['Python', 'CustomTkinter', 'SQLite', 'QRCode'],
     features: [
@@ -111,7 +111,7 @@ const codeAndVideoProjects: Project[] = [
       'Fast local SQLite database queries with DPI Awareness'
     ],
     githubUrl: 'https://github.com/wency01x/StudentRecordLocatorSystem.git',
-    liveStatus: 'Private (Client Project)',
+    liveStatus: 'Offline (Desktop Client)',
   },
   {
     id: 3,
@@ -134,6 +134,21 @@ const codeAndVideoProjects: Project[] = [
     features: ['Google OAuth & Secure Account Registration', 'Smart Task Filtering (Today, Upcoming, Important)', 'Custom Project Categories & Location Tags'],
     githubUrl: 'https://github.com/B1ns0y/Alisto-main.git',
     liveStatus: 'Offline', 
+  },
+  {
+    id: 5,
+    type: 'code',
+    title: 'Autonomous Vacuum Cleaner Robot',
+    description: 'A senior high school research project featuring an autonomous cleaning robot built with Arduino. Engineered with custom circuitry, dual-sensor obstacle detection, and a high-RPM suction system.',
+    imageUrl: '/vacuum_thumbnail.webp', 
+    tags: ['Arduino', 'C++', 'Robotics', 'Hardware', 'Circuit Design'],
+    features: [
+      'Dual-sensor obstacle detection using Ultrasonic (HC-SR04) and IR sensors',
+      'High-powered suction system utilizing a 100,000 RPM 3-phase brushless motor',
+      'Differential steering and brush control via L298N motor drivers',
+      'Custom power distribution with LM2596 buck converters and Li-Po batteries'
+    ],
+    liveStatus: 'Offline (Academic Project)', 
   },
   {
     id: 6,
@@ -595,7 +610,7 @@ const Projects = () => {
                       <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 px-4 py-2 bg-zinc-800 text-white text-xs font-semibold rounded-lg opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 pointer-events-none whitespace-nowrap shadow-xl border border-zinc-700 flex items-center gap-2 z-50">
                         {/* Dynamic colored dot based on status */}
                         {selectedProject.liveStatus.includes('Development') && <span className="w-2 h-2 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.6)]" />}
-                        {selectedProject.liveStatus.includes('Private') && <span className="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.6)]" />}
+                        {selectedProject.liveStatus.includes('Client') && !selectedProject.liveStatus.includes('Offline') && <span className="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.6)]" />}
                         {selectedProject.liveStatus.includes('Hold') && <span className="w-2 h-2 rounded-full bg-zinc-400 shadow-[0_0_8px_rgba(161,161,170,0.6)]" />}
                         {selectedProject.liveStatus.includes('Offline') && <span className="w-2 h-2 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.6)]" />}
                         
