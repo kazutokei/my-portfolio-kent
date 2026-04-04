@@ -481,7 +481,7 @@ const SequentialBioReveal: React.FC = () => {
   // Single scroll progress for the ENTIRE bio block
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ['start 85%', 'end 30%'],
+    offset: ['start 85%', 'end 60%'],
   });
 
   return (
