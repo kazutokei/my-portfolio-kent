@@ -20,6 +20,7 @@ interface Project {
   features?: string[];
   githubUrl?: string;
   liveUrl?: string;
+  liveStatus?: string; 
   youtubeId?: string; 
 }
 
@@ -94,7 +95,7 @@ const codeAndVideoProjects: Project[] = [
       'Real-time Request Status Tracking & Analytics'
     ],
     githubUrl: 'https://github.com/pendonj14/iRequest.git',
-    liveUrl: 'https://irequest-nu.vercel.app/',
+    liveStatus: 'In Development',
   },
   {
     id: 2,
@@ -110,6 +111,7 @@ const codeAndVideoProjects: Project[] = [
       'Fast local SQLite database queries with DPI Awareness'
     ],
     githubUrl: 'https://github.com/wency01x/StudentRecordLocatorSystem.git',
+    liveStatus: 'Private (Client Project)',
   },
   {
     id: 3,
@@ -120,6 +122,7 @@ const codeAndVideoProjects: Project[] = [
     tags: ['JavaScript', 'React', 'HTML', 'CSS', 'Supabase', 'Vercel'],
     features: ['Randomized pairing algorithm', 'Anonymous wishlists', 'Mobile-responsive UI'],
     githubUrl: 'https://github.com/kazutokei/christmas-party.git',
+    liveStatus: 'On Hold',
   },
   {
     id: 4,
@@ -130,7 +133,7 @@ const codeAndVideoProjects: Project[] = [
     tags: ['TypeScript', 'Tailwind CSS', 'PostgreSQL', 'Vercel'],
     features: ['Google OAuth & Secure Account Registration', 'Smart Task Filtering (Today, Upcoming, Important)', 'Custom Project Categories & Location Tags'],
     githubUrl: 'https://github.com/B1ns0y/Alisto-main.git',
-    liveUrl: 'https://alisto-main.vercel.app',
+    liveStatus: 'Offline', // ✅ CHANGED HERE
   },
   {
     id: 5, 
@@ -546,7 +549,7 @@ const Projects = () => {
             <div className="flex items-center gap-3 text-sm text-zinc-400 mb-10">
               <button 
                 onClick={() => setSelectedProject(null)}
-                className="flex items-center gap-2 px-4 py-2 bg-zinc-900 border border-zinc-800 rounded-lg hover:text-white hover:border-zinc-600 transition-colors"
+                className="flex items-center gap-2 px-4 py-2 bg-zinc-900 border border-zinc-800 rounded-lg hover:text-white hover:border-zinc-600 transition-colors cursor-pointer"
               >
                 <ChevronLeft className="w-4 h-4" /> Back to Projects
               </button>
@@ -586,13 +589,39 @@ const Projects = () => {
                 </div>
 
                 <div className="flex flex-wrap gap-3">
+                  {/* Active Live Demo Button */}
                   {selectedProject.liveUrl && (
-                    <a href={selectedProject.liveUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-8 py-3.5 bg-cyan-500 text-black font-bold rounded-xl hover:bg-cyan-400 hover:scale-105 transition-all text-sm md:text-base">
+                    <a href={selectedProject.liveUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-8 py-3.5 bg-cyan-500 text-black font-bold rounded-xl hover:bg-cyan-400 hover:scale-105 transition-all text-sm md:text-base cursor-pointer">
                       <ExternalLink className="w-4 h-4" /> Live Demo
                     </a>
                   )}
+
+                  {/* Disabled Tooltip Button for projects without a liveUrl */}
+                  {selectedProject.liveStatus && !selectedProject.liveUrl && (
+                    <div className="relative group">
+                      {/* Greyed out button */}
+                      <div className="flex items-center gap-2 px-8 py-3.5 bg-zinc-900 text-zinc-500 font-bold rounded-xl border border-zinc-800/80 cursor-not-allowed select-none text-sm md:text-base transition-colors duration-300 group-hover:bg-zinc-800/50 group-hover:border-zinc-700">
+                        <ExternalLink className="w-4 h-4 opacity-50" /> Live Demo
+                      </div>
+                      
+                      {/* Floating Tooltip */}
+                      <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 px-4 py-2 bg-zinc-800 text-white text-xs font-semibold rounded-lg opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 pointer-events-none whitespace-nowrap shadow-xl border border-zinc-700 flex items-center gap-2 z-50">
+                        {/* Dynamic colored dot based on status */}
+                        {selectedProject.liveStatus.includes('Development') && <span className="w-2 h-2 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.6)]" />}
+                        {selectedProject.liveStatus.includes('Private') && <span className="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.6)]" />}
+                        {selectedProject.liveStatus.includes('Hold') && <span className="w-2 h-2 rounded-full bg-zinc-400 shadow-[0_0_8px_rgba(161,161,170,0.6)]" />}
+                        {selectedProject.liveStatus.includes('Offline') && <span className="w-2 h-2 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.6)]" />}
+                        
+                        {selectedProject.liveStatus}
+                        
+                        {/* Tooltip downward arrow */}
+                        <div className="absolute top-full left-1/2 -translate-x-1/2 border-[5px] border-transparent border-t-zinc-800" />
+                      </div>
+                    </div>
+                  )}
+
                   {selectedProject.githubUrl && (
-                    <a href={selectedProject.githubUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-8 py-3.5 bg-zinc-900 text-white font-semibold rounded-xl border border-zinc-800 hover:bg-zinc-800 transition-all text-sm md:text-base shadow-lg shadow-black/20">
+                    <a href={selectedProject.githubUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-8 py-3.5 bg-zinc-900 text-white font-semibold rounded-xl border border-zinc-800 hover:bg-zinc-800 transition-all text-sm md:text-base shadow-lg shadow-black/20 cursor-pointer">
                       <Github className="w-4 h-4" /> Source Code
                     </a>
                   )}
@@ -656,7 +685,7 @@ const Projects = () => {
           />
           <button 
             onClick={() => setActiveVideo(null)}
-            className="absolute top-4 right-4 md:top-8 md:right-8 text-zinc-400 hover:text-white bg-zinc-900/50 hover:bg-zinc-800 p-3 rounded-full border border-zinc-800 transition-all z-10"
+            className="absolute top-4 right-4 md:top-8 md:right-8 text-zinc-400 hover:text-white bg-zinc-900/50 hover:bg-zinc-800 p-3 rounded-full border border-zinc-800 transition-all z-10 cursor-pointer"
           >
             <X className="w-6 h-6" />
           </button>
