@@ -136,17 +136,6 @@ const codeAndVideoProjects: Project[] = [
     liveStatus: 'Offline', 
   },
   {
-    id: 5, 
-    type: 'code',
-    title: 'Personal Portfolio Website',
-    description: 'A modern, high-performance portfolio website built to showcase my career and technical skills. Features smooth animations, a responsive layout, and interactive components.',
-    imageUrl: '/pf_thumbnail.webp', 
-    tags: ['React', 'TypeScript', 'Tailwind CSS', 'Framer Motion', 'GSAP'],
-    features: ['Custom 3D WebGL Dome Gallery', 'Scroll-triggered GSAP animations', 'Responsive Bento Grid layout', 'Performance optimized WebP assets'],
-    githubUrl: '#',
-    liveUrl: '#',
-  },
-  {
     id: 6,
     type: 'video',
     title: 'Procedures for Disciplinary Actions in Cheating',
@@ -352,7 +341,6 @@ const Projects = () => {
             <div className="text-center mb-10 space-y-3">
               <h2 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight">Portfolio Showcase</h2>
               <div className="w-20 h-1 bg-cyan-500 rounded-full mx-auto" />
-              {/* REVISED TEXT HERE */}
               <p className="text-zinc-400 max-w-2xl mx-auto text-base leading-relaxed pt-2">
                 Explore my journey through projects, certifications, and technical expertise. 
                 Each milestone reflects my growth as a developer and showcases my creative works.
