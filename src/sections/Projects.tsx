@@ -119,7 +119,7 @@ const codeAndVideoProjects: Project[] = [
     title: 'Gift Exchange App',
     description: 'Developed to overcome time and distance constraints among friends, this platform automates holiday gift exchanges with randomized matching, allowing seamless celebrations from anywhere.',
     imageUrl: '/gift-exchange_thumbnail.webp',
-    tags: ['JavaScript', 'React', 'HTML', 'CSS', 'Supabase', 'Vercel'],
+    tags: ['JavaScript', 'React', 'Tailwind CSS', 'Supabase', 'Vercel'],
     features: ['Randomized pairing algorithm', 'Anonymous wishlists', 'Mobile-responsive UI'],
     githubUrl: 'https://github.com/kazutokei/christmas-party.git',
     liveStatus: 'On Hold',
@@ -184,7 +184,7 @@ const techStackData = [
       { name: 'TypeScript', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg' },
       { name: 'JavaScript', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg' },
       { name: 'Tailwind CSS', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg' },
-      { name: 'Vite', iconUrl: '/vite.svg' }, 
+      { name: 'Vite', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vitejs/vitejs-original.svg' }, 
       { name: 'HTML5', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg' },
       { name: 'CSS3', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg' }
     ]
@@ -195,8 +195,6 @@ const techStackData = [
     icon: Database,
     items: [
       { name: 'Python', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg' },
-      { name: 'Java', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg' },
-      { name: 'C++', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg' },
       { name: 'Django', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/django/django-plain.svg' },
       { name: 'PostgreSQL', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg' },
       { name: 'Supabase', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/supabase/supabase-original.svg' },
