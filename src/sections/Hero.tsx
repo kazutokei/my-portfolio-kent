@@ -133,8 +133,7 @@ const Hero = () => {
                     "Aspiring Web & Software Dev", 
                     "Graphic Designer",
                     "Video Editor",
-                    "UI/UX Enthusiast",
-                    "Student Leader",
+                    "UI/UX Enthusiast"
                   ]}
                   typingSpeed={25}   
                   deletingSpeed={15} 
@@ -147,9 +146,9 @@ const Hero = () => {
             {/* REST OF CONTENT */}
             <div ref={restOfLeftRef} className="space-y-6 w-full pt-2 opacity-0 flex flex-col items-center lg:items-start">
               
+              {/* REVISED HERO DESCRIPTION */}
               <p className="text-zinc-400 text-sm sm:text-base md:text-lg max-w-xl leading-relaxed text-center lg:text-left mt-2 px-2 lg:px-0">
-                Computer Science undergraduate bridging Full-Stack Development and Multimedia Design. 
-                Dedicated to delivering high-fidelity user experiences through the integration of technical logic and creativity.
+                Computer Science undergraduate bridging full-stack technologies and visual design. Dedicated to delivering impactful digital solutions through the integration of technical logic, clean interfaces, and creative resourcefulness.
               </p>
 
               <div className="flex flex-wrap justify-center lg:justify-start gap-3 pt-1">
@@ -200,9 +199,6 @@ const Hero = () => {
 
           {/* --- RIGHT COLUMN: Profile Card --- */}
           <div ref={rightColRef} className="w-full flex justify-center lg:justify-end relative perspective-1000 opacity-0 mt-0 sm:mt-8 lg:mt-0">
-            {/* FIX: Force proportional shrinking via CSS transform scale. 
-                This shrinks the fixed-width card down to 85% of its size on small phones, 
-                then 95% on medium phones, and 100% on large screens! */}
             <div className="flex justify-center w-full transform scale-[0.85] xs:scale-[0.90] sm:scale-[0.95] md:scale-100 origin-top">
                <ProfileCard
                  name="Kent John J. Chavo"
