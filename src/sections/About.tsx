@@ -2,7 +2,6 @@ import React, { useRef } from 'react';
 import { motion, useScroll, useTransform, MotionValue } from 'framer-motion';
 import { gsap } from 'gsap';
 import { GraduationCap, Globe, Calendar, Users } from 'lucide-react';
-import ScrollReveal from '../components/bits/ScrollReveal';
 
 // ==========================================
 // MAGIC BENTO ENGINE
@@ -458,7 +457,7 @@ function WordReveal({
 
 const BIO_PARAGRAPHS = [
   "Hello! I am Kent, an aspiring Full-Stack Developer and Computer Science student. With a background in graphic design and organizational branding, I aim to build impactful, real-world solutions that connect solid backend logic with engaging frontend interfaces, utilizing a versatile set of modern technologies and creative tools.",
-  "My current academic focus centers on artificial intelligence, particularly deep learning and machine learning within computer vision, alongside coursework in computational modeling and simulations.",
+  "My current academic focus centers on artificial intelligence, particularly deep learning and machine learning within computer vision.",
   "Beyond code, my creative background allows me to approach problems with a designer's perspective, yet my execution remains fundamentally practical. Whether designing publicity materials or managing other creative works, I operate with a strict awareness of deadlines, scope, and available resources. I carefully weigh these factors to navigate realistic constraints without sacrificing creative quality. Always eager to learn emerging technologies, my goal is to ensure every solution I build is delivered efficiently, grounded in scalable logic, and executed with thoughtful design.",
 ];
 
