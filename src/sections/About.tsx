@@ -678,10 +678,6 @@ const About = () => {
               <span className="text-zinc-200 font-medium text-lg">Cebuano</span>
               <span className="text-xs font-bold text-purple-400 bg-purple-500/10 px-3 py-1 rounded-md tracking-wider uppercase">Native</span>
             </div>
-            <div className="flex justify-between items-center border-b border-zinc-800/50 py-3">
-              <span className="text-zinc-200 font-medium text-lg">Korean</span>
-              <span className="text-xs font-bold text-zinc-400 bg-zinc-800 px-3 py-1 rounded-md tracking-wider uppercase">Basic</span>
-            </div>
             <div className="flex justify-between items-center pt-3">
               <span className="text-zinc-200 font-medium text-lg">Japanese</span>
               <span className="text-xs font-bold text-blue-400 bg-blue-500/10 px-3 py-1 rounded-md tracking-wider uppercase">Learning</span>
