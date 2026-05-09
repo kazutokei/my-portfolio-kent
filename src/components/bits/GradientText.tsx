@@ -95,7 +95,7 @@ export default function GradientText({
   return (
     <motion.div
       // ✅ REMOVED 'font-medium' and added 'font-inherit' logic
-      className={`relative flex max-w-fit flex-row items-center justify-start rounded-[1.25rem] backdrop-blur transition-shadow duration-500 overflow-hidden cursor-pointer ${showBorder ? 'py-1 px-2' : ''} ${className}`}
+      className={`relative flex max-w-fit flex-row items-center justify-start rounded-[1.25rem] backdrop-blur transition-shadow duration-500 cursor-pointer ${showBorder ? 'overflow-hidden py-1 px-2' : ''} ${className}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -117,7 +117,7 @@ export default function GradientText({
         </motion.div>
       )}
       <motion.div
-        className="inline-block relative z-2 text-transparent bg-clip-text"
+        className="inline-block relative z-2 text-transparent bg-clip-text pb-[0.1em] mr-[-0.1em] pr-[0.1em]"
         style={{ ...gradientStyle, backgroundPosition, WebkitBackgroundClip: 'text' }}
       >
         {children}

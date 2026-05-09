@@ -2,7 +2,8 @@ import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { 
   ExternalLink, ArrowRight, Code, Palette, Video, Award, Layers, 
   ChevronLeft, Github, Star, Code2, Play, X, Calendar, Building2,
-  MonitorSmartphone, Database, Clapperboard, Wrench, Triangle, Feather
+  MonitorSmartphone, Database, Clapperboard, Wrench, Triangle, Feather,
+  Bot
 } from 'lucide-react';
 import DomeGallery from '../components/bits/DomeGallery'; 
 
@@ -243,6 +244,15 @@ const techStackData = [
       { name: 'Framer Motion', iconUrl: '/framer-motion.svg' },
       { name: 'GSAP', iconUrl: '/gsap.svg' }
     ]
+  },
+  {
+    title: 'AI Tools',
+    description: 'Leveraging artificial intelligence for coding, debugging, and productivity.',
+    icon: Bot,
+    items: [
+      { name: 'Gemini', iconUrl: '/gemini.svg' },
+      { name: 'Claude', iconUrl: '/claude.svg' }
+    ]
   }
 ];
 
@@ -251,7 +261,6 @@ const projectsData: Project[] = [...codeAndVideoProjects, ...graphicProjects];
 // MagicTechCard: Interactive bento card for tech stack categories
 const MagicTechCard = ({ category }: { category: typeof techStackData[0] }) => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [isHovered, setIsHovered] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -267,8 +276,6 @@ const MagicTechCard = ({ category }: { category: typeof techStackData[0] }) => {
     <div
       ref={cardRef}
       onMouseMove={handleMouseMove}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
       className="relative w-full bg-zinc-900 border border-zinc-800 rounded-[32px] p-6 md:p-8 overflow-hidden group transition-all duration-500"
     >
       {/* Dynamic spotlight hover effect */}
@@ -423,6 +430,7 @@ const Projects = () => {
                             <img 
                               src={project.imageUrl} 
                               alt={project.title}
+                              loading="lazy"
                               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 select-none"
                               draggable={false}
                               onContextMenu={(e) => e.preventDefault()}
@@ -490,9 +498,10 @@ const Projects = () => {
                       className="group block bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden hover:border-cyan-500/50 hover:shadow-[0_0_30px_rgba(34,211,238,0.15)] transition-all duration-300"
                     >
                       <div className="relative aspect-[4/3] bg-zinc-950 overflow-hidden p-6 border-b border-zinc-800 flex items-center justify-center">
-                        <img 
+                       <img 
                           src={cert.imageUrl} 
                           alt={cert.title} 
+                          loading="lazy"
                           className="w-full h-full object-contain drop-shadow-2xl transition-transform duration-500 group-hover:scale-[1.02] select-none"
                           draggable={false}
                           onContextMenu={(e) => e.preventDefault()}
@@ -648,6 +657,7 @@ const Projects = () => {
                   <img 
                     src={selectedProject.imageUrl} 
                     alt={selectedProject.title} 
+                    loading="lazy"
                     className="w-full h-full object-cover select-none"
                     draggable={false}
                     onContextMenu={(e) => e.preventDefault()}

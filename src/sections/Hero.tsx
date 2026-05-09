@@ -86,7 +86,7 @@ const Hero = () => {
   const gradientColors = ['#a855f7', '#3b82f6', '#22d3ee', '#a855f7'];
 
   return (
-    <section id="home" ref={containerRef} className="relative w-full max-w-[100vw] bg-transparent overflow-x-hidden overflow-y-hidden lg:overflow-y-visible">
+    <section id="home" ref={containerRef} className="relative w-full bg-transparent">
       
       <div className="min-h-screen flex items-center justify-center px-4 sm:px-6 pt-24 pb-12 w-full">
         <div className="max-w-5xl w-full grid grid-cols-1 lg:grid-cols-2 gap-8 items-center z-10 relative">

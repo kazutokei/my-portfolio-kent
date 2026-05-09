@@ -148,7 +148,12 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
   /* Firefox Fallback */
   scrollbar-width: thin;
   scrollbar-color: #27272a #09090b;
+}
+
+body {
+  overflow-x: hidden;
 }

@@ -1,10 +1,17 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import Hero from './sections/Hero';
-import About from './sections/About';
-import Projects from './sections/Projects';
-import Contact from './sections/Contact';
 import Particles from './components/bits/Particles';
 import GooeyNav from './components/bits/GooeyNav';
+
+const About = lazy(() => import('./sections/About'));
+const Projects = lazy(() => import('./sections/Projects'));
+const Contact = lazy(() => import('./sections/Contact'));
+
+const SectionFallback = () => (
+  <div className="w-full py-32 flex items-center justify-center">
+    <div className="w-8 h-8 rounded-full border-2 border-cyan-500 border-t-transparent animate-spin" />
+  </div>
+);
 
 function App() {
   // Navigation items: Ensure href matches the id="name" in each section file
@@ -16,7 +23,7 @@ function App() {
   ];
 
   return (
-    <main className="relative bg-zinc-950 min-h-screen text-white selection:bg-cyan-500/30 overflow-x-hidden">
+    <main className="relative bg-zinc-950 min-h-screen text-white selection:bg-cyan-500/30">
       
       {/* --- OGL PARTICLES BACKGROUND --- */}
       {/* Set z-0 so it stays behind everything */}
@@ -60,9 +67,15 @@ function App() {
       {/* relative z-10 puts your content on top of the fixed background */}
       <div className="relative z-10">
         <Hero />
-        <About />
-        <Projects />
-        <Contact />
+        <Suspense fallback={<SectionFallback />}>
+          <About />
+        </Suspense>
+        <Suspense fallback={<SectionFallback />}>
+          <Projects />
+        </Suspense>
+        <Suspense fallback={<SectionFallback />}>
+          <Contact />
+        </Suspense>
       </div>
       
     </main>

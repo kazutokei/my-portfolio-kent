@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useCallback, useMemo, useState } from 'react';
+import React, { useEffect, useRef, useCallback, useMemo } from 'react';
 
 const DEFAULT_INNER_GRADIENT = 'linear-gradient(145deg,#60496e8c 0%,#71C4FF44 100%)';
 
@@ -74,7 +74,6 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
   mobileTiltSensitivity = 5,
   miniAvatarUrl,
   name = 'Javi A. Torres',
-  title = 'Software Engineer',
   handle = 'javicodes',
   status = 'Online',
   contactText = 'Contact',
@@ -206,6 +205,8 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
 
   const handlePointerMove = useCallback(
     (event: PointerEvent): void => {
+      // Skip touch pointers — let them scroll the page naturally on mobile
+      if (event.pointerType === 'touch') return;
       const shell = shellRef.current;
       if (!shell || !tiltEngine) return;
       const { x, y } = getOffsets(event, shell);
@@ -216,6 +217,8 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
 
   const handlePointerEnter = useCallback(
     (event: PointerEvent): void => {
+      // Skip touch pointers on mobile
+      if (event.pointerType === 'touch') return;
       const shell = shellRef.current;
       if (!shell || !tiltEngine) return;
 
@@ -443,7 +446,7 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
   return (
     <div
       ref={wrapRef}
-      className={`relative touch-none ${className}`.trim()}
+      className={`relative ${className}`.trim()}
       style={{ perspective: '500px', transform: 'translate3d(0, 0, 0.1px)', ...cardStyle } as React.CSSProperties}
     >
       {behindGlowEnabled && (
