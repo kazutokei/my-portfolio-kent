@@ -621,6 +621,15 @@ export default function DomeGallery({
       `;
       overlay.addEventListener('click', () => scrimRef.current?.click());
 
+      const picture = document.createElement('picture');
+      const isLocal = rawSrc.startsWith('/');
+      if (isLocal) {
+        const source = document.createElement('source');
+        source.srcset = rawSrc.replace(/\.(webp|png|jpg|jpeg)$/, '.avif');
+        source.type = 'image/avif';
+        picture.appendChild(source);
+      }
+
       const img = document.createElement('img');
       img.src = rawSrc;
       img.alt = rawAlt;
@@ -632,7 +641,8 @@ export default function DomeGallery({
         object-fit: contain;
         filter: ${grayscale ? 'grayscale(1)' : 'none'};
       `;
-      overlay.appendChild(img);
+      picture.appendChild(img);
+      overlay.appendChild(picture);
       document.body.appendChild(overlay);
       bodyOverlayRef.current = overlay;
 
@@ -829,17 +839,20 @@ export default function DomeGallery({
                       backfaceVisibility: 'hidden'
                     }}
                   >
-                    <img
-                      src={it.src}
-                      draggable={false}
-                      alt={it.alt}
-                      loading="lazy"
-                      className="w-full h-full object-cover pointer-events-none"
-                      style={{
-                        backfaceVisibility: 'hidden',
-                        filter: `var(--image-filter, ${grayscale ? 'grayscale(1)' : 'none'})`
-                      }}
-                    />
+                    <picture className="w-full h-full object-cover pointer-events-none">
+                      {it.src.startsWith('/') && <source srcSet={it.src.replace(/\.(webp|png|jpg|jpeg)$/, '.avif')} type="image/avif" />}
+                      <img
+                        src={it.src}
+                        draggable={false}
+                        alt={it.alt}
+                        loading="lazy"
+                        className="w-full h-full object-cover pointer-events-none"
+                        style={{
+                          backfaceVisibility: 'hidden',
+                          filter: `var(--image-filter, ${grayscale ? 'grayscale(1)' : 'none'})`
+                        }}
+                      />
+                    </picture>
                   </div>
                 </div>
               ))}

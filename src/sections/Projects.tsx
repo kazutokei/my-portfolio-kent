@@ -15,6 +15,19 @@ import type {
   ProjectType 
 } from '../data/portfolioData';
 
+// Helper to provide AVIF fallback
+const OptimizedImage = ({ src, alt, className, loading = "lazy", ...props }: { src: string, alt: string, className?: string, loading?: "lazy" | "eager", [key: string]: any }) => {
+  const isLocal = src.startsWith('/');
+  const avifSrc = isLocal ? src.replace(/\.(webp|png|jpg|jpeg)$/, '.avif') : src;
+  
+  return (
+    <picture className={className}>
+      {isLocal && <source srcSet={avifSrc} type="image/avif" />}
+      <img src={src} alt={alt} className={className} loading={loading} {...props} />
+    </picture>
+  );
+};
+
 // MagicTechCard: Interactive bento card for tech stack categories
 const MagicTechCard = ({ category }: { category: typeof techStackData[0] }) => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -184,14 +197,17 @@ const Projects = () => {
                                 </div>
                               </div>
                             )}
-                            <img 
+                                </div>
+                              </div>
+                            )}
+                            <OptimizedImage 
                               src={project.imageUrl} 
                               alt={project.title}
                               loading="lazy"
                               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 select-none"
                               draggable={false}
-                              onContextMenu={(e) => e.preventDefault()}
-                              onError={(e) => { (e.target as HTMLImageElement).src = 'data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw=='; }}
+                              onContextMenu={(e: any) => e.preventDefault()}
+                              onError={(e: any) => { (e.target as HTMLImageElement).src = 'data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw=='; }}
                             />
                           </div>
 
@@ -255,13 +271,13 @@ const Projects = () => {
                       className="group block bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden hover:border-cyan-500/50 hover:shadow-[0_0_30px_rgba(34,211,238,0.15)] transition-all duration-300"
                     >
                       <div className="relative aspect-[4/3] bg-zinc-950 overflow-hidden p-6 border-b border-zinc-800 flex items-center justify-center">
-                       <img 
+                       <OptimizedImage 
                           src={cert.imageUrl} 
                           alt={cert.title} 
                           loading="lazy"
                           className="w-full h-full object-contain drop-shadow-2xl transition-transform duration-500 group-hover:scale-[1.02] select-none"
                           draggable={false}
-                          onContextMenu={(e) => e.preventDefault()}
+                          onContextMenu={(e: any) => e.preventDefault()}
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-zinc-900/50 to-transparent pointer-events-none" />
                       </div>
@@ -411,14 +427,14 @@ const Projects = () => {
 
               <div className="lg:col-span-7 space-y-8">
                 <div className="rounded-[32px] overflow-hidden border border-zinc-800 bg-zinc-900 aspect-[4/3] relative shadow-2xl shadow-black/50">
-                  <img 
+                  <OptimizedImage 
                     src={selectedProject.imageUrl} 
                     alt={selectedProject.title} 
                     loading="lazy"
                     className="w-full h-full object-cover select-none"
                     draggable={false}
-                    onContextMenu={(e) => e.preventDefault()}
-                    onError={(e) => { (e.target as HTMLImageElement).src = 'data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw=='; }}
+                    onContextMenu={(e: any) => e.preventDefault()}
+                    onError={(e: any) => { (e.target as HTMLImageElement).src = 'data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw=='; }}
                   />
                 </div>
 
