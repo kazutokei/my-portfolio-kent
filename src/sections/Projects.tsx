@@ -16,7 +16,18 @@ import type {
 } from '../data/portfolioData';
 
 // Helper to provide AVIF fallback
-const OptimizedImage = ({ src, alt, className, loading = "lazy", ...props }: { src: string, alt: string, className?: string, loading?: "lazy" | "eager", [key: string]: any }) => {
+const OptimizedImage = ({ 
+  src, 
+  alt, 
+  className, 
+  loading = "lazy", 
+  ...props 
+}: { 
+  src: string; 
+  alt: string; 
+  className?: string; 
+  loading?: "lazy" | "eager"; 
+} & React.ImgHTMLAttributes<HTMLImageElement>) => {
   const isLocal = src.startsWith('/');
   const avifSrc = isLocal ? src.replace(/\.(webp|png|jpg|jpeg)$/, '.avif') : src;
   
@@ -197,19 +208,19 @@ const Projects = () => {
                                 </div>
                               </div>
                             )}
-                                </div>
-                              </div>
-                            )}
                             <OptimizedImage 
                               src={project.imageUrl} 
                               alt={project.title}
                               loading="lazy"
                               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 select-none"
                               draggable={false}
-                              onContextMenu={(e: any) => e.preventDefault()}
-                              onError={(e: any) => { (e.target as HTMLImageElement).src = 'data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw=='; }}
+                              onContextMenu={(e) => e.preventDefault()}
+                              onError={(e) => { (e.currentTarget as HTMLImageElement).src = 'data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw=='; }}
                             />
                           </div>
+
+
+
 
                           <div className="p-4 flex flex-col flex-grow">
                             <div className="flex flex-wrap gap-1.5 mb-2">
@@ -277,7 +288,7 @@ const Projects = () => {
                           loading="lazy"
                           className="w-full h-full object-contain drop-shadow-2xl transition-transform duration-500 group-hover:scale-[1.02] select-none"
                           draggable={false}
-                          onContextMenu={(e: any) => e.preventDefault()}
+                          onContextMenu={(e) => e.preventDefault()}
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-zinc-900/50 to-transparent pointer-events-none" />
                       </div>
@@ -433,8 +444,8 @@ const Projects = () => {
                     loading="lazy"
                     className="w-full h-full object-cover select-none"
                     draggable={false}
-                    onContextMenu={(e: any) => e.preventDefault()}
-                    onError={(e: any) => { (e.target as HTMLImageElement).src = 'data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw=='; }}
+                    onContextMenu={(e) => e.preventDefault()}
+                    onError={(e) => { (e.currentTarget as HTMLImageElement).src = 'data:image/gif;base64,R0lGODlhAQABAIAAAMLCwgAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw=='; }}
                   />
                 </div>
 
