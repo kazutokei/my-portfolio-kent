@@ -157,3 +157,22 @@ html {
 body {
   overflow-x: hidden;
 }
+
+/* ── PREVENT IMAGE DRAGGING & SELECTION ── */
+img {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* Use this class if you want to explicitly allow interaction with an image */
+.allow-drag {
+  -webkit-user-drag: auto;
+  user-drag: auto;
+  user-select: auto;
+  pointer-events: auto;
+}
