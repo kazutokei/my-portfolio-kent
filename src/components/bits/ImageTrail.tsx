@@ -1,5 +1,6 @@
 import { gsap } from 'gsap';
-import { JSX, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
+import type { JSX } from 'react';
 
 function lerp(a: number, b: number, n: number): number {
   return (1 - n) * a + n * b;
@@ -73,8 +74,6 @@ class ImageTrailVariant8 {
   private imagesTotal: number;
   private imgPosition: number;
   private zIndexVal: number;
-  private activeImagesCount: number;
-  private isIdle: boolean;
   private threshold: number;
   private mousePos: { x: number; y: number };
   private lastMousePos: { x: number; y: number };
@@ -83,11 +82,10 @@ class ImageTrailVariant8 {
   private cachedRotation: { x: number; y: number };
   private zValue: number;
   private cachedZValue: number;
-  private trailLength: number = 5; // Keep 5 images visible at once
-  private visibleImagesQueue: number[] = [];
-  private threshold: number;
+  private trailLength: number = 5;
   private lastShowTime: number = 0;
-  private cooldown: number = 150; // Minimum 150ms between pops
+  private cooldown: number = 120;
+  private isTouch: boolean = false; // Track if last input was touch
 
   constructor(container: HTMLDivElement) {
     this.container = container;
@@ -96,7 +94,7 @@ class ImageTrailVariant8 {
     this.imagesTotal = this.images.length;
     this.imgPosition = 0;
     this.zIndexVal = 1;
-    this.threshold = 100; // Snappier threshold
+    this.threshold = 80;
     this.mousePos = { x: 0, y: 0 };
     this.lastMousePos = { x: 0, y: 0 };
     this.cacheMousePos = { x: 0, y: 0 };
@@ -105,17 +103,25 @@ class ImageTrailVariant8 {
     this.zValue = 0;
     this.cachedZValue = 0;
 
-    const handlePointerMove = (ev: MouseEvent | TouchEvent) => {
+    const handleMouseMove = (ev: MouseEvent) => {
+      this.isTouch = false;
       const rect = container.getBoundingClientRect();
       this.mousePos = getLocalPointerPos(ev, rect);
     };
-    container.addEventListener('mousemove', handlePointerMove);
-    container.addEventListener('touchmove', handlePointerMove);
+    const handleTouchMove = (ev: TouchEvent) => {
+      this.isTouch = true;
+      const rect = container.getBoundingClientRect();
+      this.mousePos = getLocalPointerPos(ev, rect);
+    };
+
+    container.addEventListener('mousemove', handleMouseMove);
+    container.addEventListener('touchmove', handleTouchMove, { passive: true });
 
     const initRender = (ev: MouseEvent | TouchEvent) => {
       const rect = container.getBoundingClientRect();
       this.mousePos = getLocalPointerPos(ev, rect);
       this.cacheMousePos = { ...this.mousePos };
+      this.lastMousePos = { ...this.mousePos };
       requestAnimationFrame(() => this.render());
       container.removeEventListener('mousemove', initRender as EventListener);
       container.removeEventListener('touchmove', initRender as EventListener);
@@ -126,21 +132,26 @@ class ImageTrailVariant8 {
 
   private render() {
     const distance = getMouseDistance(this.mousePos, this.lastMousePos);
-    
-    // Directional check: Only pop if movement is more horizontal than vertical
-    const dx = Math.abs(this.mousePos.x - this.lastMousePos.x);
-    const dy = Math.abs(this.mousePos.y - this.lastMousePos.y);
-    const isHorizontal = dx > dy * 1.5; // Threshold for horizontal bias
 
-    this.cacheMousePos.x = lerp(this.cacheMousePos.x, this.mousePos.x, 0.1);
-    this.cacheMousePos.y = lerp(this.cacheMousePos.y, this.mousePos.y, 0.1);
+    this.cacheMousePos.x = lerp(this.cacheMousePos.x, this.mousePos.x, 0.15);
+    this.cacheMousePos.y = lerp(this.cacheMousePos.y, this.mousePos.y, 0.15);
 
     const now = Date.now();
-    if (distance > this.threshold && now - this.lastShowTime > this.cooldown && isHorizontal) {
+    let shouldShow = distance > this.threshold && now - this.lastShowTime > this.cooldown;
+
+    // On touch: only trigger for horizontal swipes to avoid blocking vertical scroll
+    if (this.isTouch && shouldShow) {
+      const dx = Math.abs(this.mousePos.x - this.lastMousePos.x);
+      const dy = Math.abs(this.mousePos.y - this.lastMousePos.y);
+      shouldShow = dx > dy * 1.2;
+    }
+
+    if (shouldShow) {
       this.showNextImage();
       this.lastMousePos = { ...this.mousePos };
       this.lastShowTime = now;
     }
+
     requestAnimationFrame(() => this.render());
   }
 
@@ -179,7 +190,11 @@ class ImageTrailVariant8 {
         scale: 0.4,
         z: -300,
         ease: 'power1.in',
-        overwrite: true
+        overwrite: true,
+        onComplete: () => {
+          // Reset z-index so hidden images stay behind future pops
+          gsap.set(oldestImg.DOM.el, { zIndex: 0 });
+        }
       });
     }
 
@@ -196,7 +211,8 @@ class ImageTrailVariant8 {
         opacity: 1,
         z: 0,
         scale: 0.8,
-        zIndex: this.zIndexVal,
+        // Push new image to the front with a high z-index
+        zIndex: this.zIndexVal + 1000,
         x: this.cacheMousePos.x - imgW / 2,
         y: this.cacheMousePos.y - imgH / 2,
         rotationX: this.cachedRotation.x,
