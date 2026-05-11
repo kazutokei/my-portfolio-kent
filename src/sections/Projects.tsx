@@ -3,7 +3,7 @@ import {
   ExternalLink, Palette, Video, Code, Layers,
   ChevronLeft, Github, Star, Code2, Play, X, Calendar, Building2, ArrowRight, ArrowLeft
 } from 'lucide-react';
-import DomeGallery from '../components/bits/DomeGallery'; 
+import ImageTrail from '../components/bits/ImageTrail'; 
 import { 
   projectsData, 
   certificatesData
@@ -62,7 +62,8 @@ const Projects = () => {
 
   const graphicImages = useMemo(() => {
     const graphics = projectsData.filter(p => p.type === 'graphic');
-    return graphics.map(p => ({ src: p.imageUrl, alt: p.title }));
+    // Use AVIF for the ImageTrail — much smaller files for a buttery smooth trail
+    return graphics.map(p => ({ src: p.imageUrl.replace(/\.webp$/, '.avif'), alt: p.title }));
   }, []);
 
   // Animate the left info panel on project change
@@ -254,22 +255,13 @@ const Projects = () => {
                   <h3 className="text-2xl font-bold text-white flex items-center gap-3">
                     <Palette className="w-6 h-6 text-purple-400" /> Graphic Design
                   </h3>
-                  <div className="relative w-full h-[500px] md:h-[600px] rounded-2xl overflow-hidden border border-zinc-800 bg-zinc-950/40">
-                    <DomeGallery
-                      images={graphicImages.length > 0 ? graphicImages : undefined}
-                      fit={0.8}
-                      minRadius={600}
-                      maxVerticalRotationDeg={15}
-                      segments={34}
-                      dragDampening={2}
-                      grayscale={false}
-                      overlayBlurColor="transparent"
-                      imageBorderRadius="16px"
-                      openedImageBorderRadius="16px"
+                  <div className="relative w-full h-[500px] md:h-[600px] rounded-[32px] overflow-hidden border border-zinc-800 bg-zinc-950/40">
+                    <ImageTrail
+                      items={graphicImages.map(img => img.src)}
                     />
-                    <div className="absolute bottom-4 left-0 right-0 text-center pointer-events-none z-10">
-                      <span className="bg-zinc-900/80 text-zinc-400 text-xs px-3 py-1.5 rounded-full backdrop-blur-sm border border-zinc-800">
-                        Drag to rotate • Click to view
+                    <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-center pointer-events-none z-20">
+                      <span className="bg-zinc-900/80 text-zinc-400 text-[10px] md:text-[11px] font-bold uppercase tracking-widest px-4 py-2 rounded-full backdrop-blur-md border border-zinc-700/50 shadow-2xl whitespace-nowrap">
+                        Explore trail to reveal graphics
                       </span>
                     </div>
                   </div>
