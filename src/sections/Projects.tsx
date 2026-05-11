@@ -48,15 +48,6 @@ const Projects = () => {
   const infoRef = useRef<HTMLDivElement>(null);
   const cardSwapRef = useRef<CardSwapHandle>(null);
 
-  // Routes navigation through the CardSwap's goTo() so cards animate too
-  const handleNavigation = (idx: number) => {
-    if (cardSwapRef.current) {
-      cardSwapRef.current.goTo(idx); // onSwap callback will handle animateToProject
-    } else {
-      animateToProject(idx);
-    }
-  };
-
   useEffect(() => {
     if (activeVideo || selectedProject) {
       document.body.style.overflow = 'hidden';
@@ -75,6 +66,7 @@ const Projects = () => {
   }, []);
 
   // Animate the left info panel on project change
+  // Animate the left info panel on project change
   const animateToProject = (newIndex: number) => {
     if (!infoRef.current) {
       setActiveIndex(newIndex);
@@ -82,14 +74,15 @@ const Projects = () => {
     }
     gsap.to(infoRef.current, {
       opacity: 0,
-      y: 20,
-      duration: 0.25,
+      y: 10,
+      duration: 0.2,
       ease: 'power2.in',
       onComplete: () => {
         setActiveIndex(newIndex);
-        gsap.fromTo(infoRef.current,
-          { opacity: 0, y: -20 },
-          { opacity: 1, y: 0, duration: 0.4, ease: 'power3.out' }
+        gsap.fromTo(
+          infoRef.current,
+          { opacity: 0, y: -10 },
+          { opacity: 1, y: 0, duration: 0.3, ease: 'power2.out' }
         );
       }
     });
@@ -118,63 +111,65 @@ const Projects = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 items-start">
 
               {/* LEFT — Project info */}
-              <div ref={infoRef} className="flex flex-col justify-between lg:min-h-[420px] pr-0 lg:pr-16 pt-2">
-                <div className="space-y-5">
-                  <h3 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight leading-snug">
-                    {currentProject.title}
-                  </h3>
-                  <div className="w-12 h-0.5 bg-cyan-500" />
-                  <p className="text-zinc-400 text-sm md:text-base leading-relaxed">
-                    {currentProject.description}
-                  </p>
+              <div className="flex flex-col justify-between lg:min-h-[420px] pr-0 lg:pr-16 pt-2">
+                <div ref={infoRef} className="flex flex-col h-full">
+                  <div className="space-y-5">
+                    <h3 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight leading-snug">
+                      {currentProject.title}
+                    </h3>
+                    <div className="w-12 h-0.5 bg-cyan-500" />
+                    <p className="text-zinc-400 text-sm md:text-base leading-relaxed">
+                      {currentProject.description}
+                    </p>
 
-                  {/* Tags */}
-                  <div className="flex flex-wrap gap-2">
-                    {currentProject.tags.map(tag => (
-                      <span
-                        key={tag}
-                        className="text-[11px] font-semibold uppercase tracking-wider px-3 py-1 rounded-full border border-zinc-800 text-zinc-400"
-                      >
-                        {tag}
-                      </span>
-                    ))}
+                    {/* Tags */}
+                    <div className="flex flex-wrap gap-2">
+                      {currentProject.tags.map(tag => (
+                        <span
+                          key={tag}
+                          className="text-[11px] font-semibold uppercase tracking-wider px-3 py-1 rounded-full border border-zinc-800 text-zinc-400"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
                   </div>
-                </div>
 
-                {/* Action buttons */}
-                <div className="flex flex-wrap gap-3 pt-6 mt-auto">
-                  <button
-                    onClick={() => setSelectedProject(currentProject)}
-                    className="flex items-center gap-2 px-5 py-2.5 bg-cyan-500 text-black font-bold rounded-lg hover:bg-cyan-400 transition-all text-sm"
-                  >
-                    View Details <ArrowRight className="w-4 h-4" />
-                  </button>
-                  {currentProject.githubUrl && (
-                    <a
-                      href={currentProject.githubUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-5 py-2.5 bg-zinc-900 text-white font-semibold rounded-lg border border-zinc-800 hover:bg-zinc-800 transition-all text-sm"
+                  {/* Action buttons */}
+                  <div className="flex flex-wrap gap-3 pt-6 mt-auto">
+                    <button
+                      onClick={() => setSelectedProject(currentProject)}
+                      className="flex items-center gap-2 px-5 py-2.5 bg-cyan-500 text-black font-bold rounded-lg hover:bg-cyan-400 transition-all text-sm"
                     >
-                      <Github className="w-4 h-4" /> Source Code
-                    </a>
-                  )}
-                  {currentProject.liveUrl && (
-                    <a
-                      href={currentProject.liveUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-5 py-2.5 bg-zinc-900 text-white font-semibold rounded-lg border border-zinc-800 hover:bg-zinc-800 transition-all text-sm"
-                    >
-                      <ExternalLink className="w-4 h-4" /> Live Demo
-                    </a>
-                  )}
+                      View Details <ArrowRight className="w-4 h-4" />
+                    </button>
+                    {currentProject.githubUrl && (
+                      <a
+                        href={currentProject.githubUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 px-5 py-2.5 bg-zinc-900 text-white font-semibold rounded-lg border border-zinc-800 hover:bg-zinc-800 transition-all text-sm"
+                      >
+                        <Github className="w-4 h-4" /> Source Code
+                      </a>
+                    )}
+                    {currentProject.liveUrl && (
+                      <a
+                        href={currentProject.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 px-5 py-2.5 bg-zinc-900 text-white font-semibold rounded-lg border border-zinc-800 hover:bg-zinc-800 transition-all text-sm"
+                      >
+                        <ExternalLink className="w-4 h-4" /> Live Demo
+                      </a>
+                    )}
+                  </div>
                 </div>
 
                 {/* Dot nav + arrows */}
                 <div className="flex items-center gap-4 pt-8">
                   <button
-                    onClick={() => handleNavigation((activeIndex - 1 + codeProjects.length) % codeProjects.length)}
+                    onClick={() => cardSwapRef.current ? cardSwapRef.current.prev() : animateToProject((activeIndex - 1 + codeProjects.length) % codeProjects.length)}
                     className="p-2 rounded-full border border-zinc-800 text-zinc-400 hover:border-zinc-600 hover:text-white transition-all"
                   >
                     <ArrowLeft className="w-4 h-4" />
@@ -184,7 +179,7 @@ const Projects = () => {
                     {codeProjects.map((_, i) => (
                       <button
                         key={i}
-                        onClick={() => handleNavigation(i)}
+                        onClick={() => cardSwapRef.current ? cardSwapRef.current.goTo(i) : animateToProject(i)}
                         className={`rounded-full transition-all duration-300 ${
                           i === activeIndex
                             ? 'w-8 h-2.5 bg-cyan-500'
@@ -195,7 +190,7 @@ const Projects = () => {
                   </div>
 
                   <button
-                    onClick={() => handleNavigation((activeIndex + 1) % codeProjects.length)}
+                    onClick={() => cardSwapRef.current ? cardSwapRef.current.next() : animateToProject((activeIndex + 1) % codeProjects.length)}
                     className="p-2 rounded-full border border-zinc-800 text-zinc-400 hover:border-zinc-600 hover:text-white transition-all"
                   >
                     <ArrowRight className="w-4 h-4" />
@@ -213,12 +208,12 @@ const Projects = () => {
                   cardDistance={50}
                   verticalDistance={55}
                   delay={4000}
-                  pauseOnHover={false}
+                  pauseOnHover={true}
                   skewAmount={5}
                   easing="elastic"
                   containerClassName="absolute bottom-0 perspective-[900px] overflow-visible scale-[0.62] origin-bottom right-1/2 translate-x-1/2 -translate-y-2 lg:scale-100 lg:origin-bottom-right lg:right-0 lg:translate-x-0 lg:-translate-y-20"
                   onSwap={(newFrontIdx) => animateToProject(newFrontIdx)}
-                  onCardClick={(idx) => handleNavigation(idx % codeProjects.length)}
+                  onCardClick={(idx) => cardSwapRef.current?.goTo(idx % codeProjects.length)}
                 >
                   {codeProjects.map((project, i) => (
                     <Card
