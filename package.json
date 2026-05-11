@@ -12,6 +12,7 @@
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
     "@gsap/react": "^2.1.2",
+    "@lobehub/icons": "^5.8.0",
     "@tailwindcss/vite": "^4.1.18",
     "@use-gesture/react": "^10.3.1",
     "class-variance-authority": "^0.7.1",
@@ -24,6 +25,7 @@
     "ogl": "^1.0.11",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "react-icons": "^5.6.0",
     "react-kino": "^0.3.1",
     "react-router-dom": "^6.30.3",
     "sweetalert2": "^11.26.24",
@@ -37,6 +39,7 @@
     "@types/node": "^24.10.12",
     "@types/react": "^19.2.13",
     "@types/react-dom": "^19.2.3",
+    "@types/unist": "^3.0.3",
     "@vitejs/plugin-react-swc": "^4.2.2",
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",

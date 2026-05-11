@@ -5,10 +5,11 @@ import GooeyNav from './components/bits/GooeyNav';
 
 const About = lazy(() => import('./sections/About'));
 const Projects = lazy(() => import('./sections/Projects'));
+const TechStack = lazy(() => import('./sections/TechStack'));
 const Contact = lazy(() => import('./sections/Contact'));
 
 const SectionFallback = () => (
-  <div className="w-full py-32 flex items-center justify-center">
+  <div className="flex items-center justify-center px-4 sm:px-6 pt-20 pb-8 w-full">
     <div className="w-8 h-8 rounded-full border-2 border-cyan-500 border-t-transparent animate-spin" />
   </div>
 );
@@ -19,7 +20,8 @@ function App() {
     { label: "Home", href: "#" },
     { label: "About", href: "#about" },
     { label: "Projects", href: "#projects" },
-    { label: "Contact", href: "#contact" }, // This links to <section id="contact">
+    { label: "Skills", href: "#skills" },
+    { label: "Contact", href: "#contact" }, 
   ];
 
   return (
@@ -48,8 +50,8 @@ function App() {
 
       {/* --- STICKY NAVIGATION BAR --- */}
       {/* z-50 ensures it floats above all content, fixed top-6 keeps it pinned */}
-      <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-auto animate-in slide-in-from-top-12 duration-1000">
-        <div className="bg-zinc-950/60 backdrop-blur-xl border border-zinc-800/60 rounded-full p-2 shadow-2xl shadow-black/50">
+      <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-max max-w-[95vw] animate-in slide-in-from-top-12 duration-1000">
+        <div className="bg-zinc-950/60 backdrop-blur-xl border border-zinc-800/60 rounded-full p-1.5 sm:p-2 shadow-2xl shadow-black/50 overflow-hidden">
           <GooeyNav
             items={navItems}
             particleCount={15}
@@ -72,6 +74,9 @@ function App() {
         </Suspense>
         <Suspense fallback={<SectionFallback />}>
           <Projects />
+        </Suspense>
+        <Suspense fallback={<SectionFallback />}>
+          <TechStack />
         </Suspense>
         <Suspense fallback={<SectionFallback />}>
           <Contact />

@@ -1,6 +1,9 @@
+import React from 'react';
 import { 
-  MonitorSmartphone, Database, Clapperboard, Wrench, Triangle, Feather, Bot 
+  MonitorSmartphone, Database, Clapperboard, Wrench, Feather, Bot, Brain, FileText, Kanban, Target, Eye, Clock, MessageCircle 
 } from 'lucide-react';
+import { Vercel } from '@lobehub/icons';
+
 
 export type ProjectType = 'code' | 'graphic' | 'video';
 export type MainCategory = 'projects' | 'certificates' | 'tech_stack';
@@ -209,9 +212,9 @@ export const techStackData = [
     items: [
       { name: 'Figma', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/figma/figma-original.svg' },
       { name: 'Canva', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/canva/canva-original.svg' },
-      { name: 'Photoshop', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/photoshop/photoshop-original.svg' },
-      { name: 'Premiere Pro', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/premierepro/premierepro-original.svg' },
-      { name: 'DaVinci Resolve', iconUrl: '/davinci.svg' }, 
+      { name: 'Photoshop', iconUrl: '/Adobe_Photoshop_CC_icon.svg.png' },
+      { name: 'Premiere Pro', iconUrl: '/Adobe_Premiere_Pro_CC_icon.svg.png' },
+      { name: 'DaVinci Resolve', iconUrl: '/DaVinci_Resolve_17_logo.svg.png' }, 
       { name: 'CapCut', iconUrl: '/capcut.svg' } 
     ]
   },
@@ -222,12 +225,12 @@ export const techStackData = [
     items: [
       { name: 'Git', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg' },
       { name: 'GitHub', iconUrl: '/github.svg' },
-      { name: 'Vercel', LucideIcon: Triangle },
+      { name: 'Vercel', LucideIcon: (props: { className?: string }) => <Vercel.Avatar size={32} {...props} /> },
       { name: 'Tkinter', LucideIcon: Feather }, 
       { name: 'CustomTkinter', iconUrl: '/custom-tkinter.svg' },
       { name: 'LaTeX', iconUrl: '/latex.svg' },
       { name: 'Framer Motion', iconUrl: '/framer-motion.svg' },
-      { name: 'GSAP', iconUrl: '/gsap.svg' }
+      { name: 'GSAP', iconUrl: '/GSAP_2023.webp' }
     ]
   },
   {
@@ -237,6 +240,19 @@ export const techStackData = [
     items: [
       { name: 'Gemini', iconUrl: '/gemini.svg' },
       { name: 'Claude', iconUrl: '/claude.svg' }
+    ]
+  },
+  {
+    title: 'Soft Skills',
+    description: 'Core competencies for effective collaboration, planning, and execution.',
+    icon: Brain,
+    items: [
+      { name: 'Document and Research Writing', LucideIcon: FileText },
+      { name: 'Project Management', LucideIcon: Kanban },
+      { name: 'Strategic Planning', LucideIcon: Target },
+      { name: 'Attention to Detail', LucideIcon: Eye },
+      { name: 'Time Management', LucideIcon: Clock },
+      { name: 'Effective Communication', LucideIcon: MessageCircle }
     ]
   }
 ];

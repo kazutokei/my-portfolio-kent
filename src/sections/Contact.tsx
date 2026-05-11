@@ -112,7 +112,7 @@ const Contact = () => {
   ];
 
   return (
-    <section id="contact" className="relative min-h-screen bg-transparent px-6 pt-24 pb-32 flex flex-col justify-center overflow-x-hidden">
+    <section id="contact" className="relative bg-transparent px-6 py-16 md:py-24 flex flex-col justify-center overflow-x-hidden">
       <div className="max-w-6xl mx-auto w-full">
         
         <div className="mb-16 text-center animate-in fade-in slide-in-from-bottom-8 duration-700">

@@ -88,7 +88,7 @@ const Hero = () => {
   return (
     <section id="home" ref={containerRef} className="relative w-full bg-transparent">
       
-      <div className="min-h-screen flex items-center justify-center px-4 sm:px-6 pt-24 pb-12 w-full">
+      <div className="flex items-center justify-center px-4 sm:px-6 pt-20 pb-8 w-full">
         <div className="max-w-5xl w-full grid grid-cols-1 lg:grid-cols-2 gap-8 items-center z-10 relative">
           
           {/* --- LEFT COLUMN: Text Content --- */}

@@ -486,7 +486,7 @@ const SequentialBioReveal: React.FC = () => {
   return (
     <div
       ref={containerRef}
-      className="mb-24 md:mb-32 max-w-4xl mx-auto flex flex-col gap-6"
+      className="mb-16 md:mb-20 max-w-4xl mx-auto flex flex-col gap-6"
     >
       {BIO_PARAGRAPHS.map((_, pIdx) => {
         const { start, count } = PARA_RANGES[pIdx];
@@ -751,11 +751,11 @@ const About = () => {
   ];
 
   return (
-    <section id="about" className="relative w-full bg-transparent px-6 py-24 md:py-32">
+    <section id="about" className="relative w-full bg-transparent px-6 py-16 md:py-20">
       <div className="max-w-5xl mx-auto flex flex-col items-center">
 
         {/* TITLE */}
-        <div className="relative inline-block mb-16 md:mb-24">
+        <div className="relative inline-block mb-12 md:mb-16">
           <h2 className="text-3xl md:text-5xl font-extrabold text-white tracking-tight">About Me</h2>
           <span className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-20 h-1.5 bg-cyan-500 rounded-full shadow-[0_0_15px_rgba(6,182,212,0.5)]" />
         </div>

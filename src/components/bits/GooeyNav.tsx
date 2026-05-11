@@ -16,6 +16,25 @@ export interface GooeyNavProps {
   initialActiveIndex?: number;
 }
 
+const noise = (n = 1) => n / 2 - Math.random() * n;
+
+const getXY = (distance: number, pointIndex: number, totalPoints: number): [number, number] => {
+  const angle = ((360 + noise(8)) / totalPoints) * pointIndex * (Math.PI / 180);
+  return [distance * Math.cos(angle), distance * Math.sin(angle)];
+};
+
+const createParticle = (i: number, t: number, d: [number, number], r: number, particleCount: number, colors: number[]) => {
+  const rotate = noise(r / 10);
+  return {
+    start: getXY(d[0], particleCount - i, particleCount),
+    end: getXY(d[1] + noise(7), particleCount - i, particleCount),
+    time: t,
+    scale: 1 + noise(0.2),
+    color: colors[Math.floor(Math.random() * colors.length)],
+    rotate: rotate > 0 ? (rotate + r / 20) * 10 : (rotate - r / 20) * 10
+  };
+};
+
 const GooeyNav: React.FC<GooeyNavProps> = ({
   items,
   animationTime = 600,
@@ -32,22 +51,7 @@ const GooeyNav: React.FC<GooeyNavProps> = ({
   const textRef = useRef<HTMLSpanElement>(null);
   const [activeIndex, setActiveIndex] = useState<number>(initialActiveIndex);
 
-  const noise = (n = 1) => n / 2 - Math.random() * n;
-  const getXY = (distance: number, pointIndex: number, totalPoints: number): [number, number] => {
-    const angle = ((360 + noise(8)) / totalPoints) * pointIndex * (Math.PI / 180);
-    return [distance * Math.cos(angle), distance * Math.sin(angle)];
-  };
-  const createParticle = (i: number, t: number, d: [number, number], r: number) => {
-    let rotate = noise(r / 10);
-    return {
-      start: getXY(d[0], particleCount - i, particleCount),
-      end: getXY(d[1] + noise(7), particleCount - i, particleCount),
-      time: t,
-      scale: 1 + noise(0.2),
-      color: colors[Math.floor(Math.random() * colors.length)],
-      rotate: rotate > 0 ? (rotate + r / 20) * 10 : (rotate - r / 20) * 10
-    };
-  };
+
   const makeParticles = (element: HTMLElement) => {
     const d: [number, number] = particleDistances;
     const r = particleR;
@@ -55,7 +59,7 @@ const GooeyNav: React.FC<GooeyNavProps> = ({
     element.style.setProperty('--time', `${bubbleTime}ms`);
     for (let i = 0; i < particleCount; i++) {
       const t = animationTime * 2 + noise(timeVariance * 2);
-      const p = createParticle(i, t, d, r);
+      const p = createParticle(i, t, d, r, particleCount, colors);
       element.classList.remove('active');
       setTimeout(() => {
         const particle = document.createElement('span');
@@ -76,9 +80,9 @@ const GooeyNav: React.FC<GooeyNavProps> = ({
           element.classList.add('active');
         });
         setTimeout(() => {
-          try {
+          if (element.contains(particle)) {
             element.removeChild(particle);
-          } catch {}
+          }
         }, t);
       }, 30);
     }
@@ -182,6 +186,19 @@ const GooeyNav: React.FC<GooeyNavProps> = ({
           .effect.text {
             color: white;
             transition: color 0.3s ease;
+            font-weight: 600;
+            font-size: 11px;
+            letter-spacing: -0.01em;
+          }
+          @media (min-width: 640px) {
+            .effect.text {
+              font-size: 12px;
+            }
+          }
+          @media (min-width: 768px) {
+            .effect.text {
+              font-size: 14px;
+            }
           }
           .effect.text.active {
             color: black;
@@ -310,7 +327,7 @@ const GooeyNav: React.FC<GooeyNavProps> = ({
         <nav className="flex relative" style={{ transform: 'translate3d(0,0,0.01px)' }}>
           <ul
             ref={navRef}
-            className="flex gap-4 md:gap-8 list-none p-0 px-2 md:px-4 m-0 relative z-[3]"
+            className="flex gap-2 sm:gap-4 md:gap-8 list-none p-0 px-1 sm:px-2 md:px-4 m-0 relative z-[3]"
             style={{
               color: 'white',
               textShadow: '0 1px 1px hsl(205deg 30% 10% / 0.2)'
@@ -327,7 +344,7 @@ const GooeyNav: React.FC<GooeyNavProps> = ({
                   href={item.href}
                   onClick={e => handleClick(e, index)}
                   onKeyDown={e => handleKeyDown(e, index)}
-                  className="outline-none py-[0.6em] px-[0.8em] md:px-[1em] inline-block font-semibold text-sm md:text-base"
+                  className="outline-none py-[0.6em] px-[0.6em] sm:px-[0.8em] md:px-[1em] inline-block font-semibold text-[11px] sm:text-xs md:text-sm"
                 >
                   {item.label}
                 </a>
