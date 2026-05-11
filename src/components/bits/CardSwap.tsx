@@ -3,13 +3,15 @@ import React, {
   cloneElement,
   forwardRef,
   isValidElement,
-  ReactElement,
-  ReactNode,
-  RefObject,
   useEffect,
   useImperativeHandle,
   useMemo,
   useRef
+} from 'react';
+import type {
+  ReactElement,
+  ReactNode,
+  RefObject
 } from 'react';
 import gsap from 'gsap';
 
