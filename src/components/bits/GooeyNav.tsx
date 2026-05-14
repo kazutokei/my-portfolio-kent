@@ -161,11 +161,17 @@ const GooeyNav: React.FC<GooeyNavProps> = ({
     return () => resizeObserver.disconnect();
   }, [activeIndex]);
 
+  // Use a ref to track activeIndex inside the observer to avoid re-creating it
+  const activeIndexRef = useRef(activeIndex);
+  useEffect(() => {
+    activeIndexRef.current = activeIndex;
+  }, [activeIndex]);
+
   // Intersection Observer for Scroll-based Navigation
   useEffect(() => {
     const observerOptions = {
       root: null,
-      rootMargin: '-20% 0px -70% 0px', // Detect when section is in the upper part of the viewport
+      rootMargin: '-20% 0px -70% 0px',
       threshold: 0
     };
 
@@ -176,7 +182,7 @@ const GooeyNav: React.FC<GooeyNavProps> = ({
         if (entry.isIntersecting) {
           const id = entry.target.id;
           const index = items.findIndex(item => item.href === `#${id}`);
-          if (index !== -1 && index !== activeIndex) {
+          if (index !== -1 && index !== activeIndexRef.current) {
             setActiveIndex(index);
           }
         }
@@ -184,17 +190,39 @@ const GooeyNav: React.FC<GooeyNavProps> = ({
     };
 
     const observer = new IntersectionObserver(handleIntersection, observerOptions);
+    const observedElements = new Set<Element>();
 
-    items.forEach(item => {
-      const id = item.href.replace('#', '');
-      if (id) {
-        const element = document.getElementById(id);
-        if (element) observer.observe(element);
-      }
+    const attachObservers = () => {
+      items.forEach(item => {
+        const id = item.href.replace('#', '');
+        if (id) {
+          const element = document.getElementById(id);
+          if (element && !observedElements.has(element)) {
+            observer.observe(element);
+            observedElements.add(element);
+          }
+        }
+      });
+    };
+
+    // Initial attachment
+    attachObservers();
+
+    // Use MutationObserver to detect when lazy-loaded sections are added to the DOM
+    const mutationObserver = new MutationObserver(() => {
+      attachObservers();
     });
 
-    return () => observer.disconnect();
-  }, [items, activeIndex]);
+    mutationObserver.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+
+    return () => {
+      observer.disconnect();
+      mutationObserver.disconnect();
+    };
+  }, [items]); // Only re-run if items change, NOT activeIndex
 
   return (
     <>
