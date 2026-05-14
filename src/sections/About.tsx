@@ -573,7 +573,7 @@ const About = () => {
       ]
     },
     {
-      org: "Robogals CDO",
+      org: "Robogals",
       chapter: "CDO Chapter",
       logo: "/robogals_logo.avif",
       noWhiteBg: true,

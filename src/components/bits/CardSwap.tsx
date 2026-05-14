@@ -59,7 +59,11 @@ const CardSwap = forwardRef<CardSwapHandle, CardSwapProps>(({
     : { ease: 'power1.inOut', durDrop: 0.8, durMove: 0.8, durReturn: 0.8, promoteOverlap: 0.45, returnDelay: 0.2 };
 
   const childArr = useMemo(() => Children.toArray(children) as ReactElement<CardProps>[], [children]);
-  const refs = useMemo<CardRef[]>(() => childArr.map(() => React.createRef<HTMLDivElement>()), [childArr.length]);
+  
+  // FIXED: Changed dependency to [childArr] to satisfy React Compiler and ensure refs stay in sync
+  const refs = useMemo<CardRef[]>(() => childArr.map(() => React.createRef<HTMLDivElement>()), [childArr]);
+  
+  // Use a ref for order, but we'll need to sync it if child count changes
   const order = useRef<number[]>(Array.from({ length: childArr.length }, (_, i) => i));
 
   const tlRef = useRef<gsap.core.Timeline | null>(null);
@@ -127,6 +131,14 @@ const CardSwap = forwardRef<CardSwapHandle, CardSwapProps>(({
     tl.call(() => { order.current = [...rest, front]; });
   };
 
+  // Synchronize order if children change
+  useEffect(() => {
+    if (order.current.length !== childArr.length) {
+      order.current = Array.from({ length: childArr.length }, (_, i) => i);
+      snapToOrder(order.current);
+    }
+  }, [childArr]);
+
   useEffect(() => {
     const total = refs.length;
     refs.forEach((r, i) => { if (r.current) placeNow(r.current, makeSlot(i, cardDistance, verticalDistance, total), skewAmount); });
@@ -142,7 +154,7 @@ const CardSwap = forwardRef<CardSwapHandle, CardSwapProps>(({
       return () => { node.removeEventListener('mouseenter', pause); node.removeEventListener('mouseleave', resume); clearInterval(intervalRef.current); tlRef.current?.kill(); };
     }
     return () => { clearInterval(intervalRef.current); tlRef.current?.kill(); };
-  }, [cardDistance, verticalDistance, delay, pauseOnHover, skewAmount, easing]);
+  }, [cardDistance, verticalDistance, delay, pauseOnHover, skewAmount, easing, refs]);
 
   useImperativeHandle(ref, () => ({
     // Instantly snap to next card, restart auto-cycle
