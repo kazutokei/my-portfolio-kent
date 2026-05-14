@@ -238,7 +238,7 @@ export const techStackData = [
     description: 'Leveraging artificial intelligence for coding, debugging, and productivity.',
     icon: Bot,
     items: [
-      { name: 'Gemini', iconUrl: '/gemini.svg' },
+      { name: 'Gemini', iconUrl: 'https://logo-teka.com/wp-content/uploads/2026/02/gemini-icon-logo.svg' },
       { name: 'Claude', iconUrl: '/claude.svg' }
     ]
   },

@@ -17,7 +17,7 @@ const SectionFallback = () => (
 function App() {
   // Navigation items: Ensure href matches the id="name" in each section file
   const navItems = [
-    { label: "Home", href: "#" },
+    { label: "Home", href: "#home" },
     { label: "About", href: "#about" },
     { label: "Projects", href: "#projects" },
     { label: "Skills", href: "#skills" },
@@ -50,7 +50,7 @@ function App() {
 
       {/* --- STICKY NAVIGATION BAR --- */}
       {/* z-50 ensures it floats above all content, fixed top-6 keeps it pinned */}
-      <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-max max-w-[95vw] animate-in slide-in-from-top-12 duration-1000">
+      <div id="main-nav" className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-max max-w-[95vw]">
         <div className="bg-zinc-950/60 backdrop-blur-xl border border-zinc-800/60 rounded-full p-1.5 sm:p-2 shadow-2xl shadow-black/50 overflow-hidden">
           <GooeyNav
             items={navItems}

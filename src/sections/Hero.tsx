@@ -26,7 +26,9 @@ const Hero = () => {
     gsap.set(rightColRef.current, { opacity: 0, x: isMobile ? 0 : 40, y: isMobile ? 40 : 0 });
     
     const nav = document.getElementById('main-nav');
-    if (nav) gsap.set(nav, { opacity: 0, y: -20 });
+    if (nav) {
+      gsap.set(nav, { opacity: 0, y: -20, pointerEvents: "none" });
+    }
 
     const tl = gsap.timeline({
       scrollTrigger: {
@@ -61,7 +63,7 @@ const Hero = () => {
 
     // 2. Fade in the Navbar we hid in App.tsx
     if (nav) {
-      tl.to(nav, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }, 0.2);
+      tl.to(nav, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out", pointerEvents: "auto" }, 0.2);
     }
 
     // 3. Fade in the Bio, Buttons, and Stats
