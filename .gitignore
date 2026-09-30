@@ -22,3 +22,10 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Local helper scripts & installer files
+*.bat
+node.zip
+node_installer.msi
+nodejs/
+

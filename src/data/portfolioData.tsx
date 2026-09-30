@@ -1,6 +1,6 @@
-import React from 'react';
 import { 
-  MonitorSmartphone, Database, Clapperboard, Wrench, Feather, Bot, Brain, FileText, Kanban, Target, Eye, Clock, MessageCircle 
+  MonitorSmartphone, Database, Clapperboard, Wrench, Feather, Bot, Brain, FileText, Kanban, Target, Eye, Clock, MessageCircle,
+  ShieldCheck, ClipboardCheck, FileCheck, Flame, CheckCircle2, Bug
 } from 'lucide-react';
 import { Vercel } from '@lobehub/icons';
 
@@ -72,6 +72,38 @@ export const graphicFiles = [
 
 export const codeAndVideoProjects: Project[] = [
   {
+    id: 'adaptivehub',
+    type: 'code',
+    title: 'AdaptiveHub',
+    description: 'A smart, AI-powered personalized learning platform for schools. Features adaptive assessments, structured learning materials, and classroom management designed to adjust to every student\'s pace and proficiency level.',
+    imageUrl: '/adaptivehub_thumbnail.webp',
+    tags: ['PHP', 'Laravel', 'Tailwind CSS', 'Bootstrap', 'JavaScript', 'MySQL', 'AI Education'],
+    features: [
+      'AI-Powered Adaptive Learning & Personalized Assessment',
+      'Structured Lessons, Quizzes, and Subject Materials',
+      'Multi-Role System (Teachers, Students & Administrators)',
+      'Automated Performance Insights & Classroom Management'
+    ],
+    liveUrl: 'https://adaptivehub.app',
+    liveStatus: 'Live',
+  },
+  {
+    id: 'adaptive-library',
+    type: 'code',
+    title: 'Adaptive Library',
+    description: 'A modern school library management and circulation system. Streamlines library operations with fast cataloging, real-time circulation tracking, reading insights, and seamless migration from Koha or SLiMS.',
+    imageUrl: '/adaptive-library_thumbnail.webp',
+    tags: ['PHP', 'Laravel', 'Tailwind CSS', 'Alpine.js', 'MySQL'],
+    features: [
+      'Fast Cataloging & Real-Time Circulation Tracking',
+      'Seamless Data Migration from Koha & SLiMS',
+      'Student Publications & Reading Insights Portal',
+      'Modern, High-Performance Responsive Library UI'
+    ],
+    liveUrl: 'https://library.adaptivehub.app',
+    liveStatus: 'Live',
+  },
+  {
     id: 1,
     type: 'code',
     title: 'iREQUEST: Online Credential Request System',
@@ -112,8 +144,7 @@ export const codeAndVideoProjects: Project[] = [
     tags: ['JavaScript', 'React', 'Tailwind CSS', 'Supabase', 'Vercel'],
     features: ['Randomized pairing algorithm', 'Anonymous wishlists', 'Mobile-responsive UI'],
     githubUrl: 'https://github.com/kazutokei/christmas-party.git',
-    liveUrl: 'https://christmas-party-woad.vercel.app',
-    liveStatus: 'Live',
+    liveStatus: 'Offline',
   },
   {
     id: 4,
@@ -187,6 +218,8 @@ export const techStackData = [
       { name: 'React', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg' },
       { name: 'TypeScript', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg' },
       { name: 'JavaScript', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg' },
+      { name: 'Dart', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/dart/dart-original.svg' },
+      { name: 'Flutter', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/flutter/flutter-original.svg' },
       { name: 'Tailwind CSS', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg' },
       { name: 'Vite', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vitejs/vitejs-original.svg' }, 
       { name: 'HTML5', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg' },
@@ -199,6 +232,8 @@ export const techStackData = [
     icon: Database,
     items: [
       { name: 'Python', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg' },
+      { name: 'PHP', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/php/php-original.svg' },
+      { name: 'Laravel', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/laravel/laravel-original.svg' },
       { name: 'Django', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/django/django-plain.svg' },
       { name: 'PostgreSQL', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg' },
       { name: 'Supabase', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/supabase/supabase-original.svg' },
@@ -206,7 +241,19 @@ export const techStackData = [
     ]
   },
   {
-    title: 'Visual Design & Video',
+    title: 'Testing & QA',
+    description: 'Quality assurance methodologies, test execution, and verification.',
+    icon: ShieldCheck,
+    items: [
+      { name: 'Manual Testing', LucideIcon: ClipboardCheck },
+      { name: 'Functional Testing', LucideIcon: FileCheck },
+      { name: 'Smoke Testing', LucideIcon: Flame },
+      { name: 'UI/UX Verification', LucideIcon: CheckCircle2 },
+      { name: 'Bug Reporting & Tracking', LucideIcon: Bug }
+    ]
+  },
+  {
+    title: 'Multimedia & Design',
     description: 'Crafting brand identities, layout designs, and cinematic videos.',
     icon: Clapperboard,
     items: [
@@ -226,6 +273,7 @@ export const techStackData = [
       { name: 'Git', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg' },
       { name: 'GitHub', iconUrl: '/github.svg' },
       { name: 'Vercel', LucideIcon: (props: { className?: string }) => <Vercel.Avatar size={32} {...props} /> },
+      { name: 'Notion', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/notion/notion-original.svg' },
       { name: 'Tkinter', LucideIcon: Feather }, 
       { name: 'CustomTkinter', iconUrl: '/custom-tkinter.svg' },
       { name: 'LaTeX', iconUrl: '/latex.svg' },
@@ -238,7 +286,8 @@ export const techStackData = [
     description: 'Leveraging artificial intelligence for coding, debugging, and productivity.',
     icon: Bot,
     items: [
-      { name: 'Gemini', iconUrl: 'https://logo-teka.com/wp-content/uploads/2026/02/gemini-icon-logo.svg' },
+      { name: 'ChatGPT', iconUrl: '/chatgpt.webp' },
+      { name: 'Gemini', iconUrl: '/gemini.svg' },
       { name: 'Claude', iconUrl: '/claude.svg' }
     ]
   },

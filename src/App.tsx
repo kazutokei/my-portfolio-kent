@@ -4,6 +4,7 @@ import Particles from './components/bits/Particles';
 import GooeyNav from './components/bits/GooeyNav';
 
 const About = lazy(() => import('./sections/About'));
+const Experience = lazy(() => import('./sections/Experience'));
 const Projects = lazy(() => import('./sections/Projects'));
 const TechStack = lazy(() => import('./sections/TechStack'));
 const Contact = lazy(() => import('./sections/Contact'));
@@ -15,10 +16,19 @@ const SectionFallback = () => (
 );
 
 function App() {
+  // Ensure browser starts at top on refresh instead of glitching ScrollTrigger pin
+  React.useEffect(() => {
+    if (typeof window !== 'undefined' && 'scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0);
+  }, []);
+
   // Navigation items: Ensure href matches the id="name" in each section file
   const navItems = [
     { label: "Home", href: "#home" },
     { label: "About", href: "#about" },
+    { label: "Experience", href: "#experience" },
     { label: "Projects", href: "#projects" },
     { label: "Skills", href: "#skills" },
     { label: "Contact", href: "#contact" }, 
@@ -71,6 +81,9 @@ function App() {
         <Hero />
         <Suspense fallback={<SectionFallback />}>
           <About />
+        </Suspense>
+        <Suspense fallback={<SectionFallback />}>
+          <Experience />
         </Suspense>
         <Suspense fallback={<SectionFallback />}>
           <Projects />
