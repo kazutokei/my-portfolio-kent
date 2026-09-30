@@ -1,11 +1,12 @@
 import React, { useRef } from 'react';
+import { motion } from 'framer-motion';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 import ProfileCard from '../components/bits/ProfileCard';
 import TextType from '../components/bits/TextType';
 import CountUp from '../components/bits/CountUp';
-import { ArrowRight, ExternalLink, Mail } from 'lucide-react';
+import { ArrowRight, ExternalLink, Mail, ChevronDown } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -14,6 +15,7 @@ const Hero = () => {
   const nameWrapperRef = useRef<HTMLDivElement>(null);
   const restOfLeftRef = useRef<HTMLDivElement>(null);
   const rightColRef = useRef<HTMLDivElement>(null);
+  const scrollIndicatorRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
     if (!nameWrapperRef.current || !containerRef.current) return;
@@ -23,6 +25,7 @@ const Hero = () => {
     // Set initial states
     gsap.set(restOfLeftRef.current, { opacity: 0, y: 40 });
     gsap.set(rightColRef.current, { opacity: 0, x: isMobile ? 0 : 40, y: isMobile ? 40 : 0 });
+    if (scrollIndicatorRef.current) gsap.set(scrollIndicatorRef.current, { opacity: 1, y: 0 });
     
     const nav = document.getElementById('main-nav');
     if (nav) gsap.set(nav, { opacity: 0, y: -20, pointerEvents: "none" });
@@ -37,6 +40,17 @@ const Hero = () => {
         invalidateOnRefresh: true, 
       }
     });
+
+    // 0. Fade out the scroll indicator immediately as user scrolls
+    if (scrollIndicatorRef.current) {
+      tl.to(scrollIndicatorRef.current, {
+        opacity: 0,
+        y: 15,
+        duration: 0.15,
+        ease: "power2.out",
+        pointerEvents: "none"
+      }, 0);
+    }
 
     // 1. Force the Intro Block to start centered. 
     tl.from(nameWrapperRef.current, {
@@ -83,7 +97,7 @@ const Hero = () => {
   }, { scope: containerRef });
 
   return (
-    <section id="home" ref={containerRef} className="relative w-full bg-transparent">
+    <section id="home" ref={containerRef} className="relative w-full min-h-screen flex flex-col justify-center bg-transparent">
       
       <div className="flex items-center justify-center px-4 sm:px-6 pt-20 pb-8 w-full">
         <div className="max-w-5xl w-full grid grid-cols-1 lg:grid-cols-2 gap-8 items-center z-10 relative">
@@ -210,6 +224,32 @@ const Hero = () => {
 
         </div>
       </div>
+
+      {/* --- SCROLL DOWN INDICATOR --- */}
+      <div
+        ref={scrollIndicatorRef}
+        onClick={() => {
+          window.scrollTo({
+            top: window.innerHeight * 0.8,
+            behavior: 'smooth'
+          });
+        }}
+        className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center gap-1.5 cursor-pointer select-none group"
+        aria-label="Scroll down"
+      >
+        <span className="text-[10px] tracking-[0.25em] uppercase font-mono text-zinc-500 group-hover:text-cyan-400 transition-colors">
+          Scroll
+        </span>
+        <div className="w-5 h-8 rounded-full border border-zinc-700/80 group-hover:border-cyan-400/60 flex items-start justify-center p-1 bg-zinc-950/60 backdrop-blur-sm transition-colors shadow-lg shadow-black/40">
+          <motion.div
+            animate={{ y: [0, 10, 0] }}
+            transition={{ repeat: Infinity, duration: 1.6, ease: "easeInOut" }}
+            className="w-1 h-2 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(6,182,212,0.8)]"
+          />
+        </div>
+        <ChevronDown className="w-3.5 h-3.5 text-zinc-500 group-hover:text-cyan-400 animate-bounce transition-colors" />
+      </div>
+
     </section>
   );
 };

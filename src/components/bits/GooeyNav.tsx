@@ -50,6 +50,8 @@ const GooeyNav: React.FC<GooeyNavProps> = ({
   const filterRef = useRef<HTMLSpanElement>(null);
   const textRef = useRef<HTMLSpanElement>(null);
   const [activeIndex, setActiveIndex] = useState<number>(initialActiveIndex);
+  const isScrollingRef = useRef(false);
+
 
 
   const makeParticles = (element: HTMLElement) => {
@@ -102,22 +104,18 @@ const GooeyNav: React.FC<GooeyNavProps> = ({
     textRef.current.innerText = element.innerText;
   };
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>, index: number) => {
-    const liEl = e.currentTarget;
-    if (activeIndex === index) return;
+    // Set a flag to ignore observer while we manually scroll
+    isScrollingRef.current = true;
+    if (activeIndex === index) {
+      setTimeout(() => { isScrollingRef.current = false; }, 1000);
+      return;
+    }
     setActiveIndex(index);
-    updateEffectPosition(liEl);
-    if (filterRef.current) {
-      const particles = filterRef.current.querySelectorAll('.particle');
-      particles.forEach(p => filterRef.current!.removeChild(p));
-    }
-    if (textRef.current) {
-      textRef.current.classList.remove('active');
-      void textRef.current.offsetWidth;
-      textRef.current.classList.add('active');
-    }
-    if (filterRef.current) {
-      makeParticles(filterRef.current);
-    }
+    
+    // Reset the flag after some time to allow observer again
+    setTimeout(() => {
+      isScrollingRef.current = false;
+    }, 1000);
   };
   const handleKeyDown = (e: React.KeyboardEvent<HTMLAnchorElement>, index: number) => {
     if (e.key === 'Enter' || e.key === ' ') {
@@ -138,8 +136,21 @@ const GooeyNav: React.FC<GooeyNavProps> = ({
     const activeLi = navRef.current.querySelectorAll('li')[activeIndex] as HTMLElement;
     if (activeLi) {
       updateEffectPosition(activeLi);
-      textRef.current?.classList.add('active');
+      
+      // Re-trigger the gooey particles and pill animation
+      if (filterRef.current) {
+        const particles = filterRef.current.querySelectorAll('.particle');
+        particles.forEach(p => filterRef.current!.removeChild(p));
+        makeParticles(filterRef.current);
+      }
+
+      if (textRef.current) {
+        textRef.current.classList.remove('active');
+        void textRef.current.offsetWidth; // Force reflow
+        textRef.current.classList.add('active');
+      }
     }
+
     const resizeObserver = new ResizeObserver(() => {
       const currentActiveLi = navRef.current?.querySelectorAll('li')[activeIndex] as HTMLElement;
       if (currentActiveLi) {
@@ -149,6 +160,69 @@ const GooeyNav: React.FC<GooeyNavProps> = ({
     resizeObserver.observe(containerRef.current);
     return () => resizeObserver.disconnect();
   }, [activeIndex]);
+
+  // Use a ref to track activeIndex inside the observer to avoid re-creating it
+  const activeIndexRef = useRef(activeIndex);
+  useEffect(() => {
+    activeIndexRef.current = activeIndex;
+  }, [activeIndex]);
+
+  // Intersection Observer for Scroll-based Navigation
+  useEffect(() => {
+    const observerOptions = {
+      root: null,
+      rootMargin: '-20% 0px -70% 0px',
+      threshold: 0
+    };
+
+    const handleIntersection = (entries: IntersectionObserverEntry[]) => {
+      if (isScrollingRef.current) return;
+
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = entry.target.id;
+          const index = items.findIndex(item => item.href === `#${id}`);
+          if (index !== -1 && index !== activeIndexRef.current) {
+            setActiveIndex(index);
+          }
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(handleIntersection, observerOptions);
+    const observedElements = new Set<Element>();
+
+    const attachObservers = () => {
+      items.forEach(item => {
+        const id = item.href.replace('#', '');
+        if (id) {
+          const element = document.getElementById(id);
+          if (element && !observedElements.has(element)) {
+            observer.observe(element);
+            observedElements.add(element);
+          }
+        }
+      });
+    };
+
+    // Initial attachment
+    attachObservers();
+
+    // Use MutationObserver to detect when lazy-loaded sections are added to the DOM
+    const mutationObserver = new MutationObserver(() => {
+      attachObservers();
+    });
+
+    mutationObserver.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+
+    return () => {
+      observer.disconnect();
+      mutationObserver.disconnect();
+    };
+  }, [items]); // Only re-run if items change, NOT activeIndex
 
   return (
     <>

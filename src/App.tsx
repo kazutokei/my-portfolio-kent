@@ -4,6 +4,7 @@ import Particles from './components/bits/Particles';
 import GooeyNav from './components/bits/GooeyNav';
 
 const About = lazy(() => import('./sections/About'));
+const Experience = lazy(() => import('./sections/Experience'));
 const Projects = lazy(() => import('./sections/Projects'));
 const TechStack = lazy(() => import('./sections/TechStack'));
 const Contact = lazy(() => import('./sections/Contact'));
@@ -27,6 +28,7 @@ function App() {
   const navItems = [
     { label: "Home", href: "#home" },
     { label: "About", href: "#about" },
+    { label: "Experience", href: "#experience" },
     { label: "Projects", href: "#projects" },
     { label: "Skills", href: "#skills" },
     { label: "Contact", href: "#contact" }, 
@@ -79,6 +81,9 @@ function App() {
         <Hero />
         <Suspense fallback={<SectionFallback />}>
           <About />
+        </Suspense>
+        <Suspense fallback={<SectionFallback />}>
+          <Experience />
         </Suspense>
         <Suspense fallback={<SectionFallback />}>
           <Projects />
