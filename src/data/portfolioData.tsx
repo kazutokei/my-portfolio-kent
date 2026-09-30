@@ -285,6 +285,7 @@ export const techStackData = [
     description: 'Leveraging artificial intelligence for coding, debugging, and productivity.',
     icon: Bot,
     items: [
+      { name: 'ChatGPT', iconUrl: '/chatgpt.webp' },
       { name: 'Gemini', iconUrl: '/gemini.svg' },
       { name: 'Claude', iconUrl: '/claude.svg' }
     ]
