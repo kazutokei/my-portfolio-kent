@@ -89,10 +89,10 @@ const ExperienceCard: React.FC<{ entry: ExperienceEntry; index: number }> = ({ e
       transition={{ duration: 0.6, delay: index * 0.15, ease: [0.25, 0.46, 0.45, 0.94] }}
       className="relative"
     >
-      <div className={`rounded-2xl border transition-all duration-300 group cursor-default ${
+      <div className={`rounded-2xl border transition-all duration-300 group cursor-default bg-[#18181b] ${
         entry.active
-          ? 'bg-zinc-900/60 border-cyan-500/30 shadow-[0_0_30px_rgba(6,182,212,0.08)]'
-          : 'bg-zinc-900/40 border-zinc-800/50 hover:border-cyan-500/20 hover:shadow-[0_4px_20px_rgba(0,0,0,0.3)]'
+          ? 'border-cyan-500/40 shadow-[0_0_25px_rgba(6,182,212,0.12)]'
+          : 'border-zinc-700/40 hover:border-cyan-500/30 hover:shadow-[0_8px_25px_rgba(0,0,0,0.3)] hover:-translate-y-0.5'
       }`}>
         <div className="p-5 sm:p-7">
           {/* Header Row */}
