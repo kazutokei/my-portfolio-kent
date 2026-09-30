@@ -60,17 +60,24 @@ const CardSwap = forwardRef<CardSwapHandle, CardSwapProps>(({
   delay = 5000, pauseOnHover = false, onCardClick, onSwap,
   skewAmount = 6, easing = 'elastic', containerClassName, children
 }, ref) => {
+  // Smooth, high-performance easing
   const config = easing === 'elastic'
-    ? { ease: 'elastic.out(0.6,0.9)', durDrop: 2, durMove: 2, durReturn: 2, promoteOverlap: 0.9, returnDelay: 0.05 }
-    : { ease: 'power1.inOut', durDrop: 0.8, durMove: 0.8, durReturn: 0.8, promoteOverlap: 0.45, returnDelay: 0.2 };
+    ? { ease: 'power3.out', durDrop: 0.9, durMove: 0.9, durReturn: 0.9, promoteOverlap: 0.75, returnDelay: 0.08 }
+    : { ease: 'power2.inOut', durDrop: 0.8, durMove: 0.8, durReturn: 0.8, promoteOverlap: 0.5, returnDelay: 0.15 };
 
   const childArr = useMemo(() => Children.toArray(children) as ReactElement<CardProps>[], [children]);
   
-  // FIXED: Changed dependency to [childArr] to satisfy React Compiler and ensure refs stay in sync
-  const refs = useMemo<CardRef[]>(() => childArr.map(() => React.createRef<HTMLDivElement>()), [childArr]);
+  // Stable refs array that persists across parent state re-renders
+  const refs = useRef<CardRef[]>([]);
+  if (refs.current.length !== childArr.length) {
+    refs.current = Array.from({ length: childArr.length }, () => React.createRef<HTMLDivElement>());
+  }
   
-  // Use a ref for order, but we'll need to sync it if child count changes
-  const order = useRef<number[]>(Array.from({ length: childArr.length }, (_, i) => i));
+  // Order of card indices currently at each slot
+  const order = useRef<number[]>([]);
+  if (order.current.length !== childArr.length) {
+    order.current = Array.from({ length: childArr.length }, (_, i) => i);
+  }
 
   const tlRef = useRef<gsap.core.Timeline | null>(null);
   const intervalRef = useRef<number>(0);
@@ -86,12 +93,29 @@ const CardSwap = forwardRef<CardSwapHandle, CardSwapProps>(({
   useEffect(() => { vertDistRef.current = verticalDistance; }, [verticalDistance]);
   useEffect(() => { skewRef.current = skewAmount; }, [skewAmount]);
 
-  // Snaps all cards instantly to their correct positions for a given order
-  const snapToOrder = (newOrder: number[]) => {
-    const total = refs.length;
+  // Positions cards for a given order, optionally animated smoothly
+  const snapToOrder = (newOrder: number[], animate = false) => {
+    const total = refs.current.length;
     newOrder.forEach((cardIdx, slotIdx) => {
-      const el = refs[cardIdx].current;
-      if (el) placeNow(el, makeSlot(slotIdx, cardDistRef.current, vertDistRef.current, total), skewRef.current);
+      const el = refs.current[cardIdx]?.current;
+      if (!el) return;
+      const slot = makeSlot(slotIdx, cardDistRef.current, vertDistRef.current, total);
+      if (animate) {
+        gsap.to(el, {
+          x: slot.x,
+          y: slot.y,
+          z: slot.z,
+          xPercent: -50,
+          yPercent: -50,
+          skewY: skewRef.current,
+          zIndex: slot.zIndex,
+          duration: 0.6,
+          ease: 'power3.out',
+          force3D: true
+        });
+      } else {
+        placeNow(el, slot, skewRef.current);
+      }
     });
   };
 
@@ -101,66 +125,70 @@ const CardSwap = forwardRef<CardSwapHandle, CardSwapProps>(({
     intervalRef.current = window.setInterval(autoSwap, delay);
   };
 
-  // The cinematic auto-swap animation (original website style)
+  // The cinematic auto-swap animation
   const autoSwap = () => {
     if (isAnimating.current || order.current.length < 2) return;
     isAnimating.current = true;
 
     const [front, ...rest] = order.current;
-    const elFront = refs[front].current;
+    const elFront = refs.current[front]?.current;
     if (!elFront) { isAnimating.current = false; return; }
+
+    const newOrder = [...rest, front];
 
     const tl = gsap.timeline({
       onComplete: () => {
-        order.current = [...rest, front];
+        order.current = newOrder;
         isAnimating.current = false;
       }
     });
     tlRef.current = tl;
 
-    tl.to(elFront, { y: '+=500', duration: config.durDrop, ease: config.ease });
+    tl.to(elFront, { y: '+=450', duration: config.durDrop, ease: config.ease });
     tl.addLabel('promote', `-=${config.durDrop * config.promoteOverlap}`);
     tl.call(() => { onSwapRef.current?.(rest[0]); }, undefined, 'promote');
 
     rest.forEach((idx, i) => {
-      const el = refs[idx].current;
+      const el = refs.current[idx]?.current;
       if (!el) return;
-      const slot = makeSlot(i, cardDistance, verticalDistance, refs.length);
+      const slot = makeSlot(i, cardDistRef.current, vertDistRef.current, refs.current.length);
       tl.set(el, { zIndex: slot.zIndex }, 'promote');
-      tl.to(el, { x: slot.x, y: slot.y, z: slot.z, duration: config.durMove, ease: config.ease }, `promote+=${i * 0.15}`);
+      tl.to(el, { x: slot.x, y: slot.y, z: slot.z, duration: config.durMove, ease: config.ease }, `promote+=${i * 0.08}`);
     });
 
-    const backSlot = makeSlot(refs.length - 1, cardDistance, verticalDistance, refs.length);
+    const backSlot = makeSlot(refs.current.length - 1, cardDistRef.current, vertDistRef.current, refs.current.length);
     tl.addLabel('return', `promote+=${config.durMove * config.returnDelay}`);
     tl.call(() => { gsap.set(elFront, { zIndex: backSlot.zIndex }); }, undefined, 'return');
     tl.to(elFront, { x: backSlot.x, y: backSlot.y, z: backSlot.z, duration: config.durReturn, ease: config.ease }, 'return');
-    tl.call(() => { order.current = [...rest, front]; });
   };
 
-  // Synchronize order if children change
+  // Initial placement on mount
   useEffect(() => {
-    if (order.current.length !== childArr.length) {
-      order.current = Array.from({ length: childArr.length }, (_, i) => i);
-      snapToOrder(order.current);
-    }
-  }, [childArr]);
+    snapToOrder(order.current);
+  }, []);
 
+  // Auto-cycle interval
   useEffect(() => {
-    const total = refs.length;
-    refs.forEach((r, i) => { if (r.current) placeNow(r.current, makeSlot(i, cardDistance, verticalDistance, total), skewAmount); });
-
     intervalRef.current = window.setInterval(autoSwap, delay);
 
-    if (pauseOnHover) {
-      const node = container.current!;
+    if (pauseOnHover && container.current) {
+      const node = container.current;
       const pause = () => { tlRef.current?.pause(); clearInterval(intervalRef.current); };
       const resume = () => { tlRef.current?.play(); intervalRef.current = window.setInterval(autoSwap, delay); };
       node.addEventListener('mouseenter', pause);
       node.addEventListener('mouseleave', resume);
-      return () => { node.removeEventListener('mouseenter', pause); node.removeEventListener('mouseleave', resume); clearInterval(intervalRef.current); tlRef.current?.kill(); };
+      return () => {
+        node.removeEventListener('mouseenter', pause);
+        node.removeEventListener('mouseleave', resume);
+        clearInterval(intervalRef.current);
+        tlRef.current?.kill();
+      };
     }
-    return () => { clearInterval(intervalRef.current); tlRef.current?.kill(); };
-  }, [cardDistance, verticalDistance, delay, pauseOnHover, skewAmount, easing, refs]);
+    return () => {
+      clearInterval(intervalRef.current);
+      tlRef.current?.kill();
+    };
+  }, [delay, pauseOnHover]);
 
   useImperativeHandle(ref, () => ({
     // Instantly snap to next card, restart auto-cycle
@@ -169,7 +197,7 @@ const CardSwap = forwardRef<CardSwapHandle, CardSwapProps>(({
       isAnimating.current = false;
       const newOrder = [...order.current.slice(1), order.current[0]];
       order.current = newOrder;
-      snapToOrder(newOrder);
+      snapToOrder(newOrder, true);
       onSwapRef.current?.(newOrder[0]);
       restartInterval();
     },
@@ -180,7 +208,7 @@ const CardSwap = forwardRef<CardSwapHandle, CardSwapProps>(({
       const last = order.current[order.current.length - 1];
       const newOrder = [last, ...order.current.slice(0, -1)];
       order.current = newOrder;
-      snapToOrder(newOrder);
+      snapToOrder(newOrder, true);
       onSwapRef.current?.(newOrder[0]);
       restartInterval();
     },
@@ -192,7 +220,7 @@ const CardSwap = forwardRef<CardSwapHandle, CardSwapProps>(({
       isAnimating.current = false;
       const newOrder = [...order.current.slice(pos), ...order.current.slice(0, pos)];
       order.current = newOrder;
-      snapToOrder(newOrder);
+      snapToOrder(newOrder, true);
       onSwapRef.current?.(targetCardIdx);
       restartInterval();
     }
@@ -201,9 +229,13 @@ const CardSwap = forwardRef<CardSwapHandle, CardSwapProps>(({
   const rendered = childArr.map((child, i) =>
     isValidElement<CardProps>(child)
       ? cloneElement(child, {
-          key: i, ref: refs[i],
+          key: child.key ?? i,
+          ref: refs.current[i],
           style: { width, height, ...(child.props.style ?? {}) },
-          onClick: (e: React.MouseEvent<HTMLDivElement>) => { child.props.onClick?.(e); onCardClick?.(i); }
+          onClick: (e: React.MouseEvent<HTMLDivElement>) => {
+            child.props.onClick?.(e);
+            onCardClick?.(i);
+          }
         } as CardProps & React.RefAttributes<HTMLDivElement>)
       : child
   );
