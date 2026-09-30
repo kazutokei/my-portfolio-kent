@@ -528,7 +528,7 @@ const About = () => {
 
   const affiliations = [
     {
-      org: "4H Club USTP-CDO",
+      org: "4H Club",
       chapter: "USTP CDO",
       logo: "/4h-club.webp",
       noWhiteBg: true,
