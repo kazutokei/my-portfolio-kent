@@ -1,6 +1,6 @@
-import React from 'react';
 import { 
-  MonitorSmartphone, Database, Clapperboard, Wrench, Feather, Bot, Brain, FileText, Kanban, Target, Eye, Clock, MessageCircle 
+  MonitorSmartphone, Database, Clapperboard, Wrench, Feather, Bot, Brain, FileText, Kanban, Target, Eye, Clock, MessageCircle,
+  ShieldCheck, ClipboardCheck, FileCheck, Flame, CheckCircle2, Bug
 } from 'lucide-react';
 import { Vercel } from '@lobehub/icons';
 
@@ -218,6 +218,7 @@ export const techStackData = [
       { name: 'React', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg' },
       { name: 'TypeScript', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg' },
       { name: 'JavaScript', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg' },
+      { name: 'Dart', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/dart/dart-original.svg' },
       { name: 'Tailwind CSS', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg' },
       { name: 'Vite', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vitejs/vitejs-original.svg' }, 
       { name: 'HTML5', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg' },
@@ -230,6 +231,8 @@ export const techStackData = [
     icon: Database,
     items: [
       { name: 'Python', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg' },
+      { name: 'PHP', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/php/php-original.svg' },
+      { name: 'Laravel', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/laravel/laravel-original.svg' },
       { name: 'Django', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/django/django-plain.svg' },
       { name: 'PostgreSQL', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg' },
       { name: 'Supabase', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/supabase/supabase-original.svg' },
@@ -237,7 +240,19 @@ export const techStackData = [
     ]
   },
   {
-    title: 'Visual Design & Video',
+    title: 'Testing & QA',
+    description: 'Quality assurance methodologies, test execution, and verification.',
+    icon: ShieldCheck,
+    items: [
+      { name: 'Manual Testing', LucideIcon: ClipboardCheck },
+      { name: 'Functional Testing', LucideIcon: FileCheck },
+      { name: 'Smoke Testing', LucideIcon: Flame },
+      { name: 'UI/UX Verification', LucideIcon: CheckCircle2 },
+      { name: 'Bug Reporting & Tracking', LucideIcon: Bug }
+    ]
+  },
+  {
+    title: 'Multimedia & Design',
     description: 'Crafting brand identities, layout designs, and cinematic videos.',
     icon: Clapperboard,
     items: [
@@ -257,6 +272,7 @@ export const techStackData = [
       { name: 'Git', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg' },
       { name: 'GitHub', iconUrl: '/github.svg' },
       { name: 'Vercel', LucideIcon: (props: { className?: string }) => <Vercel.Avatar size={32} {...props} /> },
+      { name: 'Notion', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/notion/notion-original.svg' },
       { name: 'Tkinter', LucideIcon: Feather }, 
       { name: 'CustomTkinter', iconUrl: '/custom-tkinter.svg' },
       { name: 'LaTeX', iconUrl: '/latex.svg' },
