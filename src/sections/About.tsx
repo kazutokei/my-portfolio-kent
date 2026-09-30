@@ -528,18 +528,29 @@ const About = () => {
 
   const affiliations = [
     {
+      org: "4H Club USTP-CDO",
+      chapter: "USTP CDO",
+      logo: "/4h-club.webp",
+      noWhiteBg: true,
+      roles: [
+        { title: "Layout Artist, Layout & Design Sector, Dept. of Creatives", date: "July 2026 - Present", active: true }
+      ]
+    },
+    {
       org: "University Student Government",
       chapter: "USTP CDO",
+      logo: "/usg_logo.avif",
       roles: [
-        { title: "Deputy Director, Office of the Creatives & Docu.", date: "July 2025 - Present", active: true },
+        { title: "Deputy Director, Office of the Creatives & Docu.", date: "July 2025 - July 2026", active: false },
         { title: "Staff, Office of the Vice President", date: "July 2024 - July 2025", active: false }
       ]
     },
     {
       org: "Computer Science Student Society",
       chapter: "USTP CDO",
+      logo: "/cs3_logo.avif",
       roles: [
-        { title: "Associate Electoral Commissioner", date: "July 2025 - Present", active: true },
+        { title: "Associate Electoral Commissioner", date: "July 2025 - July 2026", active: false },
         { title: "Vice President - External", date: "July 2024 - July 2025", active: false },
         { title: "Graphic Designer, Creatives Team", date: "July 2023 - July 2024", active: false }
       ]
@@ -547,14 +558,16 @@ const About = () => {
     {
       org: "Google Developer Groups (GDG) on Campus",
       chapter: "USTP CDO",
+      logo: "/gdgocustp_logo.avif",
       roles: [
-        { title: "Member", date: "July 2025 - Present", active: true },
+        { title: "Member", date: "July 2025 - July 2026", active: false },
         { title: "CS Ambassador, Technology Dept.", date: "Aug 2023 - July 2024", active: false }
       ]
     },
     {
       org: "Student Council of IT and Computing",
       chapter: "USTP CDO",
+      logo: "/scitc_logo.avif",
       roles: [
         { title: "Graphic Designer, Dept. of Comms.", date: "Aug 2023 - July 2024", active: false }
       ]
@@ -562,6 +575,8 @@ const About = () => {
     {
       org: "Unyon Mindanao Office",
       chapter: "USTP CDO Chapter",
+      logo: "/unyon_logo.avif",
+      noWhiteBg: true,
       roles: [
         { title: "Creatives and Technical Staff", date: "Jan 2025 - July 2025", active: false }
       ]
@@ -569,6 +584,8 @@ const About = () => {
     {
       org: "Robogals CDO",
       chapter: "CDO Chapter",
+      logo: "/robogals_logo.avif",
+      noWhiteBg: true,
       roles: [
         { title: "Socials Committee", date: "July 2023 - July 2024", active: false }
       ]
@@ -731,14 +748,26 @@ const About = () => {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {affiliations.map((org, idx) => (
-              <div key={idx} className="bg-zinc-900/40 border border-zinc-800/50 rounded-2xl p-5 hover:border-cyan-500/30 transition-colors flex flex-col">
-                <h4 className="text-white font-bold text-[15px] leading-snug mb-1">{org.org}</h4>
-                <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider mb-4">{org.chapter}</p>
-                <div className="space-y-3 mt-auto">
+              <div key={idx} className="bg-zinc-900/40 border border-zinc-800/50 rounded-2xl p-5 hover:border-cyan-500/30 transition-all flex flex-col group h-full">
+                <div className="flex gap-4 items-center mb-3">
+                  <div className={`w-12 h-12 ${org.noWhiteBg ? 'bg-transparent p-0' : 'bg-white p-1.5'} rounded-xl flex-shrink-0 shadow-lg group-hover:scale-105 transition-transform duration-300 overflow-hidden flex items-center justify-center`}>
+                    <img 
+                      src={org.logo} 
+                      alt={org.org} 
+                      className="w-full h-full object-contain" 
+                      onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} 
+                    />
+                  </div>
+                  <div>
+                    <h4 className="text-white font-bold text-[14px] leading-tight mb-1">{org.org}</h4>
+                    <p className="text-[9px] text-zinc-500 font-bold uppercase tracking-wider">{org.chapter}</p>
+                  </div>
+                </div>
+                <div className="space-y-3 mt-1">
                   {org.roles.map((role, rIdx) => (
                     <div key={rIdx} className="flex flex-col">
-                      <span className={`text-sm font-semibold ${role.active ? 'text-cyan-400' : 'text-zinc-300'}`}>{role.title}</span>
-                      <span className="text-[11px] text-zinc-500 mt-0.5 tracking-wide">{role.date}</span>
+                      <span className={`text-[13px] font-semibold ${role.active ? 'text-cyan-400' : 'text-zinc-300'}`}>{role.title}</span>
+                      <span className="text-[10px] text-zinc-500 mt-0.5 tracking-wide">{role.date}</span>
                     </div>
                   ))}
                 </div>
