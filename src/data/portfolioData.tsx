@@ -144,8 +144,7 @@ export const codeAndVideoProjects: Project[] = [
     tags: ['JavaScript', 'React', 'Tailwind CSS', 'Supabase', 'Vercel'],
     features: ['Randomized pairing algorithm', 'Anonymous wishlists', 'Mobile-responsive UI'],
     githubUrl: 'https://github.com/kazutokei/christmas-party.git',
-    liveUrl: 'https://christmas-party-woad.vercel.app',
-    liveStatus: 'Live',
+    liveStatus: 'Offline',
   },
   {
     id: 4,
