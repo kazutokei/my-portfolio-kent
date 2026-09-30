@@ -28,7 +28,9 @@ const Hero = () => {
     if (scrollIndicatorRef.current) gsap.set(scrollIndicatorRef.current, { opacity: 1, y: 0 });
     
     const nav = document.getElementById('main-nav');
-    if (nav) gsap.set(nav, { opacity: 0, y: -20, pointerEvents: "none" });
+    if (nav) {
+      gsap.set(nav, { opacity: 0, y: -20, pointerEvents: "none" });
+    }
 
     const tl = gsap.timeline({
       scrollTrigger: {
