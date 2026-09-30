@@ -4,7 +4,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 import ProfileCard from '../components/bits/ProfileCard';
 import TextType from '../components/bits/TextType';
-import GradientText from '../components/bits/GradientText';
 import CountUp from '../components/bits/CountUp';
 import { ArrowRight, ExternalLink, Mail } from 'lucide-react';
 
@@ -83,8 +82,6 @@ const Hero = () => {
 
   }, { scope: containerRef });
 
-  const gradientColors = ['#a855f7', '#3b82f6', '#22d3ee', '#a855f7'];
-
   return (
     <section id="home" ref={containerRef} className="relative w-full bg-transparent">
       
@@ -102,26 +99,16 @@ const Hero = () => {
                 <h2 className="text-3xl sm:text-4xl md:text-6xl font-extrabold text-white tracking-tight leading-[1.1]">
                   Hello, I'm
                 </h2>
-                <GradientText
-                  colors={gradientColors}
-                  animationSpeed={6}
-                  showBorder={false}
-                  className="text-3xl sm:text-4xl md:text-6xl !font-extrabold tracking-tight leading-[1.1] !block !mx-0"
-                >
+                <span className="text-3xl sm:text-4xl md:text-6xl font-extrabold text-cyan-400 tracking-tight leading-[1.1]">
                   Kent
-                </GradientText>
+                </span>
               </div>
 
               {/* LINE 2: "John Chavo" */}
               <div className="w-full flex justify-center lg:justify-start">
-                <GradientText
-                  colors={gradientColors}
-                  animationSpeed={6}
-                  showBorder={false}
-                  className="text-3xl sm:text-4xl md:text-6xl !font-extrabold tracking-tight leading-[1.1] !block !mx-0"
-                >
+                <span className="text-3xl sm:text-4xl md:text-6xl font-extrabold text-cyan-400 tracking-tight leading-[1.1]">
                   John Chavo
-                </GradientText>
+                </span>
               </div>
 
               {/* Animated Typing Roles */}
@@ -182,7 +169,7 @@ const Hero = () => {
                 </div>
                 <div className="flex flex-col items-center">
                   <h4 className="text-2xl sm:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-cyan-400 to-indigo-500 flex items-center">
-                    <CountUp from={0} to={5} separator="," direction="up" duration={3} className="count-up-text" />+
+                    <CountUp from={0} to={7} separator="," direction="up" duration={3} className="count-up-text" />+
                   </h4>
                   <p className="text-zinc-500 text-[10px] sm:text-xs md:text-sm mt-1 text-center">Projects</p>
                 </div>

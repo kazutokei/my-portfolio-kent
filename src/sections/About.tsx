@@ -719,7 +719,7 @@ const About = () => {
       className: 'lg:col-span-2 p-6',
       content: (
         <div className="flex flex-col items-center justify-center h-full text-center py-6 z-10 relative">
-          <h2 className="text-5xl font-black text-cyan-400 mb-3 drop-shadow-[0_0_15px_rgba(6,182,212,0.4)] group-hover:scale-110 transition-transform duration-300">5+</h2>
+          <h2 className="text-5xl font-black text-cyan-400 mb-3 drop-shadow-[0_0_15px_rgba(6,182,212,0.4)] group-hover:scale-110 transition-transform duration-300">7+</h2>
           <p className="text-sm text-zinc-400 font-semibold tracking-wider uppercase">Projects Completed</p>
         </div>
       )

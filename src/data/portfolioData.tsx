@@ -72,6 +72,38 @@ export const graphicFiles = [
 
 export const codeAndVideoProjects: Project[] = [
   {
+    id: 'adaptivehub',
+    type: 'code',
+    title: 'AdaptiveHub',
+    description: 'A smart, AI-powered personalized learning platform for schools. Features adaptive assessments, structured learning materials, and classroom management designed to adjust to every student\'s pace and proficiency level.',
+    imageUrl: '/adaptivehub_thumbnail.webp',
+    tags: ['PHP', 'Laravel', 'Tailwind CSS', 'Bootstrap', 'JavaScript', 'MySQL', 'AI Education'],
+    features: [
+      'AI-Powered Adaptive Learning & Personalized Assessment',
+      'Structured Lessons, Quizzes, and Subject Materials',
+      'Multi-Role System (Teachers, Students & Administrators)',
+      'Automated Performance Insights & Classroom Management'
+    ],
+    liveUrl: 'https://adaptivehub.app',
+    liveStatus: 'Live',
+  },
+  {
+    id: 'adaptive-library',
+    type: 'code',
+    title: 'Adaptive Library',
+    description: 'A modern school library management and circulation system. Streamlines library operations with fast cataloging, real-time circulation tracking, reading insights, and seamless migration from Koha or SLiMS.',
+    imageUrl: '/adaptive-library_thumbnail.webp',
+    tags: ['PHP', 'Laravel', 'Tailwind CSS', 'Alpine.js', 'MySQL'],
+    features: [
+      'Fast Cataloging & Real-Time Circulation Tracking',
+      'Seamless Data Migration from Koha & SLiMS',
+      'Student Publications & Reading Insights Portal',
+      'Modern, High-Performance Responsive Library UI'
+    ],
+    liveUrl: 'https://library.adaptivehub.app',
+    liveStatus: 'Live',
+  },
+  {
     id: 1,
     type: 'code',
     title: 'iREQUEST: Online Credential Request System',
