@@ -541,7 +541,7 @@ const About = () => {
       chapter: "USTP CDO",
       logo: "/usg_logo.avif",
       roles: [
-        { title: "Deputy Director, Office of the Creatives & Docu.", date: "July 2025 - July 2026", active: false },
+        { title: "Deputy Director, Office of the Creatives & Documentation", date: "July 2025 - July 2026", active: false },
         { title: "Staff, Office of the Vice President", date: "July 2024 - July 2025", active: false }
       ]
     },
